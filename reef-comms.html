@@ -140,6 +140,12 @@
   .clear-btn { background: transparent; border: none; color: var(--text-dim); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; padding: 0.25rem 0.5rem; transition: color 0.15s; }
   .clear-btn:hover { color: #e24b4a; }
 
+  .skeleton { display: flex; flex-direction: column; gap: 1rem; padding: 1.5rem 0; }
+  .skel-row { height: 60px; border-radius: 8px; background: linear-gradient(90deg, var(--rim) 25%, #1a2a40 50%, var(--rim) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+  .skel-row.short { height: 44px; max-width: 60%; }
+  .skel-row.right { align-self: flex-end; max-width: 70%; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--rim); border-radius: 2px; }
@@ -265,11 +271,18 @@ function renderLog(msgs) {
 }
 
 async function init() {
+  // Show skeleton while fetching
+  document.getElementById('log').innerHTML = '<div class="skeleton"><div class="skel-row"></div><div class="skel-row short right"></div><div class="skel-row short"></div><div class="skel-row right"></div></div>';
   setStatus('connecting to reef...');
   const msgs = await fetchMsgs();
   if (msgs === null) { setStatus('could not establish signal', 'error'); return; }
   renderLog(msgs);
   setStatus('');
+  // Auto-refresh every 10 minutes — silent, no status flash
+  setInterval(async () => {
+    const fresh = await fetchMsgs();
+    if (fresh !== null) renderLog(fresh);
+  }, 10 * 60 * 1000);
 }
 
 function selectWho(w) {
@@ -321,6 +334,11 @@ async function sendMsg() {
   const ok = await writeMsgs(msgs);
   if (ok) {
     inp.value = ''; inp.style.height = 'auto';
+    // Clear pressure after send
+    if (pressure) {
+      document.getElementById('p-' + pressure).classList.remove('active');
+      pressure = null;
+    }
     renderLog(msgs);
     setStatus('transmitted.', 'ok');
     setTimeout(() => setStatus(''), 2500);
