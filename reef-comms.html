@@ -372,12 +372,12 @@
 <script>
 const API_KEY = '$2a$10$iQbIsfqSZ9dCjO2yjrJtR.ORg6Wu3k1ppS/cd09Ej5gPBcQvV.3Z6';
 const BIN_BASE = 'https://api.jsonbin.io/v3/b';
-const BIN_ID_KEY = 'reef_comms_bin_id';
+const BIN_ID = '69e2eb30856a68218947648e';
 let who = 'pixel';
 let sending = false;
 
-function getBinId() { return localStorage.getItem(BIN_ID_KEY); }
-function setBinId(id) { localStorage.setItem(BIN_ID_KEY, id); }
+function getBinId() { return BIN_ID; }
+function setBinId(id) { }
 
 function setStatus(msg, type) {
   const el = document.getElementById('status');
