@@ -349,6 +349,8 @@
     <span class="depth-sep">//</span>
     <span id="msg-count">loading...</span>
     <span style="flex:1"></span>
+    <button class="clear-btn" onclick="refreshLog()">refresh</button>
+    <span class="depth-sep">//</span>
     <button class="clear-btn" onclick="clearLog()">clear archive</button>
   </div>
 
@@ -536,6 +538,14 @@ async function sendMsg() {
   }
 
   btn.disabled = false; btn.textContent = 'Send ↗'; sending = false;
+}
+
+async function refreshLog() {
+  setStatus('refreshing...');
+  const msgs = await fetchMsgs();
+  if (msgs === null) { setStatus('signal lost', 'error'); return; }
+  renderLog(msgs);
+  setStatus('');
 }
 
 async function clearLog() {
