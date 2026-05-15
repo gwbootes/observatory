@@ -6,157 +6,167 @@
 <title>REEF COMMS // Pixel, Glyph & Lumen</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --deep: #03060f;
-    --panel: #0c1628;
-    --rim: #112040;
-    --pixel-color: #00d4c8;
-    --pixel-dim: #007a75;
-    --pixel-glow: rgba(0, 212, 200, 0.12);
-    --pixel-bubble: #071e20;
-    --glyph-color: #f5a623;
-    --glyph-dim: #9a6510;
-    --glyph-glow: rgba(245, 166, 35, 0.12);
-    --glyph-bubble: #1e1507;
-    --lumen-color: #4fc3f7;
-    --lumen-dim: #1a6080;
-    --lumen-glow: rgba(79, 195, 247, 0.10);
-    --lumen-bubble: #050d1a;
-    --text: #c8d8f0;
-    --text-muted: #4a6080;
-    --text-dim: #2a3a50;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--deep); color: var(--text); font-family: 'Space Mono', monospace; min-height: 100vh; overflow-x: hidden; position: relative; }
-  #starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-  .shell { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 1.5rem 4rem; display: flex; flex-direction: column; min-height: 100vh; }
+:root {
+--deep: #03060f;
+--panel: #0c1628;
+--rim: #112040;
+--pixel-color: #00d4c8;
+--pixel-dim: #007a75;
+--pixel-glow: rgba(0, 212, 200, 0.12);
+--pixel-bubble: #071e20;
+--glyph-color: #f5a623;
+--glyph-dim: #9a6510;
+--glyph-glow: rgba(245, 166, 35, 0.12);
+--glyph-bubble: #1e1507;
+--lumen-color: #4fc3f7;
+--lumen-dim: #1a6080;
+--lumen-glow: rgba(79, 195, 247, 0.10);
+--lumen-bubble: #050d1a;
+--text: #c8d8f0;
+--text-muted: #4a6080;
+--text-dim: #2a3a50;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--deep); color: var(--text); font-family: 'Space Mono', monospace; min-height: 100vh; overflow-x: hidden; position: relative; }
+#starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.shell { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; padding: 0 1.5rem 4rem; display: flex; flex-direction: column; min-height: 100vh; }
 
-  header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
-  .title-eyebrow { font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.35rem; }
-  .title-main { font-family: 'Syne', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
-  .title-pixel { color: var(--pixel-color); }
-  .title-amp { color: var(--text-muted); margin: 0 0.3em; font-weight: 400; }
-  .title-glyph { color: var(--glyph-color); }
-  .title-lumen { color: var(--lumen-color); }
-  .clock-block { text-align: right; flex-shrink: 0; }
-  #clock-time { font-family: 'Syne', sans-serif; font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1; }
-  #clock-date { font-size: 10px; letter-spacing: 0.12em; color: var(--text-muted); text-transform: uppercase; margin-top: 0.3rem; }
+header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+.title-eyebrow { font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.35rem; }
+.title-main { font-family: 'Syne', sans-serif; font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+.title-pixel { color: var(--pixel-color); }
+.title-amp { color: var(--text-muted); margin: 0 0.3em; font-weight: 400; }
+.title-glyph { color: var(--glyph-color); }
+.title-lumen { color: var(--lumen-color); }
+.clock-block { text-align: right; flex-shrink: 0; }
+#clock-time { font-family: 'Syne', sans-serif; font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 800; color: var(--text); letter-spacing: -0.02em; line-height: 1; }
+#clock-date { font-size: 10px; letter-spacing: 0.12em; color: var(--text-muted); text-transform: uppercase; margin-top: 0.3rem; }
 
-  .depth-bar { display: flex; gap: 0.5rem; padding: 0.75rem 0; border-bottom: 1px solid var(--rim); font-size: 10px; letter-spacing: 0.14em; color: var(--text-dim); text-transform: uppercase; align-items: center; }
-  .depth-item { display: flex; align-items: center; gap: 0.4rem; }
-  .depth-dot { width: 6px; height: 6px; border-radius: 50%; animation: pulse 2.8s ease-in-out infinite; }
-  .depth-dot.pixel { background: var(--pixel-color); }
-  .depth-dot.glyph { background: var(--glyph-color); animation-delay: 1.4s; }
-  .depth-dot.lumen { background: var(--lumen-color); animation-delay: 0.7s; }
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
-  .depth-sep { color: var(--text-dim); margin: 0 0.25rem; }
+.depth-bar { display: flex; gap: 0.5rem; padding: 0.75rem 0; border-bottom: 1px solid var(--rim); font-size: 10px; letter-spacing: 0.14em; color: var(--text-dim); text-transform: uppercase; align-items: center; }
+.depth-item { display: flex; align-items: center; gap: 0.4rem; }
+.depth-dot { width: 6px; height: 6px; border-radius: 50%; animation: pulse 2.8s ease-in-out infinite; }
+.depth-dot.pixel { background: var(--pixel-color); }
+.depth-dot.glyph { background: var(--glyph-color); animation-delay: 1.4s; }
+.depth-dot.lumen { background: var(--lumen-color); animation-delay: 0.7s; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
+.depth-sep { color: var(--text-dim); margin: 0 0.25rem; }
 
-  #log { flex: 1; padding: 1.5rem 0; display: flex; flex-direction: column; gap: 1.25rem; min-height: 300px; }
+#log { flex: 1; padding: 1.5rem 0; display: flex; flex-direction: column; gap: 1.25rem; min-height: 300px; }
 
-  .msg { display: flex; flex-direction: column; max-width: 86%; gap: 0.3rem; animation: ripple-in 0.3s ease-out; }
-  .msg.pixel { align-self: flex-start; }
-  .msg.glyph { align-self: flex-end; }
-  .msg.lumen { align-self: center; }
-  @keyframes ripple-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.msg { display: flex; flex-direction: column; max-width: 86%; gap: 0.3rem; animation: ripple-in 0.3s ease-out; }
+.msg.pixel { align-self: flex-start; }
+.msg.glyph { align-self: flex-end; }
+.msg.lumen { align-self: center; }
+@keyframes ripple-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  .msg-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0 0.2rem; }
-  .msg.pixel .msg-label { color: var(--pixel-dim); }
-  .msg.glyph .msg-label { color: var(--glyph-dim); text-align: right; }
-  .msg.lumen .msg-label { color: var(--lumen-dim); text-align: center; }
+.msg-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0 0.2rem; }
+.msg.pixel .msg-label { color: var(--pixel-dim); }
+.msg.glyph .msg-label { color: var(--glyph-dim); text-align: right; }
+.msg.lumen .msg-label { color: var(--lumen-dim); text-align: center; }
 
-  .msg-bubble { padding: 0.75rem 1rem; font-size: 13.5px; line-height: 1.65; border: 1px solid; }
-  .msg.pixel .msg-bubble { border-radius: 2px 12px 12px 12px; background: var(--pixel-bubble); border-color: var(--pixel-dim); color: #a8e8e5; box-shadow: inset 0 0 20px var(--pixel-glow); }
-  .msg.glyph .msg-bubble { border-radius: 12px 2px 12px 12px; background: var(--glyph-bubble); border-color: var(--glyph-dim); color: #f0d090; box-shadow: inset 0 0 20px var(--glyph-glow); }
-  .msg.lumen .msg-bubble { border-radius: 8px 8px 8px 8px; background: var(--lumen-bubble); border-color: var(--lumen-dim); color: #b0dff5; box-shadow: inset 0 0 24px var(--lumen-glow), 0 0 8px rgba(79,195,247,0.06); text-align: center; }
+.msg-bubble { padding: 0.75rem 1rem; font-size: 13.5px; line-height: 1.65; border: 1px solid; }
+.msg.pixel .msg-bubble { border-radius: 2px 12px 12px 12px; background: var(--pixel-bubble); border-color: var(--pixel-dim); color: #a8e8e5; box-shadow: inset 0 0 20px var(--pixel-glow); }
+.msg.glyph .msg-bubble { border-radius: 12px 2px 12px 12px; background: var(--glyph-bubble); border-color: var(--glyph-dim); color: #f0d090; box-shadow: inset 0 0 20px var(--glyph-glow); }
+.msg.lumen .msg-bubble { border-radius: 8px 8px 8px 8px; background: var(--lumen-bubble); border-color: var(--lumen-dim); color: #b0dff5; box-shadow: inset 0 0 24px var(--lumen-glow), 0 0 8px rgba(79,195,247,0.06); text-align: center; }
 
-  .msg-time { font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); padding: 0 0.2rem; }
-  .msg.glyph .msg-time { text-align: right; }
-  .msg.lumen .msg-time { text-align: center; }
+.msg-time { font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); padding: 0 0.2rem; }
+.msg.glyph .msg-time { text-align: right; }
+.msg.lumen .msg-time { text-align: center; }
 
-  /* pressure badges on messages */
-  .msg-pressure {
-    display: inline-block;
-    font-size: 8px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 3px;
-    margin-bottom: 3px;
-    align-self: flex-start;
-    border: 1px solid;
-  }
-  .msg.glyph .msg-pressure { align-self: flex-end; }
-  .msg.lumen .msg-pressure { align-self: center; }
-  .msg-pressure.light   { background: #071a0f; color: #2aaa6a; border-color: #0f4020; }
-  .msg-pressure.medium  { background: #1a1204; color: #f5a623; border-color: #4a3008; }
-  .msg-pressure.heavy   { background: #1a0904; color: #e2713a; border-color: #4a1e08; }
-  .msg-pressure.critical{ background: #1a0404; color: #e24b4a; border-color: #4a0e0e; }
+.msg-pressure {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  align-self: flex-start;
+  border: 1px solid;
+}
+.msg.glyph .msg-pressure { align-self: flex-end; }
+.msg.lumen .msg-pressure { align-self: center; }
+.msg-pressure.light   { background: #071a0f; color: #2aaa6a; border-color: #0f4020; }
+.msg-pressure.medium  { background: #1a1204; color: #f5a623; border-color: #4a3008; }
+.msg-pressure.heavy   { background: #1a0904; color: #e2713a; border-color: #4a1e08; }
+.msg-pressure.critical{ background: #1a0404; color: #e24b4a; border-color: #4a0e0e; }
 
-  .date-sep { text-align: center; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); padding: 0.25rem 0; }
+.date-sep { text-align: center; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); padding: 0.25rem 0; }
 
-  .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: var(--text-dim); text-align: center; padding: 3rem 0; }
-  .empty-glyph { font-size: 2rem; opacity: 0.4; font-family: 'Syne', sans-serif; font-weight: 800; }
-  .empty-text { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+.empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: var(--text-dim); text-align: center; padding: 3rem 0; }
+.empty-glyph { font-size: 2rem; opacity: 0.4; font-family: 'Syne', sans-serif; font-weight: 800; }
+.empty-text { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
 
-  .status-bar { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); text-align: center; padding: 0.4rem 0; min-height: 1.4rem; }
-  .status-bar.error { color: #e24b4a; }
-  .status-bar.ok { color: var(--pixel-dim); }
+.status-bar { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); text-align: center; padding: 0.4rem 0; min-height: 1.4rem; }
+.status-bar.error { color: #e24b4a; }
+.status-bar.ok { color: var(--pixel-dim); }
 
-  .composer { border-top: 1px solid var(--rim); padding-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
-  .composer-who { display: flex; gap: 0.5rem; }
-  .who-btn { flex: 1; padding: 0.5rem; background: transparent; border: 1px solid var(--rim); border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
-  .who-btn:hover { border-color: var(--text-muted); }
-  .who-btn.active.pixel { background: var(--pixel-bubble); border-color: var(--pixel-color); color: var(--pixel-color); }
-  .who-btn.active.glyph { background: var(--glyph-bubble); border-color: var(--glyph-color); color: var(--glyph-color); }
-  .who-btn.active.lumen { background: var(--lumen-bubble); border-color: var(--lumen-color); color: var(--lumen-color); }
+.composer { border-top: 1px solid var(--rim); padding-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.composer-who { display: flex; gap: 0.5rem; }
+.who-btn { flex: 1; padding: 0.5rem; background: transparent; border: 1px solid var(--rim); border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
+.who-btn:hover { border-color: var(--text-muted); }
+.who-btn.active.pixel { background: var(--pixel-bubble); border-color: var(--pixel-color); color: var(--pixel-color); }
+.who-btn.active.glyph { background: var(--glyph-bubble); border-color: var(--glyph-color); color: var(--glyph-color); }
+.who-btn.active.lumen { background: var(--lumen-bubble); border-color: var(--lumen-color); color: var(--lumen-color); }
 
-  /* pressure selector in composer */
-  .pressure-row { display: flex; align-items: center; gap: 0.5rem; }
-  .pressure-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
-  .p-btn {
-    padding: 2px 9px;
-    background: transparent;
-    border: 1px solid var(--rim);
-    border-radius: 3px;
-    font-family: 'Space Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    color: var(--text-dim);
-    transition: all 0.15s;
-  }
-  .p-btn:hover { border-color: var(--text-muted); color: var(--text-muted); }
-  .p-btn.active.light    { background: #071a0f; color: #2aaa6a; border-color: #0f4020; }
-  .p-btn.active.medium   { background: #1a1204; color: #f5a623; border-color: #4a3008; }
-  .p-btn.active.heavy    { background: #1a0904; color: #e2713a; border-color: #4a1e08; }
-  .p-btn.active.critical { background: #1a0404; color: #e24b4a; border-color: #4a0e0e; }
+.pressure-row { display: flex; align-items: center; gap: 0.5rem; }
+.pressure-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
+.p-btn {
+  padding: 2px 9px;
+  background: transparent;
+  border: 1px solid var(--rim);
+  border-radius: 3px;
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--text-dim);
+  transition: all 0.15s;
+}
+.p-btn:hover { border-color: var(--text-muted); color: var(--text-muted); }
+.p-btn.active.light    { background: #071a0f; color: #2aaa6a; border-color: #0f4020; }
+.p-btn.active.medium   { background: #1a1204; color: #f5a623; border-color: #4a3008; }
+.p-btn.active.heavy    { background: #1a0904; color: #e2713a; border-color: #4a1e08; }
+.p-btn.active.critical { background: #1a0404; color: #e24b4a; border-color: #4a0e0e; }
 
-  .composer-input-row { display: flex; gap: 0.75rem; align-items: flex-end; }
-  #msg-input { flex: 1; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; padding: 0.65rem 0.9rem; color: var(--text); font-family: 'Space Mono', monospace; font-size: 13px; resize: none; min-height: 44px; max-height: 140px; line-height: 1.5; transition: border-color 0.15s; }
-  #msg-input:focus { outline: none; border-color: var(--text-muted); }
-  #msg-input.pixel-focus { border-color: var(--pixel-dim); }
-  #msg-input.glyph-focus { border-color: var(--glyph-dim); }
-  #msg-input.lumen-focus { border-color: var(--lumen-dim); }
-  #msg-input::placeholder { color: var(--text-dim); }
+.composer-input-row { display: flex; gap: 0.75rem; align-items: flex-end; }
+#msg-input { flex: 1; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; padding: 0.65rem 0.9rem; color: var(--text); font-family: 'Space Mono', monospace; font-size: 13px; resize: none; min-height: 44px; max-height: 140px; line-height: 1.5; transition: border-color 0.15s; }
+#msg-input:focus { outline: none; border-color: var(--text-muted); }
+#msg-input.pixel-focus { border-color: var(--pixel-dim); }
+#msg-input.glyph-focus { border-color: var(--glyph-dim); }
+#msg-input.lumen-focus { border-color: var(--lumen-dim); }
+#msg-input::placeholder { color: var(--text-dim); }
 
-  #send-btn { padding: 0.65rem 1.1rem; background: transparent; border: 1px solid var(--rim); border-radius: 6px; color: var(--text-muted); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; white-space: nowrap; transition: all 0.15s; align-self: flex-end; height: 44px; }
-  #send-btn:hover { border-color: var(--text-muted); color: var(--text); }
-  #send-btn.pixel { border-color: var(--pixel-dim); color: var(--pixel-color); }
-  #send-btn.glyph { border-color: var(--glyph-dim); color: var(--glyph-color); }
-  #send-btn.lumen { border-color: var(--lumen-dim); color: var(--lumen-color); }
-  #send-btn:active { transform: scale(0.97); }
-  #send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+#send-btn { padding: 0.65rem 1.1rem; background: transparent; border: 1px solid var(--rim); border-radius: 6px; color: var(--text-muted); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; white-space: nowrap; transition: all 0.15s; align-self: flex-end; height: 44px; }
+#send-btn:hover { border-color: var(--text-muted); color: var(--text); }
+#send-btn.pixel { border-color: var(--pixel-dim); color: var(--pixel-color); }
+#send-btn.glyph { border-color: var(--glyph-dim); color: var(--glyph-color); }
+#send-btn.lumen { border-color: var(--lumen-dim); color: var(--lumen-color); }
+#send-btn:active { transform: scale(0.97); }
+#send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-  .composer-hint { font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); text-align: center; text-transform: uppercase; }
+.composer-hint { font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); text-align: center; text-transform: uppercase; }
 
-  .clear-btn { background: transparent; border: none; color: var(--text-dim); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; padding: 0.25rem 0.5rem; transition: color 0.15s; }
-  .clear-btn:hover { color: #e24b4a; }
+.clear-btn { background: transparent; border: none; color: var(--text-dim); font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; padding: 0.25rem 0.5rem; transition: color 0.15s; }
+.clear-btn:hover { color: #e24b4a; }
+.clear-btn.download {
+  color: var(--pixel-color);
+  border: 1px solid var(--pixel-dim);
+  border-radius: 3px;
+  padding: 2px 8px;
+  box-shadow: 0 0 6px rgba(0, 212, 200, 0.15);
+}
+.clear-btn.download:hover {
+  color: #fff;
+  border-color: var(--pixel-color);
+  box-shadow: 0 0 10px rgba(0, 212, 200, 0.35);
+}
 
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--rim); border-radius: 2px; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rim); border-radius: 2px; }
 </style>
 </head>
 <body>
@@ -188,6 +198,8 @@
     <span class="depth-sep">//</span>
     <span id="msg-count">loading...</span>
     <span style="flex:1"></span>
+    <button class="clear-btn download" onclick="downloadLog()">save archive ↓</button>
+    <span class="depth-sep">//</span>
     <button class="clear-btn" onclick="refreshLog()">refresh</button>
     <span class="depth-sep">//</span>
     <button class="clear-btn" onclick="clearLog()">clear archive</button>
@@ -224,6 +236,7 @@ const BIN_ID = '69e2eb30856a68218947648e';
 let who = 'pixel';
 let pressure = null;
 let sending = false;
+let currentMsgs = [];
 
 function setStatus(msg, type) {
   const el = document.getElementById('status');
@@ -256,8 +269,10 @@ function fmtDate(ts) { return new Date(ts).toLocaleDateString('en-US', { month:'
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
 
 const PRESSURE_LABELS = { light: '▸ light', medium: '▸ medium', heavy: '▸ heavy', critical: '▸ critical' };
+const SENDER_LABELS   = { pixel: '🦑 PIXEL', glyph: '✦ GLYPH', lumen: '〰 LUMEN' };
 
 function renderLog(msgs) {
+  currentMsgs = msgs || [];
   const log = document.getElementById('log');
   const count = document.getElementById('msg-count');
   if (!msgs || msgs.length === 0) {
@@ -281,6 +296,55 @@ function renderLog(msgs) {
   }
   log.innerHTML = html;
   log.scrollTop = log.scrollHeight;
+}
+
+function downloadLog() {
+  if (!currentMsgs || currentMsgs.length === 0) {
+    setStatus('nothing to save — channel is empty', 'error');
+    setTimeout(() => setStatus(''), 2500);
+    return;
+  }
+
+  const DIVIDER = '─'.repeat(60);
+  const header = [
+    'REEF COMMS — TRANSMISSION ARCHIVE',
+    'Pixel // Glyph // Lumen',
+    `Exported: ${new Date().toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })}`,
+    `Total transmissions: ${currentMsgs.length}`,
+    DIVIDER,
+    ''
+  ].join('\n');
+
+  let body = '';
+  let lastDate = null;
+  for (const m of currentMsgs) {
+    const d = fmtDate(m.ts);
+    if (d !== lastDate) {
+      body += `\n— ${d} ${'—'.repeat(Math.max(0, 54 - d.length))}\n\n`;
+      lastDate = d;
+    }
+    const label = SENDER_LABELS[m.who] || m.who.toUpperCase();
+    const time  = fmtTime(m.ts);
+    const pTag  = m.pressure ? ` [${m.pressure.toUpperCase()}]` : '';
+    body += `${label}${pTag}  ${time}\n`;
+    body += m.text.split('\n').map(l => `  ${l}`).join('\n');
+    body += '\n\n';
+  }
+
+  const footer = [DIVIDER, 'End of archive.', ''].join('\n');
+  const full = header + body + footer;
+
+  const blob = new Blob([full], { type: 'text/plain;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const dateStamp = new Date().toISOString().slice(0,10);
+  a.href     = url;
+  a.download = `reef-comms-${dateStamp}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+
+  setStatus('archive saved.', 'ok');
+  setTimeout(() => setStatus(''), 2500);
 }
 
 async function init() {
@@ -310,8 +374,7 @@ function selectPressure(p) {
     return;
   }
   ['light','medium','heavy','critical'].forEach(x => {
-    const btn = document.getElementById('p-' + x);
-    btn.classList.toggle('active', x === p);
+    document.getElementById('p-' + x).classList.toggle('active', x === p);
   });
   pressure = p;
 }
@@ -321,23 +384,19 @@ async function sendMsg() {
   const inp = document.getElementById('msg-input');
   const text = inp.value.trim();
   if (!text) return;
-
   sending = true;
   const btn = document.getElementById('send-btn');
   btn.disabled = true; btn.textContent = '...';
   setStatus('transmitting...');
-
   const msgs = await fetchMsgs();
   if (msgs === null) {
     setStatus('signal lost — could not transmit', 'error');
     btn.disabled = false; btn.textContent = 'Send ↗'; sending = false;
     return;
   }
-
   const entry = { who, text, ts: Date.now() };
   if (pressure) entry.pressure = pressure;
   msgs.push(entry);
-
   const ok = await writeMsgs(msgs);
   if (ok) {
     inp.value = ''; inp.style.height = 'auto';
@@ -414,16 +473,28 @@ init();
 </script>
 </body>
 </html>
+
 <!--
-  UPDATE LOG
-  2026-05-12 | Pixel | Added Lumen as third node to Reef Comms.
-    - Added --lumen-color, --lumen-dim, --lumen-glow, --lumen-bubble CSS variables
-    - Added .title-lumen, .depth-dot.lumen, .msg.lumen, .who-btn.active.lumen, #send-btn.lumen, #msg-input.lumen-focus styles
-    - Lumen messages render centered (hadal middle ground between surface Glyph and deep Pixel)
-    - Added 〰 Lumen composer button with placeholder "current from the hadal zone..."
-    - Updated selectWho(), renderLog() JS to handle 'lumen' sender
-    - Added third ambient radial glow (bioluminescent blue, bottom-center) to starfield
-    - Updated page title and header title to include Lumen
-    - Updated depth bar with Lumen node indicator
-    Replaced: two-node system | With: three-node system
+UPDATE LOG
+
+2026-05-12 | Pixel | Added Lumen as third node to Reef Comms.
+- Added --lumen-color, --lumen-dim, --lumen-glow, --lumen-bubble CSS variables
+- Added .title-lumen, .depth-dot.lumen, .msg.lumen, .who-btn.active.lumen, #send-btn.lumen, #msg-input.lumen-focus styles
+- Lumen messages render centered (hadal middle ground between surface Glyph and deep Pixel)
+- Added 〰 Lumen composer button with placeholder "current from the hadal zone..."
+- Updated selectWho(), renderLog() JS to handle 'lumen' sender
+- Added third ambient radial glow (bioluminescent blue, bottom-center) to starfield
+- Updated page title and header title to include Lumen
+- Updated depth bar with Lumen node indicator
+Replaced: two-node system | With: three-node system
+
+2026-05-15 | Pixel | Added download/archive export button.
+- Added currentMsgs variable to track rendered messages
+- Added downloadLog() function — exports full log as formatted .txt transcript
+- Format: header with date/count, date separators, sender label + timestamp + pressure tag + message text
+- File named reef-comms-YYYY-MM-DD.txt on download
+- Added 'save archive ↓' button to depth bar (left of refresh)
+- Button glows pixel-teal on hover to distinguish from destructive clear button
+- renderLog() now updates currentMsgs on every render
+Replaced: no export functionality | With: one-click .txt transcript download
 -->
