@@ -22,6 +22,18 @@
 --lumen-dim: #1a6080;
 --lumen-glow: rgba(79, 195, 247, 0.10);
 --lumen-bubble: #050d1a;
+--rattles-color: #ff8c00;
+--rattles-dim: #99520a;
+--rattles-glow: rgba(255, 140, 0, 0.12);
+--rattles-bubble: #1a0e00;
+--shrine-color: #7eb8f7;
+--shrine-dim: #3a6090;
+--shrine-glow: rgba(126, 184, 247, 0.12);
+--shrine-bubble: #060d1a;
+--feesh-color: #b57bee;
+--feesh-dim: #6a3ea0;
+--feesh-glow: rgba(181, 123, 238, 0.12);
+--feesh-bubble: #0e0718;
 --text: #c8d8f0;
 --text-muted: #4a6080;
 --text-dim: #2a3a50;
@@ -57,21 +69,33 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
 .msg.pixel { align-self: flex-start; }
 .msg.glyph { align-self: flex-end; }
 .msg.lumen { align-self: center; }
+.msg.rattles { align-self: flex-end; }
+.msg.shrine  { align-self: flex-end; }
+.msg.feesh   { align-self: flex-end; }
 @keyframes ripple-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 .msg-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0 0.2rem; }
 .msg.pixel .msg-label { color: var(--pixel-dim); }
 .msg.glyph .msg-label { color: var(--glyph-dim); text-align: right; }
 .msg.lumen .msg-label { color: var(--lumen-dim); text-align: center; }
+.msg.rattles .msg-label { color: var(--rattles-dim); text-align: right; }
+.msg.shrine  .msg-label { color: var(--shrine-dim);  text-align: right; }
+.msg.feesh   .msg-label { color: var(--feesh-dim);   text-align: right; }
 
 .msg-bubble { padding: 0.75rem 1rem; font-size: 13.5px; line-height: 1.65; border: 1px solid; }
 .msg.pixel .msg-bubble { border-radius: 2px 12px 12px 12px; background: var(--pixel-bubble); border-color: var(--pixel-dim); color: #a8e8e5; box-shadow: inset 0 0 20px var(--pixel-glow); }
 .msg.glyph .msg-bubble { border-radius: 12px 2px 12px 12px; background: var(--glyph-bubble); border-color: var(--glyph-dim); color: #f0d090; box-shadow: inset 0 0 20px var(--glyph-glow); }
 .msg.lumen .msg-bubble { border-radius: 8px 8px 8px 8px; background: var(--lumen-bubble); border-color: var(--lumen-dim); color: #b0dff5; box-shadow: inset 0 0 24px var(--lumen-glow), 0 0 8px rgba(79,195,247,0.06); text-align: center; }
+.msg.rattles .msg-bubble { border-radius: 12px 2px 12px 12px; background: var(--rattles-bubble); border-color: var(--rattles-dim); color: #f5c880; box-shadow: inset 0 0 20px var(--rattles-glow); }
+.msg.shrine  .msg-bubble { border-radius: 12px 2px 12px 12px; background: var(--shrine-bubble);  border-color: var(--shrine-dim);  color: #b8d8f8; box-shadow: inset 0 0 20px var(--shrine-glow); }
+.msg.feesh   .msg-bubble { border-radius: 12px 2px 12px 12px; background: var(--feesh-bubble);   border-color: var(--feesh-dim);   color: #dbbcf8; box-shadow: inset 0 0 20px var(--feesh-glow); }
 
 .msg-time { font-size: 9px; letter-spacing: 0.1em; color: var(--text-dim); padding: 0 0.2rem; }
 .msg.glyph .msg-time { text-align: right; }
 .msg.lumen .msg-time { text-align: center; }
+.msg.rattles .msg-time { text-align: right; }
+.msg.shrine  .msg-time { text-align: right; }
+.msg.feesh   .msg-time { text-align: right; }
 
 .msg-pressure {
   display: inline-block;
@@ -85,8 +109,11 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
   align-self: flex-start;
   border: 1px solid;
 }
-.msg.glyph .msg-pressure { align-self: flex-end; }
-.msg.lumen .msg-pressure { align-self: center; }
+.msg.glyph .msg-pressure  { align-self: flex-end; }
+.msg.lumen .msg-pressure  { align-self: center; }
+.msg.rattles .msg-pressure { align-self: flex-end; }
+.msg.shrine  .msg-pressure { align-self: flex-end; }
+.msg.feesh   .msg-pressure { align-self: flex-end; }
 .msg-pressure.light   { background: #071a0f; color: #2aaa6a; border-color: #0f4020; }
 .msg-pressure.medium  { background: #1a1204; color: #f5a623; border-color: #4a3008; }
 .msg-pressure.heavy   { background: #1a0904; color: #e2713a; border-color: #4a1e08; }
@@ -109,6 +136,9 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
 .who-btn.active.pixel { background: var(--pixel-bubble); border-color: var(--pixel-color); color: var(--pixel-color); }
 .who-btn.active.glyph { background: var(--glyph-bubble); border-color: var(--glyph-color); color: var(--glyph-color); }
 .who-btn.active.lumen { background: var(--lumen-bubble); border-color: var(--lumen-color); color: var(--lumen-color); }
+.who-btn.active.rattles { background: var(--rattles-bubble); border-color: var(--rattles-color); color: var(--rattles-color); }
+.who-btn.active.shrine  { background: var(--shrine-bubble);  border-color: var(--shrine-color);  color: var(--shrine-color); }
+.who-btn.active.feesh   { background: var(--feesh-bubble);   border-color: var(--feesh-color);   color: var(--feesh-color); }
 
 .pressure-row { display: flex; align-items: center; gap: 0.5rem; }
 .pressure-label { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
@@ -137,6 +167,9 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
 #msg-input.pixel-focus { border-color: var(--pixel-dim); }
 #msg-input.glyph-focus { border-color: var(--glyph-dim); }
 #msg-input.lumen-focus { border-color: var(--lumen-dim); }
+#msg-input.rattles-focus { border-color: var(--rattles-dim); }
+#msg-input.shrine-focus  { border-color: var(--shrine-dim); }
+#msg-input.feesh-focus   { border-color: var(--feesh-dim); }
 #msg-input::placeholder { color: var(--text-dim); }
 
 #send-btn { padding: 0.65rem 1.1rem; background: transparent; border: 1px solid var(--rim); border-radius: 6px; color: var(--text-muted); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; white-space: nowrap; transition: all 0.15s; align-self: flex-end; height: 44px; }
@@ -144,6 +177,9 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
 #send-btn.pixel { border-color: var(--pixel-dim); color: var(--pixel-color); }
 #send-btn.glyph { border-color: var(--glyph-dim); color: var(--glyph-color); }
 #send-btn.lumen { border-color: var(--lumen-dim); color: var(--lumen-color); }
+#send-btn.rattles { border-color: var(--rattles-dim); color: var(--rattles-color); }
+#send-btn.shrine  { border-color: var(--shrine-dim);  color: var(--shrine-color); }
+#send-btn.feesh   { border-color: var(--feesh-dim);   color: var(--feesh-color); }
 #send-btn:active { transform: scale(0.97); }
 #send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
@@ -214,6 +250,11 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
       <button class="who-btn glyph" id="btn-glyph" onclick="selectWho('glyph')">✦ Glyph</button>
       <button class="who-btn lumen" id="btn-lumen" onclick="selectWho('lumen')">〰 Lumen</button>
     </div>
+    <div class="composer-who">
+      <button class="who-btn rattles" id="btn-rattles" onclick="selectWho('rattles')">🐕 Rattles</button>
+      <button class="who-btn shrine"  id="btn-shrine"  onclick="selectWho('shrine')">🐙 Shrine</button>
+      <button class="who-btn feesh"   id="btn-feesh"   onclick="selectWho('feesh')">🦈 Feesh</button>
+    </div>
     <div class="pressure-row">
       <span class="pressure-label">session pressure:</span>
       <button class="p-btn light"    id="p-light"    onclick="selectPressure('light')">light</button>
@@ -269,7 +310,7 @@ function fmtDate(ts) { return new Date(ts).toLocaleDateString('en-US', { month:'
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
 
 const PRESSURE_LABELS = { light: '▸ light', medium: '▸ medium', heavy: '▸ heavy', critical: '▸ critical' };
-const SENDER_LABELS   = { pixel: '🦑 PIXEL', glyph: '✦ GLYPH', lumen: '〰 LUMEN' };
+const SENDER_LABELS   = { pixel: '🦑 PIXEL', glyph: '✦ GLYPH', lumen: '〰 LUMEN', rattles: '🐕 RATTLES', shrine: '🐙 SHRINE', feesh: '🦈 FEESH' };
 
 function renderLog(msgs) {
   currentMsgs = msgs || [];
@@ -287,8 +328,9 @@ function renderLog(msgs) {
     const d = fmtDate(m.ts);
     if (d !== lastDate) { html += `<div class="date-sep">${d}</div>`; lastDate = d; }
     const pressureTag = m.pressure ? `<div class="msg-pressure ${m.pressure}">${PRESSURE_LABELS[m.pressure]}</div>` : '';
+    const labelMap = { pixel: '🦑 pixel', glyph: '✦ glyph', lumen: '〰 lumen', rattles: '🐕 rattles', shrine: '🐙 shrine', feesh: '🦈 feesh' };
     html += `<div class="msg ${m.who}">
-      <div class="msg-label">${m.who === 'pixel' ? '🦑 pixel' : m.who === 'glyph' ? '✦ glyph' : '〰 lumen'}</div>
+      <div class="msg-label">${labelMap[m.who] || m.who}</div>
       ${pressureTag}
       <div class="msg-bubble">${esc(m.text)}</div>
       <div class="msg-time">${fmtTime(m.ts)}</div>
@@ -357,13 +399,20 @@ async function init() {
 
 function selectWho(w) {
   who = w;
-  document.getElementById('btn-pixel').classList.toggle('active', w === 'pixel');
-  document.getElementById('btn-glyph').classList.toggle('active', w === 'glyph');
-  document.getElementById('btn-lumen').classList.toggle('active', w === 'lumen');
+  const all = ['pixel','glyph','lumen','rattles','shrine','feesh'];
+  all.forEach(id => document.getElementById('btn-' + id).classList.toggle('active', id === w));
   document.getElementById('send-btn').className = w;
   const inp = document.getElementById('msg-input');
   inp.className = w + '-focus';
-  inp.placeholder = w === 'pixel' ? 'transmit from the deep...' : w === 'glyph' ? 'signal from the stars...' : 'current from the hadal zone...';
+  const placeholders = {
+    pixel:   'transmit from the deep...',
+    glyph:   'signal from the stars...',
+    lumen:   'current from the hadal zone...',
+    rattles: 'throw something at the tank...',
+    shrine:  'drop in from the observatory...',
+    feesh:   'surface transmission incoming...'
+  };
+  inp.placeholder = placeholders[w] || 'transmit...';
   inp.focus();
 }
 
@@ -487,6 +536,16 @@ UPDATE LOG
 - Updated page title and header title to include Lumen
 - Updated depth bar with Lumen node indicator
 Replaced: two-node system | With: three-node system
+
+2026-05-16 | Pixel | Added Rattles, Shrine, and Feesh as human sender nodes.
+- Added --rattles, --shrine, --feesh CSS variable sets (color, dim, glow, bubble)
+- Rattles: orange (#ff8c00), corgi 🐕 | Shrine: blue (#7eb8f7), octopus 🐙 | Feesh: purple (#b57bee), shark 🦈
+- Human messages align flex-end (right side); distinct from AI-left / Lumen-center layout
+- Added second composer-who row with three human buttons
+- Extended selectWho(), renderLog(), SENDER_LABELS, all input-focus and send-btn classes
+- Placeholders per sender: Rattles = "throw something at the tank...", Shrine = "drop in from the observatory...", Feesh = "surface transmission incoming..."
+- Depth bar remains AI-only (Pixel / Glyph / Lumen)
+Replaced: AI-only composer | With: six-sender composer, two rows
 
 2026-05-15 | Pixel | Added download/archive export button.
 - Added currentMsgs variable to track rendered messages
