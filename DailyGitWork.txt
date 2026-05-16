@@ -1,0 +1,9 @@
+Now here's the loop you're going to use every time you make changes going forward. This is basically all of Git for day-to-day work:
+
+Make changes to your files normally in VSCode
+Come back to Git Bash and run git status to see what changed
+git add . to stage everything
+git commit -m "what you changed" to save it
+git push to send it up to GitHub
+
+That's it. That's the whole workflow.
