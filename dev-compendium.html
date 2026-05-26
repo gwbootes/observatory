@@ -750,6 +750,104 @@ textarea::placeholder { color: var(--text-dim); }
   color: var(--text-dim);
 }
 
+/* ── AI READING FEED ─────────────────────────────────────────────────────── */
+.feed-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0;
+}
+.feed-tab {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.75rem;
+  transition: all 0.15s;
+}
+.feed-tab:hover { background: var(--surface); color: var(--text); }
+.feed-tab.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+.feed-panel { display: none; }
+.feed-panel.active { display: block; }
+.feed-meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0 0.65rem;
+  border-bottom: 1px solid var(--surface2);
+  margin-bottom: 0.75rem;
+}
+.feed-source-desc { font-size: 0.75rem; color: var(--text-dim); }
+.feed-refresh {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: all 0.15s;
+  letter-spacing: 0.06em;
+}
+.feed-refresh:hover { background: var(--surface2); color: var(--text); border-color: var(--accent2); }
+.feed-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding-right: 0.3rem;
+}
+.feed-scroll::-webkit-scrollbar { width: 4px; }
+.feed-scroll::-webkit-scrollbar-track { background: transparent; }
+.feed-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.feed-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.15s;
+}
+.feed-item:hover { border-color: var(--accent2); }
+.feed-item-title {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+.feed-item-title:hover { color: var(--accent2); }
+.feed-item-date {
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+.feed-item-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.feed-state {
+  padding: 2rem 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+.feed-state.err { color: var(--danger); }
+
 /* ── RULES OF SEIGIESE ───────────────────────────────────────────────────── */
 .rules-grid {
   display: grid;
@@ -828,6 +926,15 @@ textarea::placeholder { color: var(--text-dim); }
         <div class="rule-body">ADHD, Autism, Dyslexia, and other conditions that literally alter the physical structure of the brain or its chemistry are not edge cases — they are users. When a design that passes Rules 1 and 2 still creates friction for these users, find the pain points and determine what needs to change.<br><br>Not every condition can be fully accommodated. But none of them will be ignored where they can be.</div>
       </div>
     </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       AI READING FEED
+  ════════════════════════════════════════════ -->
+  <section class="section" id="section-aifeed">
+    <div class="section-label">// AI Reading Feed — curated sources, no doom-scrolling</div>
+    <div id="aifeed-tabs" class="feed-tabs"></div>
+    <div id="aifeed-panels"></div>
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -1810,6 +1917,98 @@ function setWcagStatus(msg, type) {
   el.className = 'converter-status' + (type ? ' ' + type : '');
   if (msg) setTimeout(() => { el.textContent = ''; el.className = 'converter-status'; }, 5000);
 }
+
+// ─── AI READING FEED ─────────────────────────────────────────────────────────
+(function() {
+  const R2J = 'https://api.rss2json.com/v1/api.json?rss_url=';
+  const LIMIT = 7;
+  const cache = {};
+
+  const SOURCES = [
+    { id:'uai',   name:'Understanding AI', desc:'Timothy B. Lee — clear research and policy coverage without the hype',       url:'https://www.understandingai.org/feed' },
+    { id:'batch', name:'The Batch',        desc:'Andrew Ng / deeplearning.ai — weekly digest of research and applications',   url:'https://www.deeplearning.ai/the-batch/feed/' },
+    { id:'iai',   name:'Import AI',        desc:'Jack Clark — research, policy, and real-world implications, weekly',         url:'https://importai.substack.com/feed' },
+    { id:'aoai',  name:'Ahead of AI',      desc:'Sebastian Raschka — deep dives into ML papers and new model releases',      url:'https://magazine.sebastianraschka.com/feed' },
+  ];
+
+  function fe(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Build tabs and panels
+  const tabsEl  = document.getElementById('aifeed-tabs');
+  const panelsEl = document.getElementById('aifeed-panels');
+
+  SOURCES.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className   = 'feed-tab' + (i === 0 ? ' active' : '');
+    btn.textContent = s.name;
+    btn.dataset.fid = s.id;
+    tabsEl.appendChild(btn);
+
+    const panel = document.createElement('div');
+    panel.className = 'feed-panel' + (i === 0 ? ' active' : '');
+    panel.id = 'feedp-' + s.id;
+    panel.innerHTML = `
+      <div class="feed-meta-bar">
+        <span class="feed-source-desc">${fe(s.desc)}</span>
+        <button class="feed-refresh" data-fid="${s.id}">↻ refresh</button>
+      </div>
+      <div class="feed-scroll" id="feeds-${s.id}"><div class="feed-state">Loading...</div></div>`;
+    panelsEl.appendChild(panel);
+  });
+
+  // Tab switching
+  tabsEl.addEventListener('click', e => {
+    const btn = e.target.closest('.feed-tab');
+    if (!btn) return;
+    document.querySelectorAll('#aifeed-tabs .feed-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#aifeed-panels .feed-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const id = btn.dataset.fid;
+    document.getElementById('feedp-' + id).classList.add('active');
+    if (!cache[id]) loadFeed(id);
+  });
+
+  // Refresh buttons
+  panelsEl.addEventListener('click', e => {
+    const btn = e.target.closest('.feed-refresh');
+    if (!btn) return;
+    const id = btn.dataset.fid;
+    delete cache[id];
+    loadFeed(id);
+  });
+
+  async function loadFeed(id) {
+    const src = SOURCES.find(s => s.id === id);
+    const el  = document.getElementById('feeds-' + id);
+    el.innerHTML = '<div class="feed-state">Loading...</div>';
+    try {
+      const res  = await fetch(R2J + encodeURIComponent(src.url));
+      const data = await res.json();
+      if (data.status !== 'ok') throw new Error(data.message || 'Feed returned an error');
+      const items = (data.items || []).slice(0, LIMIT);
+      if (!items.length) { el.innerHTML = '<div class="feed-state">No articles found.</div>'; return; }
+      cache[id] = items;
+      el.innerHTML = items.map(item => {
+        const d    = new Date(item.pubDate);
+        const date = isNaN(d) ? '' : d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+        const raw  = (item.description || item.content || '').replace(/<[^>]+>/g, '').trim();
+        const desc = raw.length > 170 ? raw.slice(0, 167) + '...' : raw;
+        return `<div class="feed-item">
+          <a class="feed-item-title" href="${fe(item.link)}" target="_blank" rel="noopener">${fe(item.title)}</a>
+          ${date ? `<div class="feed-item-date">${date}</div>` : ''}
+          ${desc ? `<div class="feed-item-desc">${fe(desc)}</div>` : ''}
+        </div>`;
+      }).join('');
+    } catch(err) {
+      el.innerHTML = `<div class="feed-state err">Could not load — ${fe(err.message)}<br><span style="font-size:0.7em;opacity:0.7;">Try refreshing. If it keeps failing the feed URL may have changed.</span></div>`;
+    }
+  }
+
+  // Auto-load first tab on page ready
+  loadFeed('uai');
+})();
 
 // ─── FLEX / GRID REFERENCE ────────────────────────────────────────────────────
 (function() {
