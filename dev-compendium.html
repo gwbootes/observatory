@@ -23,7 +23,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; }
+html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -337,6 +337,34 @@ textarea::placeholder { color: var(--text-dim); }
   font-size: 0.8rem;
   letter-spacing: 0.1em;
 }
+
+/* ── PAGE NAV ─────────────────────────────────────────────────────────────── */
+.page-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0;
+  margin: 0 0 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.nav-link {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.3rem 0.65rem;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.nav-link:hover { color: var(--text); border-color: var(--border); background: var(--surface); }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -1099,6 +1127,19 @@ textarea::placeholder { color: var(--text-dim); }
 <body>
 <div class="page">
 
+  <nav class="page-nav">
+    <a class="nav-link" href="#section-seigiese">Seigiese</a>
+    <a class="nav-link" href="#section-aifeed">AI Feed</a>
+    <a class="nav-link" href="#section-converter">Converter</a>
+    <a class="nav-link" href="#section-formula">Formula</a>
+    <a class="nav-link" href="#section-tokens">Tokens</a>
+    <a class="nav-link" href="#section-wcag">WCAG</a>
+    <a class="nav-link" href="#section-fg">Flex / Grid</a>
+    <a class="nav-link" href="#section-norman">Don Norman</a>
+    <a class="nav-link" href="#section-brain">Brain</a>
+    <a class="nav-link" href="#section-notes">Notes</a>
+  </nav>
+
   <header class="site-header">
     <div class="eyebrow">// archive reef — dev tools</div>
     <h1>Dev Compendium</h1>
@@ -1109,7 +1150,7 @@ textarea::placeholder { color: var(--text-dim); }
        RULES OF SEIGIESE
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// The Rules of Seigiese — the law before the tools</div>
+    <div class="section-label" id="section-seigiese">// The Rules of Seigiese — the law before the tools</div>
 
     <div class="rules-grid">
       <div class="rule-card">
@@ -1153,7 +1194,7 @@ textarea::placeholder { color: var(--text-dim); }
        UNIT CONVERTER
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// CSS Unit Converter</div>
+    <div class="section-label" id="section-converter">// CSS Unit Converter</div>
 
     <div style="margin-bottom:1rem;">
       <div class="textarea-wrap">
@@ -1224,7 +1265,7 @@ textarea::placeholder { color: var(--text-dim); }
        FORMULA + CHEATSHEET
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// The Formula</div>
+    <div class="section-label" id="section-formula">// The Formula</div>
 
     <div class="formula-card">
       <div class="formula-label">px to percentage</div>
@@ -1275,7 +1316,7 @@ textarea::placeholder { color: var(--text-dim); }
        DESIGN TOKEN EXTRACTOR
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// Design Token Extractor</div>
+    <div class="section-label" id="section-tokens">// Design Token Extractor</div>
 
     <div class="textarea-wrap" style="margin-bottom:1rem;">
       <label>Paste your CSS</label>
@@ -1314,7 +1355,7 @@ textarea::placeholder { color: var(--text-dim); }
        WCAG CHECKER
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// WCAG Accessibility Checker</div>
+    <div class="section-label" id="section-wcag">// WCAG Accessibility Checker</div>
 
     <div class="textarea-area" style="margin-bottom:1rem;">
       <div class="textarea-wrap">
@@ -1363,7 +1404,7 @@ textarea::placeholder { color: var(--text-dim); }
        DON NORMAN
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// Don Norman — the person who explains why bad design makes you feel stupid (it's not you)</div>
+    <div class="section-label" id="section-norman">// Don Norman — the person who explains why bad design makes you feel stupid (it's not you)</div>
 
     <div class="norman-quotes">
       <div class="norman-quote">
@@ -1441,7 +1482,7 @@ textarea::placeholder { color: var(--text-dim); }
        BRAIN & LEARNING
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// Brain &amp; Learning — you didn't break it, but you can absolutely tune it</div>
+    <div class="section-label" id="section-brain">// Brain &amp; Learning — you didn't break it, but you can absolutely tune it</div>
 
     <div class="section-label" style="margin-top:0.5rem;margin-bottom:0.75rem;">// Focus techniques</div>
     <div class="brain-grid">
@@ -1690,7 +1731,7 @@ textarea::placeholder { color: var(--text-dim); }
        COMPENDIUM
   ════════════════════════════════════════════ -->
   <section class="section">
-    <div class="section-label">// Notes that clicked — add when something lands</div>
+    <div class="section-label" id="section-notes">// Notes that clicked — add when something lands</div>
 
     <div class="entry">
       <div class="entry-meta">
