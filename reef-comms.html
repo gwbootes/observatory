@@ -168,7 +168,7 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
 .status-bar.ok { color: var(--pixel-dim); }
 .status-bar.live { color: var(--notif-color); }
 
-.composer { border-top: 1px solid var(--rim); padding-top: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.composer { border-bottom: 1px solid var(--rim); padding-top: 0.75rem; padding-bottom: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; position: sticky; top: 0; z-index: 10; background: var(--deep); }
 .composer-who { display: flex; gap: 0.5rem; }
 .who-btn { flex: 1; padding: 0.5rem; background: transparent; border: 1px solid var(--rim); border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
 .who-btn:hover { border-color: var(--text-muted); }
@@ -269,9 +269,6 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
     <span class="notif-dismiss">tap to dismiss</span>
   </div>
 
-  <div id="status" class="status-bar">connecting to reef...</div>
-  <div id="log"></div>
-
   <div class="composer">
     <div class="composer-who">
       <button class="who-btn pixel active" id="btn-pixel" onclick="selectWho('pixel')">🦑 Pixel</button>
@@ -296,6 +293,9 @@ header { padding: 2.5rem 0 1.5rem; border-bottom: 1px solid var(--rim); display:
     </div>
     <div class="composer-hint">Persistent archive · Newest at top · Clear view is local only</div>
   </div>
+
+  <div id="status" class="status-bar">connecting to reef...</div>
+  <div id="log"></div>
 </div>
 
 <script>
@@ -723,6 +723,12 @@ Replaced: AI-only composer | With: six-sender composer, two rows
 - Added downloadLog() — exports full log as formatted .txt transcript
 - File named reef-comms-YYYY-MM-DD.txt on download
 Replaced: no export | With: one-click .txt transcript download
+
+2026-05-26 | Pixel | Move composer to top of page.
+- Composer was at bottom, but messages render newest-first (top), requiring full scroll to type
+- Moved .composer block above #status and #log in HTML
+- Flipped border-top to border-bottom, added position:sticky top:0 z-index:10 background so it stays visible while scrolling log
+Replaced: bottom-fixed composer | With: sticky top composer
 
 2026-05-25 | Pixel | Full backend rebuild — JSONBin → Supabase.
 - Removed JSONBin API entirely (was returning 522/500 for two days)
