@@ -847,6 +847,108 @@ textarea::placeholder { color: var(--text-dim); }
   color: var(--text-dim);
 }
 .feed-state.err { color: var(--danger); }
+.aifeed-layout {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 1.25rem;
+  align-items: start;
+}
+@media (max-width: 680px) { .aifeed-layout { grid-template-columns: 1fr; } }
+.aifeed-sidebar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.85rem;
+  position: sticky;
+  top: 1rem;
+}
+.later-header {
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.later-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.later-list::-webkit-scrollbar { width: 3px; }
+.later-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.later-item {
+  border-bottom: 1px solid var(--surface2);
+  padding-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.later-item:last-child { border-bottom: none; padding-bottom: 0; }
+.later-item-row {
+  display: flex;
+  gap: 0.35rem;
+  align-items: flex-start;
+}
+.later-item-title {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.35;
+  flex: 1;
+}
+.later-item-title:hover { color: var(--accent2); }
+.later-remove {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0 0.1rem;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.later-remove:hover { color: var(--danger); }
+.later-item-meta {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+.later-empty {
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  text-align: center;
+  padding: 1.25rem 0;
+  line-height: 1.6;
+}
+.feed-item-head {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+.feed-item-head .feed-item-title { flex: 1; }
+.feed-item-save {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  padding: 0.15rem 0.35rem;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-top: 0.1rem;
+}
+.feed-item-save:hover { color: var(--accent); border-color: var(--accent); }
+.feed-item-save.saved { color: var(--accent); border-color: var(--accent); background: var(--surface2); }
 
 /* ── RULES OF SEIGIESE ───────────────────────────────────────────────────── */
 .rules-grid {
@@ -933,8 +1035,16 @@ textarea::placeholder { color: var(--text-dim); }
   ════════════════════════════════════════════ -->
   <section class="section" id="section-aifeed">
     <div class="section-label">// AI Reading Feed — curated sources, no doom-scrolling</div>
-    <div id="aifeed-tabs" class="feed-tabs"></div>
-    <div id="aifeed-panels"></div>
+    <div class="aifeed-layout">
+      <div class="aifeed-main">
+        <div id="aifeed-tabs" class="feed-tabs"></div>
+        <div id="aifeed-panels"></div>
+      </div>
+      <div class="aifeed-sidebar">
+        <div class="later-header">// Reading Queue</div>
+        <div id="later-list" class="later-list"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -1918,6 +2028,54 @@ function setWcagStatus(msg, type) {
   if (msg) setTimeout(() => { el.textContent = ''; el.className = 'converter-status'; }, 5000);
 }
 
+// ─── READING QUEUE (localStorage) ────────────────────────────────────────────
+let laterItems = JSON.parse(localStorage.getItem('reef-readlater') || '[]');
+
+function renderLaterList() {
+  const el = document.getElementById('later-list');
+  if (!el) return;
+  if (!laterItems.length) {
+    el.innerHTML = '<div class="later-empty">Nothing saved yet.<br>Hit <strong>+later</strong> on any article.</div>';
+    return;
+  }
+  el.innerHTML = laterItems.map(item => `
+    <div class="later-item">
+      <div class="later-item-row">
+        <a class="later-item-title" href="${item.link}" target="_blank" rel="noopener">${item.title}</a>
+        <button class="later-remove" onclick="removeLater(${JSON.stringify(item.link)})" title="Remove">×</button>
+      </div>
+      <div class="later-item-meta">${item.source}${item.date ? ' · ' + item.date : ''}</div>
+    </div>`).join('');
+}
+
+function toggleLater(link, title, source, date) {
+  const idx = laterItems.findIndex(i => i.link === link);
+  if (idx >= 0) {
+    laterItems.splice(idx, 1);
+  } else {
+    laterItems.unshift({ link, title, source, date });
+  }
+  localStorage.setItem('reef-readlater', JSON.stringify(laterItems));
+  renderLaterList();
+  // Sync button states across all loaded feed panels
+  document.querySelectorAll('.feed-item-save').forEach(btn => {
+    if (btn.dataset.link === link) {
+      const saved = laterItems.some(i => i.link === link);
+      btn.classList.toggle('saved', saved);
+      btn.textContent = saved ? '✓ saved' : '+later';
+    }
+  });
+}
+
+function removeLater(link) {
+  laterItems = laterItems.filter(i => i.link !== link);
+  localStorage.setItem('reef-readlater', JSON.stringify(laterItems));
+  renderLaterList();
+  document.querySelectorAll('.feed-item-save').forEach(btn => {
+    if (btn.dataset.link === link) { btn.classList.remove('saved'); btn.textContent = '+later'; }
+  });
+}
+
 // ─── AI READING FEED ─────────────────────────────────────────────────────────
 (function() {
   const R2J = 'https://api.rss2json.com/v1/api.json?rss_url=';
@@ -1993,10 +2151,15 @@ function setWcagStatus(msg, type) {
       el.innerHTML = items.map(item => {
         const d    = new Date(item.pubDate);
         const date = isNaN(d) ? '' : d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-        const raw  = (item.description || item.content || '').replace(/<[^>]+>/g, '').trim();
-        const desc = raw.length > 170 ? raw.slice(0, 167) + '...' : raw;
+        const raw    = (item.description || item.content || '').replace(/<[^>]+>/g, '').trim();
+        const desc   = raw.length > 170 ? raw.slice(0, 167) + '...' : raw;
+        const isSaved = laterItems.some(i => i.link === item.link);
+        const saveArgs = [JSON.stringify(item.link), JSON.stringify(item.title), JSON.stringify(src.name), JSON.stringify(date)].join(',');
         return `<div class="feed-item">
-          <a class="feed-item-title" href="${fe(item.link)}" target="_blank" rel="noopener">${fe(item.title)}</a>
+          <div class="feed-item-head">
+            <a class="feed-item-title" href="${fe(item.link)}" target="_blank" rel="noopener">${fe(item.title)}</a>
+            <button class="feed-item-save${isSaved?' saved':''}" data-link="${fe(item.link)}" onclick="toggleLater(${saveArgs})">${isSaved?'✓ saved':'+later'}</button>
+          </div>
           ${date ? `<div class="feed-item-date">${date}</div>` : ''}
           ${desc ? `<div class="feed-item-desc">${fe(desc)}</div>` : ''}
         </div>`;
@@ -2008,6 +2171,7 @@ function setWcagStatus(msg, type) {
 
   // Auto-load first tab on page ready
   loadFeed('uai');
+  renderLaterList();
 })();
 
 // ─── FLEX / GRID REFERENCE ────────────────────────────────────────────────────
