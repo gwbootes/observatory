@@ -1,69 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="256" height="256">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="256" height="256" shape-rendering="crispEdges">
+<!--
+  PIXEL — 16x16 tamagotchi sprite
+  K = #1a1210  (near-black: outline, eyes, mouth)
+  W = #e8dcc8  (warm parchment: d20 face)
+  T = #0d5f6f  (dark teal: cuttlefish body)
+  C = #3cc8d8  (bright cyan: bioluminescent dots)
 
-  <!-- D20 shell — warm parchment -->
-  <polygon
-    points="16,1 21,3 26,7 29,13 29,19 26,25 21,29 16,31 11,29 6,25 3,19 3,13 6,7 11,3"
-    fill="#d4c49c" stroke="#2c200e" stroke-width="1.2" stroke-linejoin="round"/>
+  Row layout:
+  r0      top edge of d20 (6px wide, cols 5-10)
+  r1-r2   d20 widens (8px, 10px)
+  r3-r11  d20 full width (12px), teal body inside
+  r4-r5   eyes (2x2 solid black at cols 5-6 and 9-10)
+  r7      smirk (2px dash at cols 6-7, slight left offset)
+  r8      two bio-glow dots (cols 6 and 9)
+  r11-r12 d20 narrows back
+  r13     bottom edge (6px)
+  r14-r15 three tentacle nubs (cols 5, 7, 9)
+-->
 
-  <!-- D20 top-face highlight -->
-  <polygon
-    points="16,2 20,4 24,8 16,11 8,8 12,4"
-    fill="#e2d4ae" opacity="0.55"/>
+  <!-- r0: top edge -->
+  <rect x="5" y="0" width="6" height="1" fill="#1a1210"/>
 
-  <!-- D20 face lines (suggest triangular faces) -->
-  <polyline points="16,2 6,8 26,8 16,2" fill="none" stroke="#2c200e" stroke-width="0.5" opacity="0.3"/>
-  <line x1="3"  y1="13" x2="6"  y2="8"  stroke="#2c200e" stroke-width="0.5" opacity="0.2"/>
-  <line x1="29" y1="13" x2="26" y2="8"  stroke="#2c200e" stroke-width="0.5" opacity="0.2"/>
-  <line x1="3"  y1="19" x2="3"  y2="13" stroke="#2c200e" stroke-width="0.5" opacity="0.15"/>
-  <line x1="29" y1="19" x2="29" y2="13" stroke="#2c200e" stroke-width="0.5" opacity="0.15"/>
+  <!-- r1 -->
+  <rect x="3" y="1" width="1" height="1" fill="#1a1210"/>
+  <rect x="4" y="1" width="8" height="1" fill="#e8dcc8"/>
+  <rect x="12" y="1" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Cuttlefish body — outer dark -->
-  <ellipse cx="16" cy="18" rx="8.5" ry="9.5" fill="#0c5868"/>
+  <!-- r2 -->
+  <rect x="2" y="2" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="2" width="10" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="2" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Cuttlefish body — inner mid teal -->
-  <ellipse cx="16" cy="17.5" rx="6.5" ry="8" fill="#1a7888"/>
+  <!-- r3: teal body enters -->
+  <rect x="2" y="3" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="3" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="4" y="3" width="8" height="1" fill="#0d5f6f"/>
+  <rect x="12" y="3" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="3" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Side fins -->
-  <ellipse cx="7.8"  cy="18" rx="2.3" ry="4.2" fill="#0c5868"/>
-  <ellipse cx="24.2" cy="18" rx="2.3" ry="4.2" fill="#0c5868"/>
-  <ellipse cx="7.6"  cy="17" rx="1"   ry="2"   fill="#1a7888" opacity="0.5"/>
-  <ellipse cx="24.4" cy="17" rx="1"   ry="2"   fill="#1a7888" opacity="0.5"/>
+  <!-- r4: eyes top (2x2 solid black at 5-6 and 9-10) -->
+  <rect x="2" y="4" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="4" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="4" y="4" width="1" height="1" fill="#0d5f6f"/>
+  <rect x="5" y="4" width="2" height="1" fill="#1a1210"/>
+  <rect x="7" y="4" width="2" height="1" fill="#0d5f6f"/>
+  <rect x="9" y="4" width="2" height="1" fill="#1a1210"/>
+  <rect x="11" y="4" width="1" height="1" fill="#0d5f6f"/>
+  <rect x="12" y="4" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="4" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Eye sclera -->
-  <circle cx="13" cy="15" r="3"   fill="#dce8ea"/>
-  <circle cx="19" cy="15" r="3"   fill="#dce8ea"/>
+  <!-- r5: eyes bottom (same as r4 eye positions) -->
+  <rect x="2" y="5" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="5" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="4" y="5" width="1" height="1" fill="#0d5f6f"/>
+  <rect x="5" y="5" width="2" height="1" fill="#1a1210"/>
+  <rect x="7" y="5" width="2" height="1" fill="#0d5f6f"/>
+  <rect x="9" y="5" width="2" height="1" fill="#1a1210"/>
+  <rect x="11" y="5" width="1" height="1" fill="#0d5f6f"/>
+  <rect x="12" y="5" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="5" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Eye iris -->
-  <circle cx="13" cy="15" r="2.1" fill="#22a0b4"/>
-  <circle cx="19" cy="15" r="2.1" fill="#22a0b4"/>
+  <!-- r6: plain body -->
+  <rect x="2" y="6" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="6" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="4" y="6" width="8" height="1" fill="#0d5f6f"/>
+  <rect x="12" y="6" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="6" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Pupil -->
-  <circle cx="13" cy="15" r="1.2" fill="#080814"/>
-  <circle cx="19" cy="15" r="1.2" fill="#080814"/>
+  <!-- r7: smirk (2px slightly left of center at cols 6-7) -->
+  <rect x="2" y="7" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="7" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="4" y="7" width="2" height="1" fill="#0d5f6f"/>
+  <rect x="6" y="7" width="2" height="1" fill="#1a1210"/>
+  <rect x="8" y="7" width="4" height="1" fill="#0d5f6f"/>
+  <rect x="12" y="7" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="7" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Eye shine -->
-  <circle cx="13.7" cy="14.2" r="0.55" fill="#ffffff"/>
-  <circle cx="19.7" cy="14.2" r="0.55" fill="#ffffff"/>
+  <!-- r8: two bioluminescent dots -->
+  <rect x="2" y="8" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="8" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="4" y="8" width="2" height="1" fill="#0d5f6f"/>
+  <rect x="6" y="8" width="1" height="1" fill="#3cc8d8"/>
+  <rect x="7" y="8" width="2" height="1" fill="#0d5f6f"/>
+  <rect x="9" y="8" width="1" height="1" fill="#3cc8d8"/>
+  <rect x="10" y="8" width="2" height="1" fill="#0d5f6f"/>
+  <rect x="12" y="8" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="8" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Tiny smile -->
-  <path d="M14.2 18.2 Q16 19.6 17.8 18.2"
-    stroke="#081018" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+  <!-- r9: plain body -->
+  <rect x="2" y="9" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="9" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="4" y="9" width="8" height="1" fill="#0d5f6f"/>
+  <rect x="12" y="9" width="1" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="9" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Bioluminescent dots -->
-  <circle cx="16"   cy="20"   r="1.1" fill="#3cd0e4" opacity="0.95"/>
-  <circle cx="13"   cy="22"   r="0.8" fill="#3cd0e4" opacity="0.85"/>
-  <circle cx="19"   cy="22"   r="0.8" fill="#3cd0e4" opacity="0.85"/>
-  <circle cx="15"   cy="24"   r="0.6" fill="#70e0f0" opacity="0.8"/>
-  <circle cx="17.5" cy="24.5" r="0.5" fill="#70e0f0" opacity="0.7"/>
+  <!-- r10: body narrows at bottom -->
+  <rect x="2" y="10" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="10" width="2" height="1" fill="#e8dcc8"/>
+  <rect x="5" y="10" width="6" height="1" fill="#0d5f6f"/>
+  <rect x="11" y="10" width="2" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="10" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Tentacle nubs peeking from the bottom -->
-  <ellipse cx="11.5" cy="27.5" rx="1.3" ry="2"   fill="#0c5868"/>
-  <ellipse cx="14"   cy="28.5" rx="1.2" ry="1.8" fill="#0c5868"/>
-  <ellipse cx="16.5" cy="28.8" rx="1.1" ry="1.7" fill="#0c5868"/>
-  <ellipse cx="19"   cy="28.3" rx="1.2" ry="1.8" fill="#0c5868"/>
-  <ellipse cx="21.5" cy="27.2" rx="1.3" ry="2"   fill="#0c5868"/>
+  <!-- r11 -->
+  <rect x="2" y="11" width="1" height="1" fill="#1a1210"/>
+  <rect x="3" y="11" width="10" height="1" fill="#e8dcc8"/>
+  <rect x="13" y="11" width="1" height="1" fill="#1a1210"/>
 
-  <!-- Tiny glow on centre tentacle -->
-  <ellipse cx="16.5" cy="28" rx="0.4" ry="0.5" fill="#3cd0e4" opacity="0.6"/>
+  <!-- r12: d20 narrowing -->
+  <rect x="3" y="12" width="1" height="1" fill="#1a1210"/>
+  <rect x="4" y="12" width="8" height="1" fill="#e8dcc8"/>
+  <rect x="12" y="12" width="1" height="1" fill="#1a1210"/>
+
+  <!-- r13: bottom edge of d20 -->
+  <rect x="5" y="13" width="6" height="1" fill="#1a1210"/>
+
+  <!-- r14-r15: three tentacle nubs -->
+  <rect x="5" y="14" width="1" height="2" fill="#0d5f6f"/>
+  <rect x="7" y="14" width="1" height="2" fill="#0d5f6f"/>
+  <rect x="9" y="14" width="1" height="2" fill="#0d5f6f"/>
 
 </svg>
