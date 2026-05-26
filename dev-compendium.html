@@ -342,30 +342,6 @@ textarea::placeholder { color: var(--text-dim); }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-/* ---- MODE TOGGLE ---- */
-.mode-toggle {
-  display: flex;
-  width: fit-content;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 1.5rem;
-}
-.mode-btn {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 0.45rem 1.1rem;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.mode-btn + .mode-btn { border-left: 1px solid var(--border); }
-.mode-btn.active { background: var(--accent); color: var(--bg); }
-.mode-btn:not(.active):hover { background: var(--surface2); color: var(--text); }
 
 /* ---- HIERARCHY PANEL ---- */
 .hierarchy-panel {
@@ -478,12 +454,7 @@ textarea::placeholder { color: var(--text-dim); }
   <section class="section">
     <div class="section-label">// CSS Unit Converter</div>
 
-    <div class="mode-toggle">
-      <button class="mode-btn active" id="btn-simple" onclick="setMode('simple')">Simple</button>
-      <button class="mode-btn" id="btn-smart" onclick="setMode('smart')">Smart Cascade</button>
-    </div>
-
-    <div id="html-input-area" style="display:none; margin-bottom:1rem;">
+    <div style="margin-bottom:1rem;">
       <div class="textarea-wrap">
         <label>Paste your HTML structure</label>
         <textarea id="html-input" style="min-height:130px;" placeholder="Paste the relevant HTML here — just the part you're converting, e.g. your nav section"></textarea>
@@ -501,9 +472,13 @@ textarea::placeholder { color: var(--text-dim); }
           <option value="vw">px → vw</option>
         </select>
       </div>
-      <div class="field" id="field-parent">
-        <label id="label-parent">Parent size (px)</label>
+      <div class="field">
+        <label>Viewport width (px)</label>
         <input type="number" id="parent-size" value="1280" placeholder="e.g. 1280">
+      </div>
+      <div class="field">
+        <label>Viewport height (px)</label>
+        <input type="number" id="viewport-h" value="780" placeholder="e.g. 780">
       </div>
       <div class="field">
         <label>Round to decimal places</label>
@@ -512,10 +487,6 @@ textarea::placeholder { color: var(--text-dim); }
       <div class="field" id="field-root" style="display:none">
         <label>Root font size (px)</label>
         <input type="number" id="root-size" value="16" placeholder="16">
-      </div>
-      <div class="field" id="field-viewport-h" style="display:none">
-        <label>Viewport height (px)</label>
-        <input type="number" id="viewport-h" value="780" placeholder="e.g. 780">
       </div>
     </div>
 
@@ -688,78 +659,13 @@ textarea::placeholder { color: var(--text-dim); }
 </div>
 
 <script>
-let currentMode = 'simple';
-
-// ─── MODE ────────────────────────────────────────────────────────────────────
-function setMode(mode) {
-  currentMode = mode;
-  document.getElementById('btn-simple').classList.toggle('active', mode === 'simple');
-  document.getElementById('btn-smart').classList.toggle('active', mode === 'smart');
-  document.getElementById('html-input-area').style.display  = mode === 'smart' ? 'block' : 'none';
-  document.getElementById('field-viewport-h').style.display = mode === 'smart' ? 'flex'  : 'none';
-  document.getElementById('hierarchy-panel').style.display  = 'none';
-  updateFields();
-}
-
 // ─── FIELDS ──────────────────────────────────────────────────────────────────
 function updateFields() {
-  const type        = document.getElementById('convert-type').value;
-  const fieldParent = document.getElementById('field-parent');
-  const fieldRoot   = document.getElementById('field-root');
-  const labelParent = document.getElementById('label-parent');
-
-  fieldRoot.style.display = (type === 'rem' || type === 'em') ? 'flex' : 'none';
-
-  if (currentMode === 'smart') {
-    fieldParent.style.display = 'flex';
-    labelParent.textContent   = 'Viewport width (px)';
-    return;
-  }
-
-  if (type === 'pct') {
-    fieldParent.style.display = 'flex';
-    labelParent.textContent   = 'Parent size (px)';
-  } else if (type === 'vh') {
-    fieldParent.style.display = 'flex';
-    labelParent.textContent   = 'Viewport height (px)';
-  } else if (type === 'vw') {
-    fieldParent.style.display = 'flex';
-    labelParent.textContent   = 'Viewport width (px)';
-  } else {
-    fieldParent.style.display = 'none';
-  }
+  const type = document.getElementById('convert-type').value;
+  document.getElementById('field-root').style.display = (type === 'rem' || type === 'em') ? 'flex' : 'none';
 }
 
-// ─── SIMPLE CONVERT ──────────────────────────────────────────────────────────
-function applySimple(px, type, parent, root, dec) {
-  switch (type) {
-    case 'pct': return (px / parent * 100).toFixed(dec) + '%';
-    case 'rem': return (px / root).toFixed(dec) + 'rem';
-    case 'em':  return (px / root).toFixed(dec) + 'em';
-    case 'vh':  return (px / parent * 100).toFixed(dec) + 'vh';
-    case 'vw':  return (px / parent * 100).toFixed(dec) + 'vw';
-    default:    return px + 'px';
-  }
-}
-
-function convert() {
-  if (currentMode === 'smart') { convertSmart(); return; }
-
-  const input  = document.getElementById('css-input').value.trim();
-  const type   = document.getElementById('convert-type').value;
-  const parent = parseFloat(document.getElementById('parent-size').value) || 1280;
-  const root   = parseFloat(document.getElementById('root-size').value)   || 16;
-  const dec    = parseInt(document.getElementById('decimal-places').value) ?? 2;
-
-  if (!input) { setStatus('nothing to convert', 'err'); return; }
-
-  const out = input.replace(/(\d*\.?\d+)px/g, (_, n) =>
-    applySimple(parseFloat(n), type, parent, root, dec)
-  );
-  document.getElementById('css-output').value = out;
-  const count = (input.match(/(\d*\.?\d+)px/g) || []).length;
-  setStatus(`${count} value${count !== 1 ? 's' : ''} converted`, 'ok');
-}
+function convert() { convertSmart(); }
 
 // ─── SMART CASCADE ────────────────────────────────────────────────────────────
 // Properties measured against parent WIDTH
