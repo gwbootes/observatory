@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Compendium // Rattles</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0f1117;
+  --surface:   #1a1d27;
+  --surface2:  #22263a;
+  --border:    #2e3350;
+  --text:      #e2e8f0;
+  --text-muted:#7c8aaa;
+  --text-dim:  #3d4a6b;
+  --accent:    #7ee8a2;
+  --accent2:   #5b8dee;
+  --accent3:   #f5a623;
+  --danger:    #e24b4a;
+  --mono:      'IBM Plex Mono', monospace;
+  --sans:      'IBM Plex Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ---- LAYOUT ---- */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+/* ---- HEADER ---- */
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2rem;
+  margin-bottom: 3rem;
+}
+.site-header .eyebrow {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.site-header h1 {
+  font-family: var(--mono);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+.site-header .subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+/* ---- SECTION ---- */
+.section {
+  margin-bottom: 4rem;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ---- CONVERTER ---- */
+.converter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 600px) {
+  .converter-grid { grid-template-columns: 1fr; }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.field label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.field input,
+.field select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  padding: 0.55rem 0.75rem;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--accent2);
+}
+.field input::placeholder { color: var(--text-dim); }
+
+.textarea-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 600px) {
+  .textarea-area { grid-template-columns: 1fr; }
+}
+
+.textarea-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.textarea-wrap label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+textarea {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  padding: 0.75rem;
+  resize: vertical;
+  min-height: 260px;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+textarea:focus { outline: none; border-color: var(--accent2); }
+textarea[readonly] { background: var(--surface2); cursor: default; }
+textarea::placeholder { color: var(--text-dim); }
+
+.converter-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.25rem;
+  border-radius: 4px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-primary:hover { background: var(--accent); color: var(--bg); }
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+.btn-ghost:hover { border-color: var(--text-muted); color: var(--text); }
+.converter-status {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+.converter-status.ok { color: var(--accent); }
+.converter-status.err { color: var(--danger); }
+
+/* ---- FORMULA CARD ---- */
+.formula-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.formula-card .formula-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.formula-card .formula-main {
+  font-family: var(--mono);
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.formula-card .formula-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+}
+
+/* ---- CHEATSHEET ---- */
+.cheatsheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.unit-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.1rem 1.25rem;
+}
+.unit-card .unit-name {
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.unit-card .unit-when {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.unit-card .unit-example {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.3rem 0.6rem;
+  color: var(--text-muted);
+  display: inline-block;
+}
+.unit-px   .unit-name { color: var(--text-muted); }
+.unit-rem  .unit-name { color: var(--accent); }
+.unit-em   .unit-name { color: var(--accent2); }
+.unit-pct  .unit-name { color: var(--accent3); }
+.unit-vh   .unit-name { color: #c084fc; }
+.unit-vw   .unit-name { color: #f472b6; }
+
+/* ---- COMPENDIUM ENTRIES ---- */
+.entry {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+.entry-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.entry-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.tag-css    { color: var(--accent2); border-color: var(--accent2); background: rgba(91,141,238,0.08); }
+.tag-layout { color: var(--accent);  border-color: var(--accent);  background: rgba(126,232,162,0.08); }
+.tag-tip    { color: var(--accent3); border-color: var(--accent3); background: rgba(245,166,35,0.08); }
+.entry-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.entry-body {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.entry-body code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: var(--text);
+}
+.entry-source {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-top: 0.75rem;
+}
+.entry-source a { color: var(--accent2); text-decoration: none; }
+.entry-source a:hover { text-decoration: underline; }
+
+/* ---- EMPTY STATE ---- */
+.empty-state {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <div class="eyebrow">// archive reef — dev tools</div>
+    <h1>Dev Compendium</h1>
+    <p class="subtitle">Unit converter · Reference cheatsheet · Notes that actually clicked</p>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       UNIT CONVERTER
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">// CSS Unit Converter</div>
+
+    <div class="converter-grid">
+      <div class="field">
+        <label>Convert</label>
+        <select id="convert-type" onchange="updateFields()">
+          <option value="pct">px → % (percentage)</option>
+          <option value="rem">px → rem</option>
+          <option value="em">px → em</option>
+          <option value="vh">px → vh</option>
+          <option value="vw">px → vw</option>
+        </select>
+      </div>
+      <div class="field" id="field-parent">
+        <label id="label-parent">Parent width (px)</label>
+        <input type="number" id="parent-size" value="1280" placeholder="e.g. 1280">
+      </div>
+      <div class="field">
+        <label>Round to decimal places</label>
+        <input type="number" id="decimal-places" value="2" min="0" max="6">
+      </div>
+      <div class="field" id="field-root" style="display:none">
+        <label>Root font size (px)</label>
+        <input type="number" id="root-size" value="16" placeholder="16">
+      </div>
+    </div>
+
+    <div class="textarea-area">
+      <div class="textarea-wrap">
+        <label>Paste your CSS here</label>
+        <textarea id="css-input" placeholder="/* paste your CSS here */
+.nav-outer {
+  width: 300px;
+  left: 150px;
+  height: 100vh;
+}"></textarea>
+      </div>
+      <div class="textarea-wrap">
+        <label>Converted output</label>
+        <textarea id="css-output" readonly placeholder="/* converted CSS will appear here */"></textarea>
+      </div>
+    </div>
+
+    <div class="converter-actions">
+      <button class="btn btn-primary" onclick="convert()">Convert ↗</button>
+      <button class="btn btn-ghost" onclick="copyOutput()">Copy output</button>
+      <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+      <span class="converter-status" id="converter-status"></span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FORMULA + CHEATSHEET
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">// The Formula</div>
+
+    <div class="formula-card">
+      <div class="formula-label">px to percentage</div>
+      <div class="formula-main">element ÷ parent × 100 = %</div>
+      <div class="formula-note">
+        The parent is whatever contains the element — usually the artboard width for top-level layout, or the parent element's width for anything nested.
+        <br>Example: 339px inside a 1280px artboard — 339 ÷ 1280 × 100 = <strong>26.48%</strong>
+      </div>
+    </div>
+
+    <div class="section-label">// When to use what</div>
+
+    <div class="cheatsheet-grid">
+      <div class="unit-card unit-px">
+        <div class="unit-name">px</div>
+        <div class="unit-when">Fixed pixel value. Doesn't scale with anything. Use for borders, box shadows, small decorative details where you need exact control.</div>
+        <div class="unit-example">border: 1px solid red;</div>
+      </div>
+      <div class="unit-card unit-rem">
+        <div class="unit-name">rem</div>
+        <div class="unit-when">Relative to the root font size (16px by default). Scales if the user changes their browser font size. Best for font sizes and consistent spacing.</div>
+        <div class="unit-example">font-size: 1.5rem; /* = 24px */</div>
+      </div>
+      <div class="unit-card unit-em">
+        <div class="unit-name">em</div>
+        <div class="unit-when">Relative to the parent element's font size. Good for padding and margin on text components — it scales with the text it lives next to.</div>
+        <div class="unit-example">padding: 0.75em 1em;</div>
+      </div>
+      <div class="unit-card unit-pct">
+        <div class="unit-name">%</div>
+        <div class="unit-when">Relative to the parent element's size. The workhorse of responsive layout. Use for widths, positioning, anything that should scale with its container.</div>
+        <div class="unit-example">width: 26.48%; left: 11.7%;</div>
+      </div>
+      <div class="unit-card unit-vh">
+        <div class="unit-name">vh</div>
+        <div class="unit-when">Viewport height. 1vh = 1% of the browser window height. Good for full-height sections, hero areas, anything that should fill the screen vertically.</div>
+        <div class="unit-example">height: 100vh; min-height: 50vh;</div>
+      </div>
+      <div class="unit-card unit-vw">
+        <div class="unit-name">vw</div>
+        <div class="unit-when">Viewport width. 1vw = 1% of the browser window width. Use carefully — it ignores scrollbars and can cause horizontal overflow if you're not watching it.</div>
+        <div class="unit-example">font-size: clamp(1rem, 4vw, 2rem);</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       COMPENDIUM
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">// Notes that clicked — add when something lands</div>
+
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-tag tag-layout">Layout</span>
+      </div>
+      <div class="entry-title">Penpot works in CSS pixels, not device pixels</div>
+      <div class="entry-body">
+        Penpot's canvas uses CSS pixels, which is what the browser uses. So a 300px wide element in Penpot should be <code>width: 300px</code> in CSS. The values match. If they look different, it's usually because the artboard size doesn't match the viewport you're testing in — not a unit problem.
+        <br><br>
+        Physical screen pixels are different — a HiDPI display might use 3 physical pixels per CSS pixel. Only matters for image exports, not for web CSS.
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-tag tag-css">CSS</span>
+      </div>
+      <div class="entry-title">padding vs margin — they do different jobs</div>
+      <div class="entry-body">
+        <strong>Padding</strong> adds space <em>inside</em> the element, between the content and the border. It affects the element's size (unless you're using <code>box-sizing: border-box</code>, which makes padding eat into the element's set dimensions instead of adding to them).
+        <br><br>
+        <strong>Margin</strong> adds space <em>outside</em> the element, pushing other elements away. Use margin to create gaps between things. Use padding to breathe space inside a box.
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-tag tag-tip">Tip</span>
+      </div>
+      <div class="entry-title">box-sizing: border-box — always turn this on</div>
+      <div class="entry-body">
+        By default, <code>width: 300px</code> means the content is 300px wide — then padding and border get added on top, making the actual element bigger than you said. That's confusing.
+        <br><br>
+        <code>box-sizing: border-box</code> changes it so that padding and border are included inside the width you set. A 300px element stays 300px no matter what padding you add. Put this in your CSS reset and forget about it.
+      </div>
+      <div class="entry-source">From session 2026-05-26 — building Sidd's nav strip</div>
+    </div>
+
+    <div id="compendium-entries"></div>
+    <div class="empty-state" id="compendium-empty" style="display:none">No additional entries yet. Add when something clicks.</div>
+  </section>
+
+</div>
+
+<script>
+// ─── CONVERTER ──────────────────────────────────────────────────────────────
+function updateFields() {
+  const type = document.getElementById('convert-type').value;
+  const fieldParent = document.getElementById('field-parent');
+  const fieldRoot   = document.getElementById('field-root');
+  const labelParent = document.getElementById('label-parent');
+
+  fieldRoot.style.display = (type === 'rem' || type === 'em') ? 'flex' : 'none';
+
+  if (type === 'pct') {
+    fieldParent.style.display = 'flex';
+    labelParent.textContent = 'Parent size (px)';
+  } else if (type === 'vh') {
+    fieldParent.style.display = 'flex';
+    labelParent.textContent = 'Viewport height (px)';
+  } else if (type === 'vw') {
+    fieldParent.style.display = 'flex';
+    labelParent.textContent = 'Viewport width (px)';
+  } else {
+    fieldParent.style.display = 'none';
+  }
+}
+
+function convertValue(px, type, parentSize, rootSize, decimals) {
+  switch (type) {
+    case 'pct': return (px / parentSize * 100).toFixed(decimals) + '%';
+    case 'rem': return (px / rootSize).toFixed(decimals) + 'rem';
+    case 'em':  return (px / rootSize).toFixed(decimals) + 'em';
+    case 'vh':  return (px / parentSize * 100).toFixed(decimals) + 'vh';
+    case 'vw':  return (px / parentSize * 100).toFixed(decimals) + 'vw';
+    default:    return px + 'px';
+  }
+}
+
+function convert() {
+  const input      = document.getElementById('css-input').value.trim();
+  const type       = document.getElementById('convert-type').value;
+  const parentSize = parseFloat(document.getElementById('parent-size').value) || 1280;
+  const rootSize   = parseFloat(document.getElementById('root-size').value) || 16;
+  const decimals   = parseInt(document.getElementById('decimal-places').value) ?? 2;
+  const status     = document.getElementById('converter-status');
+
+  if (!input) {
+    setStatus('nothing to convert', 'err');
+    return;
+  }
+
+  // Match px values — integers or decimals, positive only
+  const converted = input.replace(/(\d*\.?\d+)px/g, (match, num) => {
+    const px = parseFloat(num);
+    return convertValue(px, type, parentSize, rootSize, decimals);
+  });
+
+  document.getElementById('css-output').value = converted;
+
+  const count = (input.match(/(\d*\.?\d+)px/g) || []).length;
+  setStatus(`${count} value${count !== 1 ? 's' : ''} converted`, 'ok');
+}
+
+function copyOutput() {
+  const output = document.getElementById('css-output').value;
+  if (!output) { setStatus('nothing to copy', 'err'); return; }
+  navigator.clipboard.writeText(output).then(() => setStatus('copied!', 'ok'));
+}
+
+function clearAll() {
+  document.getElementById('css-input').value  = '';
+  document.getElementById('css-output').value = '';
+  setStatus('', '');
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('converter-status');
+  el.textContent = msg;
+  el.className = 'converter-status' + (type ? ' ' + type : '');
+  if (msg) setTimeout(() => { el.textContent = ''; el.className = 'converter-status'; }, 3000);
+}
+
+// Allow Ctrl+Enter to convert from input textarea
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('css-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) convert();
+  });
+  updateFields();
+});
+</script>
+</body>
+</html>
+
+<!--
+UPDATE LOG
+
+2026-05-26 | Pixel | Created dev-compendium.html
+Why: Rattles needed a CSS unit converter and reference cheatsheet that grows with the project.
+What's in it:
+- CSS unit converter: paste CSS, choose conversion type (px to %, rem, em, vh, vw), set parent/root size, get converted output
+- Formula card: element / parent x 100 = %
+- Cheatsheet: px, rem, em, %, vh, vw — when to use each
+- Compendium section: notes that clicked, grows with sessions
+- Styled after utopia.fyi aesthetic: dark, monospace, technical
+- Ctrl+Enter to convert from input field
+-->
