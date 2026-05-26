@@ -437,6 +437,89 @@ textarea::placeholder { color: var(--text-dim); }
 .token-use-sel  { color: var(--text-muted); }
 .token-use-prop { color: var(--text-dim); font-style: italic; }
 .token-none { font-family: var(--mono); font-size: 0.8rem; color: var(--text-dim); text-align: center; padding: 1.5rem 0; }
+
+/* ---- WCAG CHECKER ---- */
+.check-summary {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.check-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.check-stat-num { font-size: 2rem; font-weight: 700; line-height: 1; }
+.stat-fail .check-stat-num { color: var(--danger); }
+.stat-warn .check-stat-num { color: var(--accent); }
+.stat-info .check-stat-num { color: var(--accent3); }
+
+.check-group { margin-bottom: 1.5rem; }
+.check-group-label {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid;
+}
+.check-group-fail .check-group-label { color: var(--danger);  border-color: var(--danger); }
+.check-group-warn .check-group-label { color: var(--accent);  border-color: var(--accent); }
+.check-group-info .check-group-label { color: var(--accent3); border-color: var(--accent3); }
+
+.check-item {
+  padding: 0.85rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  border-left: 3px solid;
+  background: var(--surface);
+  margin-bottom: 0.6rem;
+}
+.check-item-fail { border-left-color: var(--danger); }
+.check-item-warn { border-left-color: var(--accent); }
+.check-item-info { border-left-color: var(--accent3); }
+
+.check-item-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+.check-criterion { font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); }
+.check-level-badge {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
+  border-radius: 2px;
+  border: 1px solid;
+}
+.badge-a   { color: var(--danger);  border-color: var(--danger); }
+.badge-aa  { color: var(--accent);  border-color: var(--accent); }
+.badge-aaa { color: var(--accent3); border-color: var(--accent3); }
+.check-title   { font-size: 0.875rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+.check-element {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
+  color: var(--text-muted);
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-bottom: 0.3rem;
+}
+.check-fix  { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
+.check-pass { text-align: center; padding: 2rem 0; font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted); }
 </style>
 </head>
 <body>
@@ -606,6 +689,34 @@ textarea::placeholder { color: var(--text-dim); }
       </div>
       <div class="section-label" style="margin-top:0;">// What was found</div>
       <div id="token-report" class="token-report"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       WCAG CHECKER
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">// WCAG Accessibility Checker</div>
+
+    <div class="textarea-area" style="margin-bottom:1rem;">
+      <div class="textarea-wrap">
+        <label>Paste your HTML</label>
+        <textarea id="wcag-html" placeholder="Paste your HTML here — full page or just a component"></textarea>
+      </div>
+      <div class="textarea-wrap">
+        <label>Paste your CSS (optional — needed for contrast + focus checks)</label>
+        <textarea id="wcag-css" placeholder="/* CSS is optional but needed for contrast ratio and outline checks */"></textarea>
+      </div>
+    </div>
+
+    <div class="converter-actions" style="margin-bottom:1.5rem;">
+      <button class="btn btn-primary" onclick="runWCAGCheck()">Check Accessibility ↗</button>
+      <button class="btn btn-ghost" onclick="clearWCAGCheck()">Clear</button>
+      <span class="converter-status" id="wcag-status"></span>
+    </div>
+
+    <div id="wcag-output" style="display:none;">
+      <div id="wcag-results"></div>
     </div>
   </section>
 
@@ -928,6 +1039,379 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   updateFields();
 });
+
+// ─── WCAG ACCESSIBILITY CHECKER ──────────────────────────────────────────────
+
+function checkAltText(doc, issues) {
+  doc.querySelectorAll('img').forEach(img => {
+    if (!img.hasAttribute('alt')) {
+      issues.push({ level:'fail', criterion:'1.1.1', criterionName:'Non-text Content', wcagLevel:'A',
+        message:'Image missing alt attribute',
+        element: img.outerHTML.split('>')[0] + '>',
+        fix:'Add alt="description" for meaningful images, or alt="" for purely decorative ones.' });
+    }
+  });
+}
+
+function checkFormLabels(doc, issues) {
+  doc.querySelectorAll('input, select, textarea').forEach(el => {
+    const type = el.getAttribute('type') || 'text';
+    if (['hidden','submit','button','reset','image'].includes(type)) return;
+    const id = el.getAttribute('id');
+    const hasLabel = (id && doc.querySelector(`label[for="${id}"]`)) ||
+                     el.closest('label') || el.hasAttribute('aria-label') ||
+                     el.hasAttribute('aria-labelledby') || el.hasAttribute('title');
+    if (!hasLabel) {
+      issues.push({ level:'fail', criterion:'1.3.1', criterionName:'Info and Relationships', wcagLevel:'A',
+        message:`<${el.tagName.toLowerCase()}> has no associated label`,
+        element: el.outerHTML.split('>')[0] + '>',
+        fix:'Add a <label for="id">, wrap the input in <label>, or use aria-label="...".' });
+    }
+  });
+}
+
+function checkPageTitle(doc, issues) {
+  const title = doc.querySelector('title');
+  if (!title || !title.textContent.trim()) {
+    issues.push({ level:'fail', criterion:'2.4.2', criterionName:'Page Titled', wcagLevel:'A',
+      message:'Page is missing a <title> element', element:'<head>',
+      fix:'Add <title>Descriptive Page Title</title> inside <head>.' });
+  }
+}
+
+function checkPageLang(doc, issues) {
+  const html = doc.querySelector('html');
+  if (!html || !html.getAttribute('lang')) {
+    issues.push({ level:'fail', criterion:'3.1.1', criterionName:'Language of Page', wcagLevel:'A',
+      message:'<html> element is missing a lang attribute', element:'<html>',
+      fix:'Add lang="en" (or the correct language code) to the opening <html> tag.' });
+  }
+}
+
+function checkHeadings(doc, issues) {
+  const headings = [...doc.querySelectorAll('h1,h2,h3,h4,h5,h6')];
+  if (!headings.length) {
+    issues.push({ level:'warn', criterion:'1.3.1', criterionName:'Info and Relationships', wcagLevel:'A',
+      message:'No heading elements found', element:'',
+      fix:'Use h1–h6 to structure content. Every page should have at least one heading.' });
+    return;
+  }
+  const h1s = headings.filter(h => h.tagName === 'H1');
+  if (!h1s.length) {
+    issues.push({ level:'warn', criterion:'2.4.6', criterionName:'Headings and Labels', wcagLevel:'AA',
+      message:'No <h1> found', element:'',
+      fix:'Each page should have exactly one <h1> describing the main topic.' });
+  } else if (h1s.length > 1) {
+    issues.push({ level:'warn', criterion:'2.4.6', criterionName:'Headings and Labels', wcagLevel:'AA',
+      message:`${h1s.length} <h1> elements found — should be one per page`, element:'',
+      fix:'Use a single <h1>. Use h2–h6 for subsections.' });
+  }
+  const levels = headings.map(h => parseInt(h.tagName[1]));
+  for (let i = 1; i < levels.length; i++) {
+    if (levels[i] - levels[i-1] > 1) {
+      issues.push({ level:'warn', criterion:'1.3.1', criterionName:'Info and Relationships', wcagLevel:'A',
+        message:`Heading level skipped: h${levels[i-1]} → h${levels[i]}`,
+        element: headings[i].outerHTML.substring(0, 100),
+        fix:`Don't skip heading levels. Use h${levels[i-1]+1} instead of h${levels[i]} here.` });
+    }
+  }
+}
+
+function checkLinkText(doc, issues) {
+  const vague = ['click here','click','here','read more','more','learn more','link','this link','continue','details','info'];
+  doc.querySelectorAll('a').forEach(a => {
+    const text = (a.textContent || '').trim().toLowerCase();
+    const hasAria = a.hasAttribute('aria-label') || a.hasAttribute('aria-labelledby');
+    if (!text && !hasAria && !a.hasAttribute('title')) {
+      const imgAlt = a.querySelector('img[alt]');
+      if (!imgAlt || !imgAlt.getAttribute('alt').trim()) {
+        issues.push({ level:'fail', criterion:'2.4.4', criterionName:'Link Purpose', wcagLevel:'A',
+          message:'Link has no accessible text', element: a.outerHTML.substring(0,120),
+          fix:'Add descriptive text, aria-label, or an <img> with a meaningful alt attribute.' });
+      }
+    } else if (vague.includes(text) && !hasAria) {
+      issues.push({ level:'warn', criterion:'2.4.4', criterionName:'Link Purpose', wcagLevel:'A',
+        message:`Non-descriptive link text: "${text}"`, element: a.outerHTML.substring(0,120),
+        fix:'Describe where the link goes, e.g. "View portfolio" rather than "click here".' });
+    }
+  });
+}
+
+function checkEmptyInteractive(doc, issues) {
+  doc.querySelectorAll('button').forEach(btn => {
+    const text = (btn.textContent || '').trim();
+    const hasAria = btn.hasAttribute('aria-label') || btn.hasAttribute('aria-labelledby');
+    if (!text && !hasAria && !btn.hasAttribute('title') && !btn.querySelector('img[alt]')) {
+      issues.push({ level:'fail', criterion:'4.1.2', criterionName:'Name, Role, Value', wcagLevel:'A',
+        message:'Button has no accessible name', element: btn.outerHTML.substring(0,120),
+        fix:'Add visible text, aria-label, or a titled icon to the button.' });
+    }
+  });
+  doc.querySelectorAll('[onclick]').forEach(el => {
+    if (['A','BUTTON','INPUT','SELECT','TEXTAREA'].includes(el.tagName)) return;
+    const role = el.getAttribute('role');
+    if (!role || !['button','link','checkbox','radio'].includes(role)) {
+      issues.push({ level:'warn', criterion:'4.1.2', criterionName:'Name, Role, Value', wcagLevel:'A',
+        message:`<${el.tagName.toLowerCase()}> has onclick but no ARIA role`,
+        element: el.outerHTML.substring(0,100),
+        fix:'Use a semantic <button>, or add role="button" tabindex="0" and handle keyboard events too.' });
+    }
+  });
+}
+
+function checkLandmarks(doc, issues) {
+  if (!doc.querySelector('main') && !doc.querySelector('[role="main"]')) {
+    issues.push({ level:'info', criterion:'ARIA11', criterionName:'Landmark Regions', wcagLevel:'AA',
+      message:'No <main> landmark found', element:'',
+      fix:'Wrap primary content in <main> so screen reader users can skip directly to it.' });
+  }
+}
+
+function checkTabIndex(doc, issues) {
+  doc.querySelectorAll('[tabindex]').forEach(el => {
+    const ti = parseInt(el.getAttribute('tabindex'));
+    if (ti > 0) {
+      issues.push({ level:'warn', criterion:'2.4.3', criterionName:'Focus Order', wcagLevel:'A',
+        message:`tabindex="${ti}" — positive tabindex disrupts natural focus order`,
+        element: el.outerHTML.substring(0,100),
+        fix:'Use tabindex="0" to make something focusable without changing order, or restructure the DOM instead.' });
+    }
+  });
+}
+
+function checkTables(doc, issues) {
+  doc.querySelectorAll('table').forEach(table => {
+    if (!table.querySelector('th')) {
+      issues.push({ level:'warn', criterion:'1.3.1', criterionName:'Info and Relationships', wcagLevel:'A',
+        message:'Table has no header cells (<th>)', element:'<table>',
+        fix:'Use <th scope="col"> for column headers or <th scope="row"> for row headers.' });
+    }
+    if (!table.querySelector('caption')) {
+      issues.push({ level:'info', criterion:'1.3.1', criterionName:'Info and Relationships', wcagLevel:'A',
+        message:'Table has no <caption>', element:'<table>',
+        fix:'Add a <caption> or aria-label to describe what the table contains.' });
+    }
+  });
+}
+
+function checkFocusStyles(cssStr, issues) {
+  for (const rule of parseCSSRules(cssStr)) {
+    const outlineDecl = rule.declarations.find(d => d.prop === 'outline' && /^(none|0)$/.test(d.value.trim()));
+    if (!outlineDecl) continue;
+    const hasVisualReplacement = rule.declarations.some(d =>
+      d.prop === 'box-shadow' || d.prop === 'border' ||
+      (d.prop === 'outline' && !/^(none|0)$/.test(d.value.trim()))
+    );
+    if (hasVisualReplacement) continue;
+    const sel = rule.selector.trim();
+    const isFocusRule    = sel.includes(':focus');
+    const isInteractive  = /^(\*|a\b|button\b|input\b|select\b|textarea\b|\[tabindex\])/.test(sel);
+    if (isFocusRule || isInteractive) {
+      issues.push({ level:'warn', criterion:'2.4.7', criterionName:'Focus Visible', wcagLevel:'AA',
+        message:'Focus indicator removed without a visible replacement',
+        element:`${rule.selector} { outline: ${outlineDecl.value}; }`,
+        fix:'Use :focus-visible with a box-shadow or outline instead of removing focus styles. Never leave keyboard users with no indicator.' });
+    }
+  }
+}
+
+function checkFontSizes(cssStr, issues) {
+  let hasPx = false;
+  for (const rule of parseCSSRules(cssStr)) {
+    const fsDecl = rule.declarations.find(d => d.prop === 'font-size');
+    if (!fsDecl) continue;
+    const m = fsDecl.value.match(/^([\d.]+)px$/);
+    if (!m) continue;
+    hasPx = true;
+    if (parseFloat(m[1]) < 12) {
+      issues.push({ level:'warn', criterion:'1.4.4', criterionName:'Resize Text', wcagLevel:'AA',
+        message:`Very small text — font-size: ${fsDecl.value}`,
+        element:`${rule.selector} { font-size: ${fsDecl.value}; }`,
+        fix:'Text below 12px is hard to read. Body text should be at least 14–16px.' });
+    }
+  }
+  if (hasPx) {
+    issues.push({ level:'info', criterion:'1.4.4', criterionName:'Resize Text', wcagLevel:'AA',
+      message:'Font sizes in px do not scale with browser font preferences',
+      element:'',
+      fix:'Consider rem instead of px. 1rem = 16px by default, but grows when the user increases their browser base font size.' });
+  }
+}
+
+function checkAnimations(cssStr, issues) {
+  const hasMotion  = /animation[\s-]/.test(cssStr) || /@keyframes/.test(cssStr) || /transition[\s:]/.test(cssStr);
+  const hasQuery   = /prefers-reduced-motion/.test(cssStr);
+  if (hasMotion && !hasQuery) {
+    issues.push({ level:'info', criterion:'2.3.3', criterionName:'Animation from Interactions', wcagLevel:'AAA',
+      message:'Animations or transitions found without @media (prefers-reduced-motion)',
+      element:'',
+      fix:'Wrap motion in @media (prefers-reduced-motion: no-preference) { ... }. Some users experience nausea or seizures from unexpected motion.' });
+  }
+}
+
+// Color helpers
+function parseColorToRGB(value) {
+  if (!value) return null;
+  const v = value.trim().toLowerCase();
+  if (v.startsWith('#')) {
+    const hex = normalizeTokenVal('color', v);
+    if (hex.length === 7) return { r: parseInt(hex.slice(1,3),16), g: parseInt(hex.slice(3,5),16), b: parseInt(hex.slice(5,7),16) };
+  }
+  const rgb = v.match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/);
+  if (rgb) return { r: parseFloat(rgb[1]), g: parseFloat(rgb[2]), b: parseFloat(rgb[3]) };
+  const named = { white:{r:255,g:255,b:255}, black:{r:0,g:0,b:0}, red:{r:255,g:0,b:0},
+    blue:{r:0,g:0,b:255}, green:{r:0,g:128,b:0}, gray:{r:128,g:128,b:128}, grey:{r:128,g:128,b:128} };
+  return named[v] || null;
+}
+
+function relativeLuminance({ r, g, b }) {
+  const lin = c => { const s = c/255; return s <= 0.04045 ? s/12.92 : Math.pow((s+0.055)/1.055, 2.4); };
+  return 0.2126*lin(r) + 0.7152*lin(g) + 0.0722*lin(b);
+}
+
+function contrastRatio(c1, c2) {
+  const l1 = relativeLuminance(c1), l2 = relativeLuminance(c2);
+  return (Math.max(l1,l2) + 0.05) / (Math.min(l1,l2) + 0.05);
+}
+
+function checkColorContrast(doc, cssStr, issues) {
+  const rules = parseCSSRules(cssStr);
+  const elMap = new Map();
+  for (const rule of rules) {
+    let els;
+    try { els = doc.querySelectorAll(rule.selector); } catch (e) { continue; }
+    els.forEach(el => {
+      if (!elMap.has(el)) elMap.set(el, {});
+      for (const { prop, value } of rule.declarations) {
+        if (['color','background-color','background','font-size','font-weight'].includes(prop)) {
+          elMap.get(el)[prop] = value;
+        }
+      }
+    });
+  }
+
+  const seenPairs = new Set();
+  doc.querySelectorAll('p,h1,h2,h3,h4,h5,h6,a,span,li,td,th,label,button').forEach(el => {
+    const styles  = elMap.get(el) || {};
+    const textColor = styles['color'];
+    let bgColor   = styles['background-color'] || styles['background'];
+    if (!bgColor) {
+      let anc = el.parentElement;
+      while (anc && !bgColor) {
+        const s = elMap.get(anc) || {};
+        bgColor = s['background-color'] || s['background'];
+        anc = anc.parentElement;
+      }
+    }
+    if (!textColor || !bgColor) return;
+    const pairKey = `${textColor}||${bgColor}`;
+    if (seenPairs.has(pairKey)) return;
+    seenPairs.add(pairKey);
+    const fg = parseColorToRGB(textColor);
+    const bg = parseColorToRGB(bgColor);
+    if (!fg || !bg) return;
+    const ratio    = contrastRatio(fg, bg);
+    const fsPx     = parseFloat(styles['font-size']) || 16;
+    const fw       = styles['font-weight'] || '400';
+    const isBold   = fw === 'bold' || parseInt(fw) >= 700;
+    const isLarge  = fsPx >= 24 || (fsPx >= 18.67 && isBold);
+    const required = isLarge ? 3 : 4.5;
+    const label    = isLarge ? 'large text' : 'normal text';
+    if (ratio < required) {
+      issues.push({ level: ratio < 2 ? 'fail' : 'warn', criterion:'1.4.3', criterionName:'Contrast (Minimum)', wcagLevel:'AA',
+        message:`Contrast ${ratio.toFixed(2)}:1 — need ${required}:1 for ${label}`,
+        element:`color: ${textColor}  on  background: ${bgColor}`,
+        fix:`Increase contrast. Try darkening the background or lightening the text until the ratio reaches ${required}:1.` });
+    }
+  });
+}
+
+function renderWCAGResults(issues) {
+  if (!issues.length) {
+    return '<div class="check-pass">No issues found — looking good! Always combine with manual testing and a screen reader for full coverage.</div>';
+  }
+  const fails = issues.filter(i => i.level === 'fail');
+  const warns = issues.filter(i => i.level === 'warn');
+  const infos = issues.filter(i => i.level === 'info');
+
+  let html = `<div class="check-summary">
+    <div class="check-stat stat-fail"><span class="check-stat-num">${fails.length}</span><span>Critical</span></div>
+    <div class="check-stat stat-warn"><span class="check-stat-num">${warns.length}</span><span>Warning</span></div>
+    <div class="check-stat stat-info"><span class="check-stat-num">${infos.length}</span><span>Info</span></div>
+  </div>`;
+
+  const renderGroup = (list, level, label) => {
+    if (!list.length) return '';
+    let g = `<div class="check-group check-group-${level}"><div class="check-group-label">${label} (${list.length})</div>`;
+    for (const issue of list) {
+      const badgeLvl = (issue.wcagLevel || '').toLowerCase().split(' ')[0];
+      const badge    = badgeLvl ? `<span class="check-level-badge badge-${badgeLvl}">WCAG ${issue.wcagLevel}</span>` : '';
+      const el       = issue.element ? `<div class="check-element">${esc(issue.element)}</div>` : '';
+      g += `<div class="check-item check-item-${level}">
+        <div class="check-item-head">
+          <span class="check-criterion">${esc(issue.criterion)} · ${esc(issue.criterionName)}</span>
+          ${badge}
+        </div>
+        <div class="check-title">${esc(issue.message)}</div>
+        ${el}
+        <div class="check-fix">Fix: ${esc(issue.fix)}</div>
+      </div>`;
+    }
+    return g + '</div>';
+  };
+
+  html += renderGroup(fails, 'fail', 'Critical — WCAG Failures');
+  html += renderGroup(warns, 'warn', 'Warnings — Review Needed');
+  html += renderGroup(infos, 'info', 'Info — Suggestions');
+  return html;
+}
+
+function runWCAGCheck() {
+  const htmlStr = document.getElementById('wcag-html').value.trim();
+  const cssStr  = document.getElementById('wcag-css').value.trim();
+  if (!htmlStr) { setWcagStatus('paste some HTML to check', 'err'); return; }
+
+  const doc    = new DOMParser().parseFromString(htmlStr, 'text/html');
+  const issues = [];
+
+  checkAltText(doc, issues);
+  checkFormLabels(doc, issues);
+  checkPageTitle(doc, issues);
+  checkPageLang(doc, issues);
+  checkHeadings(doc, issues);
+  checkLinkText(doc, issues);
+  checkEmptyInteractive(doc, issues);
+  checkLandmarks(doc, issues);
+  checkTabIndex(doc, issues);
+  checkTables(doc, issues);
+  if (cssStr) {
+    checkFocusStyles(cssStr, issues);
+    checkFontSizes(cssStr, issues);
+    checkColorContrast(doc, cssStr, issues);
+    checkAnimations(cssStr, issues);
+  }
+
+  document.getElementById('wcag-results').innerHTML = renderWCAGResults(issues);
+  document.getElementById('wcag-output').style.display = 'block';
+
+  const f = issues.filter(i => i.level === 'fail').length;
+  const w = issues.filter(i => i.level === 'warn').length;
+  setWcagStatus(`${f} critical · ${w} warnings · ${issues.length - f - w} info`, f ? 'err' : 'ok');
+}
+
+function clearWCAGCheck() {
+  document.getElementById('wcag-html').value = '';
+  document.getElementById('wcag-css').value  = '';
+  document.getElementById('wcag-output').style.display = 'none';
+  setWcagStatus('', '');
+}
+
+function setWcagStatus(msg, type) {
+  const el = document.getElementById('wcag-status');
+  el.textContent = msg;
+  el.className = 'converter-status' + (type ? ' ' + type : '');
+  if (msg) setTimeout(() => { el.textContent = ''; el.className = 'converter-status'; }, 5000);
+}
 
 // ─── DESIGN TOKEN EXTRACTOR ───────────────────────────────────────────────────
 
