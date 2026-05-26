@@ -950,6 +950,107 @@ textarea::placeholder { color: var(--text-dim); }
 .feed-item-save:hover { color: var(--accent); border-color: var(--accent); }
 .feed-item-save.saved { color: var(--accent); border-color: var(--accent); background: var(--surface2); }
 
+/* ── BRAIN & LEARNING ───────────────────────────────────────────────────── */
+.brain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.brain-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent2);
+  border-radius: 0 0 6px 6px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.brain-card-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.brain-card-name {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent2);
+}
+.brain-card-body {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+.brain-card-tip {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--accent3);
+  margin-top: 0.2rem;
+  border-left: 2px solid var(--accent3);
+  padding-left: 0.5rem;
+}
+.book-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.book-entry {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.book-entry-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.1rem;
+}
+.book-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+.book-author {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+.book-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 0.15rem;
+}
+.book-tag {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tag-design     { color: var(--accent);  border-color: var(--accent);  background: rgba(133,112,71,0.08); }
+.tag-disaster   { color: var(--danger);  border-color: var(--danger);  background: rgba(226,75,74,0.07); }
+.tag-account    { color: var(--accent2); border-color: var(--accent2); background: rgba(51,76,93,0.08); }
+.tag-fantasy    { color: #c084fc;        border-color: #9333ea;        background: rgba(147,51,234,0.08); }
+.tag-historical { color: var(--accent3); border-color: var(--accent3); background: rgba(102,121,134,0.08); }
+.tag-survival   { color: #2a9a5a;        border-color: #1a6a3a;        background: rgba(42,154,90,0.08); }
+
 /* ── RULES OF SEIGIESE ───────────────────────────────────────────────────── */
 .rules-grid {
   display: grid;
@@ -1333,6 +1434,245 @@ textarea::placeholder { color: var(--text-dim); }
         <span class="link-desc">He coined the phrase "user experience" and explains what it was actually supposed to mean — and how it got watered down.</span>
       </li>
     </ul>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       BRAIN & LEARNING
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">// Brain &amp; Learning — you didn't break it, but you can absolutely tune it</div>
+
+    <div class="section-label" style="margin-top:0.5rem;margin-bottom:0.75rem;">// Focus techniques</div>
+    <div class="brain-grid">
+      <div class="brain-card">
+        <div class="brain-card-label">Focus</div>
+        <div class="brain-card-name">Pomodoro — modified</div>
+        <div class="brain-card-body">25 minutes of work, 5 minute break. Repeat. The number isn't sacred — if flow kicks in, extend it. If 25 is too long, try 15. The point is the rhythm and the permission to stop, not the clock.</div>
+        <div class="brain-card-tip">ADHD note: the break matters as much as the work. Don't skip it. Your brain consolidates during the gap.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Focus</div>
+        <div class="brain-card-name">Body doubling</div>
+        <div class="brain-card-body">Work near another person — physically or virtually. A coffee shop, a video call, a study-with-me stream. The presence creates low-level accountability without pressure or conversation.</div>
+        <div class="brain-card-tip">This is one of the most consistently effective tools for ADHD brains. The mechanism isn't fully understood but the results are real.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Focus</div>
+        <div class="brain-card-name">Hyperfocus leverage</div>
+        <div class="brain-card-body">When it hits, clear the path and let it run. Remove friction, eat something beforehand, silence notifications. You can't schedule hyperfocus, but you can stop fighting it when it arrives.</div>
+        <div class="brain-card-tip">Don't waste the state by feeling guilty about it. It's a feature. Use it.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Focus</div>
+        <div class="brain-card-name">Environmental design</div>
+        <div class="brain-card-body">Make the default action the right action. Close the tabs you don't need. Put the thing you want to work on in the center of the screen before you stop for the day. Reduce decisions between you and the work.</div>
+        <div class="brain-card-tip">ADHD brains burn executive function on micro-decisions. Every obstacle you remove is energy preserved for actual thinking.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Focus</div>
+        <div class="brain-card-name">The parking lot</div>
+        <div class="brain-card-body">Keep a dedicated note — physical or digital — for intrusive thoughts that aren't relevant right now. When one arrives, write it down immediately and return to the task. The brain lets go once it knows the thought is captured.</div>
+        <div class="brain-card-tip">Trying to suppress the thought costs more attention than writing it down. Don't fight it — file it.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Focus</div>
+        <div class="brain-card-name">Task anchoring</div>
+        <div class="brain-card-body">Attach new habits or tasks to something you already do reliably. "After I make coffee" beats "at 9am." The existing habit is the trigger — you borrow its momentum instead of generating new willpower from scratch.</div>
+        <div class="brain-card-tip">This works even better for ADHD brains than calendar alarms because it's tied to action, not time.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:0.75rem;">// Memory techniques</div>
+    <div class="brain-grid">
+      <div class="brain-card">
+        <div class="brain-card-label">Memory</div>
+        <div class="brain-card-name">Spaced repetition</div>
+        <div class="brain-card-body">Review material at increasing intervals — day 1, day 3, day 7, day 14. The brain consolidates memories during the gaps between reviews, not during the study itself. Anki is the best tool for this.</div>
+        <div class="brain-card-tip">Cramming works for the exam and evaporates by Thursday. Spaced repetition builds the kind of memory that's still there in six months.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Memory</div>
+        <div class="brain-card-name">Elaborative interrogation</div>
+        <div class="brain-card-body">After encountering any new concept, ask: "Why does this work?" and "How does this connect to something I already know?" Forces active encoding instead of passive reading. The connection is the memory.</div>
+        <div class="brain-card-tip">Passive re-reading feels productive but mostly isn't. The question is the work.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Memory</div>
+        <div class="brain-card-name">The Feynman Technique</div>
+        <div class="brain-card-body">Explain the concept out loud or in writing as if you're teaching it to someone who knows nothing. Gaps in your explanation are exactly the gaps in your understanding. Go back and fill them.</div>
+        <div class="brain-card-tip">You don't actually understand something until you can teach it simply. The performance of explaining reveals what's missing.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Memory</div>
+        <div class="brain-card-name">Method of loci</div>
+        <div class="brain-card-body">Place things you want to remember along a familiar route or space — your home, a walk you know well. Mentally walk through it to retrieve them. Spatial memory is robust and often underused.</div>
+        <div class="brain-card-tip">Works especially well if you're a visual thinker. The weirder and more vivid the image you place, the better it sticks.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Memory</div>
+        <div class="brain-card-name">Chunking</div>
+        <div class="brain-card-body">Break information into meaningful groups rather than long sequences. Phone numbers are already chunked — that's why they're easier to remember than a 10-digit string. Apply this deliberately to anything you're trying to retain.</div>
+        <div class="brain-card-tip">Working memory in ADHD brains is often smaller than average. Chunking reduces the load per slot.</div>
+      </div>
+      <div class="brain-card">
+        <div class="brain-card-label">Memory</div>
+        <div class="brain-card-name">Interest anchoring</div>
+        <div class="brain-card-body">Connect new information to something you already care deeply about. ADHD brains encode interest-linked information dramatically better than abstract or disconnected information. Find the bridge and cross it deliberately.</div>
+        <div class="brain-card-tip">This isn't a workaround — it's using your brain's actual architecture instead of fighting it.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:0.75rem;">// Reading — non-fiction</div>
+    <div class="book-shelf">
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Steal Like an Artist</div>
+          <span class="book-tag tag-design">Design</span>
+        </div>
+        <div class="book-author">Austin Kleon</div>
+        <div class="book-desc">Short, punchy, visual. About creative borrowing, building a practice, and why nothing is original — and why that's fine. ADHD-friendly format. Reads in one sitting and sticks around for years.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Emotional Design</div>
+          <span class="book-tag tag-design">Design</span>
+        </div>
+        <div class="book-author">Don Norman</div>
+        <div class="book-desc">Companion to The Design of Everyday Things. Makes the case that beauty isn't decoration — it's function. Why attractive things actually work better and what that means for how we build.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Isaac's Storm</div>
+          <span class="book-tag tag-disaster">Disaster</span>
+        </div>
+        <div class="book-author">Erik Larson</div>
+        <div class="book-desc">The 1900 Galveston hurricane — still the deadliest natural disaster in US history. Larson writes narrative nonfiction that reads like a thriller. You know how it ends and you can't stop reading.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Midnight in Chernobyl</div>
+          <span class="book-tag tag-disaster">Disaster</span>
+        </div>
+        <div class="book-author">Adam Higginbotham</div>
+        <div class="book-desc">The definitive account of the 1986 nuclear disaster. Meticulously reported, almost unbearably tense. The engineering failure is only part of it — the human bureaucratic failure is what haunts you.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Krakatoa</div>
+          <span class="book-tag tag-disaster">Disaster</span>
+        </div>
+        <div class="book-author">Simon Winchester</div>
+        <div class="book-desc">The 1883 eruption that was heard 3,000 miles away and changed the global climate. Winchester explains plate tectonics, colonialism, and the birth of modern telecommunications, all through one volcano.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Five Days at Memorial</div>
+          <span class="book-tag tag-disaster">Disaster</span>
+        </div>
+        <div class="book-author">Sheri Fink</div>
+        <div class="book-desc">Hurricane Katrina and a New Orleans hospital that ran out of options. A medical ethics investigation that becomes a study in what people do when systems collapse and there are no good choices left.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Into Thin Air</div>
+          <span class="book-tag tag-account">Account</span>
+        </div>
+        <div class="book-author">Jon Krakauer</div>
+        <div class="book-desc">First-person account of the 1996 Everest disaster. Krakauer was on the mountain when it happened. Devastating and impossible to put down. The best disaster memoir ever written.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Unbroken</div>
+          <span class="book-tag tag-account">Account</span>
+        </div>
+        <div class="book-author">Laura Hillenbrand</div>
+        <div class="book-desc">Louis Zamperini: Olympic runner, WWII bombardier, plane crash survivor, POW. One of the most extraordinary survival stories ever documented. Hillenbrand's pacing is relentless.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Night</div>
+          <span class="book-tag tag-account">Account</span>
+        </div>
+        <div class="book-author">Elie Wiesel</div>
+        <div class="book-desc">Short. About 120 pages. A first-person account of surviving Auschwitz and Buchenwald. One of the most important books written in the 20th century. Read it slowly.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:0.75rem;">// Reading — fiction</div>
+    <div class="book-shelf">
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Six of Crows</div>
+          <span class="book-tag tag-fantasy">Fantasy</span>
+        </div>
+        <div class="book-author">Leigh Bardugo</div>
+        <div class="book-desc">Heist fantasy. Morally grey ensemble cast, each with a distinct voice. Propulsive, plotted like a thriller. The characters are the reason people re-read it. Start here, not with Shadow and Bone.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">An Ember in the Ashes</div>
+          <span class="book-tag tag-fantasy">Fantasy</span>
+        </div>
+        <div class="book-author">Sabaa Tahir</div>
+        <div class="book-desc">Roman-empire-inspired world with a brutal military academy and a resistance underground. Dual POV. Tahir doesn't flinch and doesn't waste pages. First book in a series but stands on its own.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Graceling</div>
+          <span class="book-tag tag-fantasy">Fantasy</span>
+        </div>
+        <div class="book-author">Kristin Cashore</div>
+        <div class="book-desc">A young woman whose extraordinary gift is killing. Fantasy adventure with genuine emotional intelligence. Standalone — no cliffhanger, no obligation to continue. The rare fantasy that ends on its own terms.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">The Book Thief</div>
+          <span class="book-tag tag-historical">Historical</span>
+        </div>
+        <div class="book-author">Markus Zusak</div>
+        <div class="book-desc">WWII Germany, narrated by Death. A young girl who steals books during the bombing of Munich. Zusak's prose is unlike anything else. Beautiful, devastating, and structured so that you know the ending from page one and it still destroys you.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">All the Light We Cannot See</div>
+          <span class="book-tag tag-historical">Historical</span>
+        </div>
+        <div class="book-author">Anthony Doerr</div>
+        <div class="book-desc">A blind French girl and a German soldier whose lives converge in occupied France. Pulitzer winner. Doerr writes in very short chapters — ideal for ADHD reading patterns. Each one lands like a short film.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">The Night Circus</div>
+          <span class="book-tag tag-historical">Historical</span>
+        </div>
+        <div class="book-author">Erin Morgenstern</div>
+        <div class="book-desc">A magical competition between two young illusionists, set inside a circus that only appears at night. Late Victorian atmosphere. Less about plot, more about immersion — the kind of book you read to live inside for a while.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Hatchet</div>
+          <span class="book-tag tag-survival">Survival</span>
+        </div>
+        <div class="book-author">Gary Paulsen</div>
+        <div class="book-desc">A 13-year-old survives alone in the Canadian wilderness after a plane crash, with nothing but a hatchet. A YA classic that reads in one sitting. Paulsen respects the reader's intelligence and doesn't over-explain survival or emotion.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">Life of Pi</div>
+          <span class="book-tag tag-survival">Survival</span>
+        </div>
+        <div class="book-author">Yann Martel</div>
+        <div class="book-desc">A boy survives 227 days on a lifeboat in the Pacific — with a Bengal tiger. Part survival story, part philosophy of storytelling and belief. The ending reframes everything. Give it the ending it deserves before you decide what you think.</div>
+      </div>
+      <div class="book-entry">
+        <div class="book-entry-head">
+          <div class="book-title">The Martian</div>
+          <span class="book-tag tag-survival">Survival</span>
+        </div>
+        <div class="book-author">Andy Weir</div>
+        <div class="book-desc">An astronaut gets stranded alone on Mars and has to science his way to survival. First-person problem-solving as plot. Genuinely funny. The ADHD brain responds well to "okay but what do I do NEXT" structure — this book is all that.</div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
