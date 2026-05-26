@@ -2128,8 +2128,13 @@ function removeLater(link) {
     if (!cache[id]) loadFeed(id);
   });
 
-  // Refresh buttons
+  // Refresh + save buttons
   panelsEl.addEventListener('click', e => {
+    const saveBtn = e.target.closest('.feed-item-save');
+    if (saveBtn) {
+      toggleLater(saveBtn.dataset.link, saveBtn.dataset.title, saveBtn.dataset.source, saveBtn.dataset.date);
+      return;
+    }
     const btn = e.target.closest('.feed-refresh');
     if (!btn) return;
     const id = btn.dataset.fid;
@@ -2154,11 +2159,10 @@ function removeLater(link) {
         const raw    = (item.description || item.content || '').replace(/<[^>]+>/g, '').trim();
         const desc   = raw.length > 170 ? raw.slice(0, 167) + '...' : raw;
         const isSaved = laterItems.some(i => i.link === item.link);
-        const saveArgs = [JSON.stringify(item.link), JSON.stringify(item.title), JSON.stringify(src.name), JSON.stringify(date)].join(',');
         return `<div class="feed-item">
           <div class="feed-item-head">
             <a class="feed-item-title" href="${fe(item.link)}" target="_blank" rel="noopener">${fe(item.title)}</a>
-            <button class="feed-item-save${isSaved?' saved':''}" data-link="${fe(item.link)}" onclick="toggleLater(${saveArgs})">${isSaved?'✓ saved':'+later'}</button>
+            <button class="feed-item-save${isSaved?' saved':''}" data-link="${fe(item.link)}" data-title="${fe(item.title)}" data-source="${fe(src.name)}" data-date="${fe(date)}">${isSaved?'✓ saved':'+later'}</button>
           </div>
           ${date ? `<div class="feed-item-date">${date}</div>` : ''}
           ${desc ? `<div class="feed-item-desc">${fe(desc)}</div>` : ''}
