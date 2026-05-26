@@ -670,6 +670,85 @@ textarea::placeholder { color: var(--text-dim); }
   border-radius: 3px;
   padding: 0.1rem 0.35rem;
 }
+
+/* ── DON NORMAN ──────────────────────────────────────────────────────────── */
+.norman-quotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+.norman-quote {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.norman-quote-text {
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.55;
+  font-style: italic;
+}
+.norman-quote-source {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+.norman-concepts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.norman-concept {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+  flex: 1 1 200px;
+}
+.norman-concept-name {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+.norman-concept-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+.norman-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.norman-links li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.norman-links a {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--accent2);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.norman-links a:hover { border-bottom-color: var(--accent2); }
+.norman-links .link-desc {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
 </style>
 </head>
 <body>
@@ -889,6 +968,84 @@ textarea::placeholder { color: var(--text-dim); }
     <div id="fgp-grid-cont"  class="fg-panel"></div>
     <div id="fgp-grid-items" class="fg-panel"></div>
     <div id="fgp-conflicts"  class="fg-panel"></div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       DON NORMAN
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">// Don Norman — the person who explains why bad design makes you feel stupid (it's not you)</div>
+
+    <div class="norman-quotes">
+      <div class="norman-quote">
+        <div class="norman-quote-text">"When simple things need pictures, labels, or instructions, the design has failed."</div>
+        <div class="norman-quote-source">The Design of Everyday Things</div>
+      </div>
+      <div class="norman-quote">
+        <div class="norman-quote-text">"Human error usually is a result of poor design: it should be called system error."</div>
+        <div class="norman-quote-source">The Design of Everyday Things</div>
+      </div>
+      <div class="norman-quote">
+        <div class="norman-quote-text">"Good design is actually a lot harder to notice than poor design."</div>
+        <div class="norman-quote-source">The Design of Everyday Things</div>
+      </div>
+      <div class="norman-quote">
+        <div class="norman-quote-text">"Beautiful things work better."</div>
+        <div class="norman-quote-source">Emotional Design</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:0.75rem;">// Core concepts</div>
+    <div class="norman-concepts" style="margin-bottom:2rem;">
+      <div class="norman-concept">
+        <div class="norman-concept-name">Affordances</div>
+        <div class="norman-concept-desc">The perceived or actual properties of an object that suggest how it should be used. A button affords pressing. A handle affords pulling. If users have to guess, the affordance is missing or wrong.</div>
+      </div>
+      <div class="norman-concept">
+        <div class="norman-concept-name">Signifiers</div>
+        <div class="norman-concept-desc">The cues that communicate how to interact with something — labels, shapes, colors, placement. A button that looks flat has poor signifiers even if it technically affords clicking. Signifiers are what the user actually sees.</div>
+      </div>
+      <div class="norman-concept">
+        <div class="norman-concept-name">Feedback</div>
+        <div class="norman-concept-desc">Confirmation that an action was received and what happened. Clicks that give no response, buttons that don't change state, forms that silently fail — these violate feedback. Users need to know the system heard them.</div>
+      </div>
+      <div class="norman-concept">
+        <div class="norman-concept-name">Constraints</div>
+        <div class="norman-concept-desc">Limiting actions to prevent errors. A date picker that won't let you type garbage. A form that disables Submit until required fields are filled. Good constraints make the wrong thing hard and the right thing obvious.</div>
+      </div>
+      <div class="norman-concept">
+        <div class="norman-concept-name">Mappings</div>
+        <div class="norman-concept-desc">The relationship between controls and their effects. Up arrow increases volume — that's a natural mapping. Switches labeled only Left/Right for a row of lights — that's a broken one. Good mappings don't need labels.</div>
+      </div>
+      <div class="norman-concept">
+        <div class="norman-concept-name">Conceptual Models</div>
+        <div class="norman-concept-desc">The mental model a user builds of how a system works, based on the signals you give them. If your design implies one model but behaves differently, users feel confused and blame themselves. Make the model match reality.</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-bottom:0.75rem;">// Worth reading</div>
+    <ul class="norman-links">
+      <li>
+        <a href="https://www.fastcompany.com/90338379/i-wrote-the-book-on-user-friendly-design-what-i-see-today-horrifies-me" target="_blank" rel="noopener">I Wrote the Book on User-Friendly Design. What I See Today Horrifies Me — Fast Company (2019)</a>
+        <span class="link-desc">His sharpest critique of where modern UX went wrong. Essential reading.</span>
+      </li>
+      <li>
+        <a href="https://www.ted.com/talks/don_norman_3_ways_good_design_makes_you_happy" target="_blank" rel="noopener">3 Ways Good Design Makes You Happy — TED Talk</a>
+        <span class="link-desc">On visceral, behavioral, and reflective design — why emotion is not decoration, it's function.</span>
+      </li>
+      <li>
+        <a href="https://www.nngroup.com/articles/author/don-norman/" target="_blank" rel="noopener">Don Norman's articles on Nielsen Norman Group</a>
+        <span class="link-desc">Full archive of his NN/g writing. Signifiers, mental models, complexity, design thinking.</span>
+      </li>
+      <li>
+        <a href="https://jnd.org" target="_blank" rel="noopener">jnd.org — his personal site</a>
+        <span class="link-desc">Essays, talks, and updates direct from Norman. Slower pace, more considered than social media.</span>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/watch?v=yY96hTb8WgI" target="_blank" rel="noopener">Don Norman: The term "UX" — YouTube</a>
+        <span class="link-desc">He coined the phrase "user experience" and explains what it was actually supposed to mean — and how it got watered down.</span>
+      </li>
+    </ul>
   </section>
 
   <!-- ═══════════════════════════════════════════
