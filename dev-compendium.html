@@ -749,6 +749,49 @@ textarea::placeholder { color: var(--text-dim); }
   font-size: 0.75rem;
   color: var(--text-dim);
 }
+
+/* ── RULES OF SEIGIESE ───────────────────────────────────────────────────── */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1rem;
+}
+.rule-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 0 0 6px 6px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.rule-num {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.rule-name {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.rule-body {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+.rule-closer {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-top: 0.2rem;
+  letter-spacing: 0.02em;
+}
 </style>
 </head>
 <body>
@@ -759,6 +802,33 @@ textarea::placeholder { color: var(--text-dim); }
     <h1>Dev Compendium</h1>
     <p class="subtitle">Unit converter · Reference cheatsheet · Notes that actually clicked</p>
   </header>
+
+  <!-- ═══════════════════════════════════════════
+       RULES OF SEIGIESE
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label">// The Rules of Seigiese — the law before the tools</div>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-num">Rule 01</div>
+        <div class="rule-name">The 3-Step Rule</div>
+        <div class="rule-body">If it takes more than 3 steps to reach or complete the thing a design was built for, it's wrong.</div>
+        <div class="rule-closer">Rework it. Redesign it. Figure. It. Out.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">Rule 02</div>
+        <div class="rule-name">The 5-Minute Rule</div>
+        <div class="rule-body">If 5 minutes of looking at it or playing with it isn't enough to understand what it is and how it works, it's wrong.</div>
+        <div class="rule-closer">Rework it. Redesign it. Figure. It. Out.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">Rule 03</div>
+        <div class="rule-name">Mental Accessibility</div>
+        <div class="rule-body">ADHD, Autism, Dyslexia, and other conditions that literally alter the physical structure of the brain or its chemistry are not edge cases — they are users. When a design that passes Rules 1 and 2 still creates friction for these users, find the pain points and determine what needs to change.<br><br>Not every condition can be fully accommodated. But none of them will be ignored where they can be.</div>
+      </div>
+    </div>
+  </section>
 
   <!-- ═══════════════════════════════════════════
        UNIT CONVERTER
