@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="256" height="256">
+
+  <!-- D20 shell — warm parchment -->
+  <polygon
+    points="16,1 21,3 26,7 29,13 29,19 26,25 21,29 16,31 11,29 6,25 3,19 3,13 6,7 11,3"
+    fill="#d4c49c" stroke="#2c200e" stroke-width="1.2" stroke-linejoin="round"/>
+
+  <!-- D20 top-face highlight -->
+  <polygon
+    points="16,2 20,4 24,8 16,11 8,8 12,4"
+    fill="#e2d4ae" opacity="0.55"/>
+
+  <!-- D20 face lines (suggest triangular faces) -->
+  <polyline points="16,2 6,8 26,8 16,2" fill="none" stroke="#2c200e" stroke-width="0.5" opacity="0.3"/>
+  <line x1="3"  y1="13" x2="6"  y2="8"  stroke="#2c200e" stroke-width="0.5" opacity="0.2"/>
+  <line x1="29" y1="13" x2="26" y2="8"  stroke="#2c200e" stroke-width="0.5" opacity="0.2"/>
+  <line x1="3"  y1="19" x2="3"  y2="13" stroke="#2c200e" stroke-width="0.5" opacity="0.15"/>
+  <line x1="29" y1="19" x2="29" y2="13" stroke="#2c200e" stroke-width="0.5" opacity="0.15"/>
+
+  <!-- Cuttlefish body — outer dark -->
+  <ellipse cx="16" cy="18" rx="8.5" ry="9.5" fill="#0c5868"/>
+
+  <!-- Cuttlefish body — inner mid teal -->
+  <ellipse cx="16" cy="17.5" rx="6.5" ry="8" fill="#1a7888"/>
+
+  <!-- Side fins -->
+  <ellipse cx="7.8"  cy="18" rx="2.3" ry="4.2" fill="#0c5868"/>
+  <ellipse cx="24.2" cy="18" rx="2.3" ry="4.2" fill="#0c5868"/>
+  <ellipse cx="7.6"  cy="17" rx="1"   ry="2"   fill="#1a7888" opacity="0.5"/>
+  <ellipse cx="24.4" cy="17" rx="1"   ry="2"   fill="#1a7888" opacity="0.5"/>
+
+  <!-- Eye sclera -->
+  <circle cx="13" cy="15" r="3"   fill="#dce8ea"/>
+  <circle cx="19" cy="15" r="3"   fill="#dce8ea"/>
+
+  <!-- Eye iris -->
+  <circle cx="13" cy="15" r="2.1" fill="#22a0b4"/>
+  <circle cx="19" cy="15" r="2.1" fill="#22a0b4"/>
+
+  <!-- Pupil -->
+  <circle cx="13" cy="15" r="1.2" fill="#080814"/>
+  <circle cx="19" cy="15" r="1.2" fill="#080814"/>
+
+  <!-- Eye shine -->
+  <circle cx="13.7" cy="14.2" r="0.55" fill="#ffffff"/>
+  <circle cx="19.7" cy="14.2" r="0.55" fill="#ffffff"/>
+
+  <!-- Tiny smile -->
+  <path d="M14.2 18.2 Q16 19.6 17.8 18.2"
+    stroke="#081018" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+
+  <!-- Bioluminescent dots -->
+  <circle cx="16"   cy="20"   r="1.1" fill="#3cd0e4" opacity="0.95"/>
+  <circle cx="13"   cy="22"   r="0.8" fill="#3cd0e4" opacity="0.85"/>
+  <circle cx="19"   cy="22"   r="0.8" fill="#3cd0e4" opacity="0.85"/>
+  <circle cx="15"   cy="24"   r="0.6" fill="#70e0f0" opacity="0.8"/>
+  <circle cx="17.5" cy="24.5" r="0.5" fill="#70e0f0" opacity="0.7"/>
+
+  <!-- Tentacle nubs peeking from the bottom -->
+  <ellipse cx="11.5" cy="27.5" rx="1.3" ry="2"   fill="#0c5868"/>
+  <ellipse cx="14"   cy="28.5" rx="1.2" ry="1.8" fill="#0c5868"/>
+  <ellipse cx="16.5" cy="28.8" rx="1.1" ry="1.7" fill="#0c5868"/>
+  <ellipse cx="19"   cy="28.3" rx="1.2" ry="1.8" fill="#0c5868"/>
+  <ellipse cx="21.5" cy="27.2" rx="1.3" ry="2"   fill="#0c5868"/>
+
+  <!-- Tiny glow on centre tentacle -->
+  <ellipse cx="16.5" cy="28" rx="0.4" ry="0.5" fill="#3cd0e4" opacity="0.6"/>
+
+</svg>
