@@ -520,6 +520,156 @@ textarea::placeholder { color: var(--text-dim); }
 }
 .check-fix  { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
 .check-pass { text-align: center; padding: 2rem 0; font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted); }
+
+/* ── FLEX / GRID REFERENCE ───────────────────────────────────────────────── */
+.fg-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+}
+.fg-tab {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.75rem;
+  transition: all 0.15s;
+}
+.fg-tab:hover { background: var(--surface); color: var(--text); }
+.fg-tab.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+.fg-panel { display: none; }
+.fg-panel.active { display: block; }
+.fg-group { margin-bottom: 2rem; }
+.fg-group-name {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+.fg-group-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+.fg-cards { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.fg-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem;
+  min-width: 128px;
+  max-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.fg-card-val {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface2);
+  border-radius: 3px;
+  padding: 0.15rem 0.4rem;
+  display: inline-block;
+}
+.fg-card-demo { line-height: 0; border-radius: 3px; overflow: hidden; }
+.fg-card-code {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--accent2);
+  background: var(--surface2);
+  border-radius: 3px;
+  padding: 0.25rem 0.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fg-card-desc { font-size: 0.72rem; color: var(--text-muted); line-height: 1.35; }
+.fg-table-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+.fg-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+.fg-table th {
+  background: var(--surface2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+}
+.fg-table td {
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--surface2);
+  vertical-align: top;
+  color: var(--text);
+}
+.fg-table tr:hover td { background: var(--surface); }
+.fg-table code {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: var(--surface2);
+  border-radius: 3px;
+  padding: 0.1rem 0.3rem;
+}
+.fg-yes  { color: #2a7a5a; font-weight: 700; }
+.fg-no   { color: var(--danger); font-weight: 700; }
+.fg-warn-icon { color: var(--accent); font-weight: 700; }
+.fg-gotcha {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 0.6rem;
+  overflow: hidden;
+}
+.fg-gotcha-head {
+  background: var(--surface2);
+  padding: 0.6rem 0.85rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text);
+  user-select: none;
+  gap: 1rem;
+}
+.fg-gotcha-head:hover { background: var(--surface); }
+.fg-gotcha-body { display: none; padding: 0.85rem; }
+.fg-gotcha-body.open { display: block; }
+.fg-gotcha-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--text);
+}
+.fg-gotcha-label {
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding-top: 0.15rem;
+}
+.fg-gotcha-body code {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  background: var(--surface2);
+  border-radius: 3px;
+  padding: 0.1rem 0.35rem;
+}
 </style>
 </head>
 <body>
@@ -718,6 +868,27 @@ textarea::placeholder { color: var(--text-dim); }
     <div id="wcag-output" style="display:none;">
       <div id="wcag-results"></div>
     </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       FLEX / GRID REFERENCE
+  ════════════════════════════════════════════ -->
+  <section class="section" id="section-fg">
+    <div class="section-label">// Flexbox &amp; Grid Visual Reference — with conflict &amp; override guide</div>
+
+    <div class="fg-tabs" id="fg-tabs">
+      <button class="fg-tab active" data-panel="fgp-flex-cont">Flex Container</button>
+      <button class="fg-tab" data-panel="fgp-flex-items">Flex Items</button>
+      <button class="fg-tab" data-panel="fgp-grid-cont">Grid Container</button>
+      <button class="fg-tab" data-panel="fgp-grid-items">Grid Items</button>
+      <button class="fg-tab" data-panel="fgp-conflicts">Conflicts &amp; Overrides</button>
+    </div>
+
+    <div id="fgp-flex-cont"  class="fg-panel active"></div>
+    <div id="fgp-flex-items" class="fg-panel"></div>
+    <div id="fgp-grid-cont"  class="fg-panel"></div>
+    <div id="fgp-grid-items" class="fg-panel"></div>
+    <div id="fgp-conflicts"  class="fg-panel"></div>
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -1411,6 +1582,412 @@ function setWcagStatus(msg, type) {
   el.textContent = msg;
   el.className = 'converter-status' + (type ? ' ' + type : '');
   if (msg) setTimeout(() => { el.textContent = ''; el.className = 'converter-status'; }, 5000);
+}
+
+// ─── FLEX / GRID REFERENCE ────────────────────────────────────────────────────
+(function() {
+  // Tab switching
+  document.getElementById('fg-tabs').addEventListener('click', function(e) {
+    const btn = e.target.closest('.fg-tab');
+    if (!btn) return;
+    document.querySelectorAll('#fg-tabs .fg-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#section-fg .fg-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.panel).classList.add('active');
+  });
+
+  // Demo color palette + dimensions
+  const C1='#5f90c4', C2='#5fa38f', C3='#c4875f';
+  const BG='#c8ced3';
+  const W=108, H=68;
+
+  // ── Demo container builders ────────────────────────────────────────────────
+  function fdc(css, items) {
+    return `<div style="display:flex;width:${W}px;height:${H}px;background:${BG};border-radius:4px;padding:6px;box-sizing:border-box;${css}">${items}</div>`;
+  }
+  function gdc(css, items) {
+    return `<div style="display:grid;width:${W}px;height:${H}px;background:${BG};border-radius:4px;padding:4px;box-sizing:border-box;${css}">${items}</div>`;
+  }
+
+  // ── Item builders ──────────────────────────────────────────────────────────
+  function sq(c, w, h, extra='') {
+    return `<div style="background:${c};border-radius:2px;width:${w}px;height:${h}px;flex-shrink:0;${extra}"></div>`;
+  }
+  function sqf(c, extra='') {
+    return `<div style="background:${c};border-radius:2px;${extra}"></div>`;
+  }
+  function gsq(c, extra='') {
+    return `<div style="background:${c};border-radius:2px;${extra}"></div>`;
+  }
+
+  const i3  = () => [sq(C1,16,16),sq(C2,16,16),sq(C3,16,16)].join('');
+  const i3v = () => [sq(C1,16,10),sq(C2,16,22),sq(C3,16,16)].join('');
+  const i3s = () => [sqf(C1,'width:16px;'),sqf(C2,'width:16px;'),sqf(C3,'width:16px;')].join('');
+  const i6  = () => [sq(C1,18,14),sq(C2,18,14),sq(C3,18,14),sq(C1,18,14),sq(C2,18,14),sq(C3,18,14)].join('');
+  const g4  = () => [gsq(C1),gsq(C2),gsq(C3),gsq(C1)].join('');
+  const g6  = () => [gsq(C1),gsq(C2),gsq(C3),gsq(C1),gsq(C2),gsq(C3)].join('');
+
+  const iGrow = (g1,g2,g3) => [
+    `<div style="background:${C1};border-radius:2px;height:16px;flex-grow:${g1};"></div>`,
+    `<div style="background:${C2};border-radius:2px;height:16px;flex-grow:${g2};"></div>`,
+    `<div style="background:${C3};border-radius:2px;height:16px;flex-grow:${g3};"></div>`,
+  ].join('');
+
+  const iMid = (alignSelf) => [
+    sq(C1,16,16,'opacity:0.35;'),
+    `<div style="background:${C3};border-radius:2px;width:16px;height:16px;flex-shrink:0;align-self:${alignSelf};"></div>`,
+    sq(C2,16,16,'opacity:0.35;'),
+  ].join('');
+
+  // ── Card renderer ──────────────────────────────────────────────────────────
+  function fgEsc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function renderGroup(name, desc, values) {
+    const cards = values.map(v => `
+      <div class="fg-card">
+        <div class="fg-card-val">${fgEsc(v.val)}</div>
+        <div class="fg-card-demo">${v.demo}</div>
+        <div class="fg-card-code">${fgEsc(v.prop || name)}: ${fgEsc(v.val)};</div>
+        ${v.desc ? `<div class="fg-card-desc">${fgEsc(v.desc)}</div>` : ''}
+      </div>`).join('');
+    return `<div class="fg-group">
+      <div class="fg-group-name">${fgEsc(name)}</div>
+      ${desc ? `<div class="fg-group-desc">${fgEsc(desc)}</div>` : ''}
+      <div class="fg-cards">${cards}</div>
+    </div>`;
+  }
+
+  // ── FLEX CONTAINER ─────────────────────────────────────────────────────────
+  const flexCont = [
+    renderGroup('flex-direction', 'Sets the main axis — which direction items flow.', [
+      { val:'row',            demo: fdc('flex-direction:row;align-items:center;gap:4px;', i3()), desc:'Left to right (default)' },
+      { val:'row-reverse',    demo: fdc('flex-direction:row-reverse;align-items:center;gap:4px;', i3()), desc:'Right to left' },
+      { val:'column',         demo: fdc('flex-direction:column;justify-content:center;gap:4px;', i3()), desc:'Top to bottom' },
+      { val:'column-reverse', demo: fdc('flex-direction:column-reverse;justify-content:center;gap:4px;', i3()), desc:'Bottom to top' },
+    ]),
+    renderGroup('flex-wrap', 'Whether items wrap to a new line when they overflow.', [
+      { val:'nowrap',       demo: fdc('flex-wrap:nowrap;align-items:center;gap:3px;', i6()), desc:'One line — items may shrink or overflow (default)' },
+      { val:'wrap',         demo: fdc('flex-wrap:wrap;align-content:flex-start;gap:3px;', i6()), desc:'Wraps to next line when out of space' },
+      { val:'wrap-reverse', demo: fdc('flex-wrap:wrap-reverse;align-content:flex-end;gap:3px;', i6()), desc:'Wraps, but first row sits at the bottom' },
+    ]),
+    renderGroup('justify-content', 'Distributes items along the main axis.', [
+      { val:'flex-start',    demo: fdc('justify-content:flex-start;align-items:center;gap:4px;', i3()), desc:'Pack at the start' },
+      { val:'flex-end',      demo: fdc('justify-content:flex-end;align-items:center;gap:4px;', i3()), desc:'Pack at the end' },
+      { val:'center',        demo: fdc('justify-content:center;align-items:center;gap:4px;', i3()), desc:'Pack in the center' },
+      { val:'space-between', demo: fdc('justify-content:space-between;align-items:center;', i3()), desc:'Equal gaps between, no edge gap' },
+      { val:'space-around',  demo: fdc('justify-content:space-around;align-items:center;', i3()), desc:'Equal gaps around each item' },
+      { val:'space-evenly',  demo: fdc('justify-content:space-evenly;align-items:center;', i3()), desc:'Perfectly equal gaps including edges' },
+    ]),
+    renderGroup('align-items', 'Aligns items on the cross axis (perpendicular to the main axis).', [
+      { val:'stretch',    demo: fdc('align-items:stretch;justify-content:center;gap:4px;', i3s()), desc:'Items stretch to fill container height (default)' },
+      { val:'flex-start', demo: fdc('align-items:flex-start;justify-content:center;gap:4px;', i3v()), desc:'Items align to cross-axis start' },
+      { val:'flex-end',   demo: fdc('align-items:flex-end;justify-content:center;gap:4px;', i3v()), desc:'Items align to cross-axis end' },
+      { val:'center',     demo: fdc('align-items:center;justify-content:center;gap:4px;', i3v()), desc:'Items center on the cross axis' },
+      { val:'baseline',   demo: fdc('align-items:baseline;justify-content:center;gap:4px;', i3v()), desc:'Items align by their text baseline' },
+    ]),
+    renderGroup('align-content', 'Aligns multiple flex lines on the cross axis. Requires flex-wrap: wrap and overflow.', [
+      { val:'flex-start',    demo: fdc('flex-wrap:wrap;align-content:flex-start;gap:3px;', i6()), desc:'Lines packed at start' },
+      { val:'flex-end',      demo: fdc('flex-wrap:wrap;align-content:flex-end;gap:3px;', i6()), desc:'Lines packed at end' },
+      { val:'center',        demo: fdc('flex-wrap:wrap;align-content:center;gap:3px;', i6()), desc:'Lines centered' },
+      { val:'space-between', demo: fdc('flex-wrap:wrap;align-content:space-between;gap:3px;', i6()), desc:'Equal space between lines' },
+      { val:'space-around',  demo: fdc('flex-wrap:wrap;align-content:space-around;gap:3px;', i6()), desc:'Equal space around lines' },
+      { val:'stretch',       demo: fdc('flex-wrap:wrap;align-content:stretch;gap:3px;', i6()), desc:'Lines stretch to fill container' },
+    ]),
+    renderGroup('gap', 'Spacing between items. Replaces the old margin-on-children hack.', [
+      { val:'4px',      demo: fdc('gap:4px;align-items:center;justify-content:center;', i3()), desc:'Small uniform gap' },
+      { val:'12px',     demo: fdc('gap:12px;align-items:center;justify-content:center;', i3()), desc:'Larger uniform gap' },
+      { val:'4px 12px', prop:'gap', demo: fdc('gap:4px 12px;align-items:center;flex-wrap:wrap;', i6()), desc:'row-gap then column-gap' },
+    ]),
+  ].join('');
+
+  // ── FLEX ITEMS ─────────────────────────────────────────────────────────────
+  const flexItems = [
+    renderGroup('order', 'Changes visual order without touching the DOM. Default is 0 for all items.', [
+      { val:'-1', demo: fdc('align-items:center;gap:4px;', [
+          `<div style="background:${C3};border-radius:2px;width:16px;height:16px;flex-shrink:0;order:-1;"></div>`,
+          sq(C1,16,16), sq(C2,16,16)].join('')), desc:'Amber moved to front' },
+      { val:'0',  demo: fdc('align-items:center;gap:4px;', i3()), desc:'DOM order (default)' },
+      { val:'1',  demo: fdc('align-items:center;gap:4px;', [
+          sq(C1,16,16), sq(C2,16,16),
+          `<div style="background:${C3};border-radius:2px;width:16px;height:16px;flex-shrink:0;order:1;"></div>`,
+        ].join('')), desc:'Amber moved to end' },
+    ]),
+    renderGroup('flex-grow', 'How much the item expands to fill remaining space relative to siblings.', [
+      { val:'0',         demo: fdc('align-items:center;gap:3px;', iGrow(0,0,0)), desc:'No growing — stays natural size (default)' },
+      { val:'1',         demo: fdc('align-items:center;gap:3px;', iGrow(1,1,1)), desc:'All share space equally' },
+      { val:'2 vs 1 vs 1', prop:'flex-grow', demo: fdc('align-items:center;gap:3px;', iGrow(2,1,1)), desc:'Blue gets double the free space' },
+    ]),
+    renderGroup('flex-shrink', 'How much the item shrinks when space is tight.', [
+      { val:'1', demo: fdc('flex-wrap:nowrap;align-items:center;gap:2px;', i6()), desc:'All items shrink equally (default)' },
+      { val:'0', demo: fdc('flex-wrap:nowrap;align-items:center;gap:2px;', [
+          `<div style="background:${C1};border-radius:2px;width:20px;height:14px;flex-shrink:0;"></div>`,
+          sq(C2,20,14,'flex-shrink:1;'), sq(C3,20,14,'flex-shrink:1;'),
+          sq(C1,20,14,'flex-shrink:1;'), sq(C2,20,14,'flex-shrink:1;'),
+        ].join('')), desc:'Blue refuses to shrink — others compensate' },
+    ]),
+    renderGroup('flex-basis', 'The initial size before growing/shrinking applies.', [
+      { val:'auto',  demo: fdc('align-items:center;gap:4px;', i3()), desc:'Natural content size (default)' },
+      { val:'0',     demo: fdc('align-items:center;gap:3px;', iGrow(1,1,1)), desc:'Start from zero — use with flex-grow' },
+      { val:'40px',  demo: fdc('align-items:center;gap:3px;', [
+          `<div style="background:${C1};border-radius:2px;flex-basis:40px;height:16px;"></div>`,
+          sq(C2,16,16), sq(C3,16,16)].join('')), desc:'Blue locked at 40px wide' },
+    ]),
+    renderGroup('flex (shorthand)', 'Shorthand for flex-grow flex-shrink flex-basis. Use these common values.', [
+      { val:'1',    prop:'flex', demo: fdc('gap:3px;align-items:center;', iGrow(1,1,1)), desc:'= 1 1 0 — equal distribution from zero' },
+      { val:'auto', prop:'flex', demo: fdc('gap:3px;align-items:center;', [
+          `<div style="background:${C1};border-radius:2px;height:16px;flex:auto;"></div>`,
+          `<div style="background:${C2};border-radius:2px;height:16px;flex:auto;width:28px;"></div>`,
+          `<div style="background:${C3};border-radius:2px;height:16px;flex:auto;"></div>`,
+        ].join('')), desc:'= 1 1 auto — grows from natural size' },
+      { val:'none', prop:'flex', demo: fdc('gap:3px;align-items:center;', [
+          `<div style="background:${C1};border-radius:2px;height:16px;flex:none;width:22px;"></div>`,
+          `<div style="background:${C2};border-radius:2px;height:16px;flex:none;width:22px;"></div>`,
+          `<div style="background:${C3};border-radius:2px;height:16px;flex:none;width:22px;"></div>`,
+        ].join('')), desc:'= 0 0 auto — fixed, never grows or shrinks' },
+    ]),
+    renderGroup('align-self', 'Overrides the container\'s align-items for this one item.', [
+      { val:'flex-start', demo: fdc('align-items:center;justify-content:center;gap:4px;', iMid('flex-start')), desc:'Amber snaps to top' },
+      { val:'flex-end',   demo: fdc('align-items:center;justify-content:center;gap:4px;', iMid('flex-end')), desc:'Amber snaps to bottom' },
+      { val:'center',     demo: fdc('align-items:flex-start;justify-content:center;gap:4px;', iMid('center')), desc:'Amber centers while others are top-aligned' },
+      { val:'stretch',    demo: fdc('align-items:flex-start;justify-content:center;gap:4px;', [
+          sq(C1,16,16,'opacity:0.35;'),
+          sqf(C3,'width:16px;align-self:stretch;'),
+          sq(C2,16,16,'opacity:0.35;'),
+        ].join('')), desc:'Amber stretches to fill height' },
+    ]),
+    renderGroup('margin: auto', 'Auto margins absorb all available space in that direction — the most powerful flex alignment trick.', [
+      { val:'margin-left: auto', prop:'margin-left', demo: fdc('align-items:center;gap:4px;', [
+          sq(C1,16,16), sq(C2,16,16),
+          `<div style="background:${C3};border-radius:2px;width:16px;height:16px;margin-left:auto;"></div>`,
+        ].join('')), desc:'Amber pushed to far right' },
+      { val:'margin: auto', prop:'margin', demo: fdc('', [
+          `<div style="background:${C1};border-radius:2px;width:20px;height:20px;margin:auto;"></div>`,
+        ].join('')), desc:'Single item perfectly centered both axes' },
+    ]),
+  ].join('');
+
+  // ── GRID CONTAINER ─────────────────────────────────────────────────────────
+  const gridCont = [
+    renderGroup('grid-template-columns', 'Defines the columns of the grid.', [
+      { val:'repeat(3, 1fr)',       demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', g6()), desc:'3 equal columns' },
+      { val:'1fr 2fr',              demo: gdc('grid-template-columns:1fr 2fr;gap:3px;', g4()), desc:'Second column twice as wide' },
+      { val:'auto 1fr auto',        demo: gdc('grid-template-columns:auto 1fr auto;gap:3px;', g6()), desc:'Outer cols fit content, middle expands' },
+      { val:'repeat(2, minmax(0,1fr))', demo: gdc('grid-template-columns:repeat(2,minmax(0,1fr));gap:3px;', g4()), desc:'Columns that can shrink below content size' },
+    ]),
+    renderGroup('grid-template-rows', 'Defines explicit row heights.', [
+      { val:'auto',           demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:auto;gap:3px;', g6()), desc:'Rows size to their content (default)' },
+      { val:'24px 1fr',       demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:24px 1fr;gap:3px;', g6()), desc:'First row fixed, second fills rest' },
+      { val:'repeat(2, 1fr)', demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:3px;', g6()), desc:'Equal-height rows' },
+    ]),
+    renderGroup('grid-template-areas', 'Name regions for semantic placement. Each string = one row.', [
+      { val:'"h h" "s m"', prop:'grid-template-areas', demo: gdc(
+          'grid-template-columns:1fr 2fr;grid-template-rows:1fr 1fr;gap:3px;', [
+          `<div style="background:${C1};border-radius:2px;grid-area:1/1/2/3;"></div>`,
+          `<div style="background:${C2};border-radius:2px;grid-area:2/1/3/2;"></div>`,
+          `<div style="background:${C3};border-radius:2px;grid-area:2/2/3/3;"></div>`,
+        ].join('')), desc:'Header full width, sidebar + main below' },
+    ]),
+    renderGroup('justify-items', 'Aligns ALL items along the inline (horizontal) axis inside their cell.', [
+      { val:'start',   demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;justify-items:start;',   g6()), desc:'Items align to cell left' },
+      { val:'end',     demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;justify-items:end;',     g6()), desc:'Items align to cell right' },
+      { val:'center',  demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;justify-items:center;',  g6()), desc:'Items center in cell' },
+      { val:'stretch', demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;justify-items:stretch;', g6()), desc:'Items fill full cell width (default)' },
+    ]),
+    renderGroup('align-items', 'Aligns ALL items along the block (vertical) axis inside their cell.', [
+      { val:'start',   demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;align-items:start;',   g6()), desc:'Items align to cell top' },
+      { val:'end',     demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;align-items:end;',     g6()), desc:'Items align to cell bottom' },
+      { val:'center',  demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;align-items:center;',  g6()), desc:'Items center vertically' },
+      { val:'stretch', demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;align-items:stretch;', g6()), desc:'Items fill full cell height (default)' },
+    ]),
+    renderGroup('justify-content', 'Distributes grid tracks along the inline axis when the grid is smaller than the container.', [
+      { val:'start',         demo: gdc('grid-template-columns:repeat(3,22px);justify-content:start;gap:3px;',         g6()), desc:'Tracks at start' },
+      { val:'center',        demo: gdc('grid-template-columns:repeat(3,22px);justify-content:center;gap:3px;',        g6()), desc:'Tracks centered' },
+      { val:'end',           demo: gdc('grid-template-columns:repeat(3,22px);justify-content:end;gap:3px;',           g6()), desc:'Tracks at end' },
+      { val:'space-between', demo: gdc('grid-template-columns:repeat(3,22px);justify-content:space-between;gap:0;',   g6()), desc:'Equal gaps between tracks' },
+    ]),
+    renderGroup('gap', 'Gutters between rows and columns.', [
+      { val:'3px',      demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', g6()), desc:'Uniform small gap' },
+      { val:'8px',      demo: gdc('grid-template-columns:repeat(3,1fr);gap:8px;', g6()), desc:'Larger uniform gap' },
+      { val:'3px 10px', prop:'gap', demo: gdc('grid-template-columns:repeat(3,1fr);row-gap:3px;column-gap:10px;', g6()), desc:'Separate row-gap + column-gap' },
+    ]),
+  ].join('');
+
+  // ── GRID ITEMS ─────────────────────────────────────────────────────────────
+  const gridItems = [
+    renderGroup('grid-column', 'Controls which columns an item occupies.', [
+      { val:'1 / 3',   demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:3px;', [
+          `<div style="background:${C1};border-radius:2px;grid-column:1/3;"></div>`,
+          gsq(C2), gsq(C3), gsq(C2), gsq(C3)].join('')), desc:'Spans columns 1 through 2' },
+      { val:'span 2',  demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;grid-column:span 2;"></div>`,
+          gsq(C3), gsq(C2)].join('')), desc:'Span 2 from current position' },
+      { val:'1 / -1',  demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:3px;', [
+          `<div style="background:${C1};border-radius:2px;grid-column:1/-1;"></div>`,
+          gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Full row (1 to last line)' },
+    ]),
+    renderGroup('grid-row', 'Controls which rows an item occupies.', [
+      { val:'1 / 3',  demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:3px;', [
+          `<div style="background:${C1};border-radius:2px;grid-row:1/3;"></div>`,
+          gsq(C2), gsq(C3), gsq(C2), gsq(C3)].join('')), desc:'Spans both rows in the first column' },
+      { val:'span 2', demo: gdc('grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;grid-row:span 2;"></div>`,
+          gsq(C3), gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Span 2 rows from current position' },
+    ]),
+    renderGroup('justify-self', 'Aligns one item along the inline axis in its cell. Overrides justify-items.', [
+      { val:'start',   demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;justify-self:start;width:10px;"></div>`,
+          gsq(C3), gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Blue item aligns left in its cell' },
+      { val:'end',     demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;justify-self:end;width:10px;"></div>`,
+          gsq(C3), gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Blue item aligns right' },
+      { val:'center',  demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;justify-self:center;width:10px;"></div>`,
+          gsq(C3), gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Blue item centers in cell' },
+    ]),
+    renderGroup('align-self', 'Aligns one item along the block axis in its cell. Overrides align-items.', [
+      { val:'start',  demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;align-self:start;height:10px;"></div>`,
+          gsq(C3), gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Blue item aligns to cell top' },
+      { val:'end',    demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;align-self:end;height:10px;"></div>`,
+          gsq(C3), gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Blue item aligns to cell bottom' },
+      { val:'center', demo: gdc('grid-template-columns:repeat(3,1fr);gap:3px;', [
+          gsq(C2),
+          `<div style="background:${C1};border-radius:2px;align-self:center;height:10px;"></div>`,
+          gsq(C3), gsq(C2), gsq(C3), gsq(C1)].join('')), desc:'Blue item centers vertically' },
+    ]),
+    renderGroup('z-index', 'Controls stacking when grid items overlap (explicit placement or negative margins).', [
+      { val:'1', demo: gdc('grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:0;', [
+          `<div style="background:${C1};border-radius:2px;grid-area:1/1/3/2;z-index:1;margin-right:-10px;"></div>`,
+          `<div style="background:${C2};border-radius:2px;grid-area:1/1/3/3;margin-left:10px;opacity:0.7;"></div>`,
+        ].join('')), desc:'Blue (z-index:1) overlaps teal' },
+    ]),
+  ].join('');
+
+  // ── CONFLICTS PANEL ────────────────────────────────────────────────────────
+  const sharedRows = [
+    ['gap',            '✅ Works',            '✅ Works',            'Identical behavior — gaps between flex/grid lines.'],
+    ['order',          '✅ Works',            '✅ Works',            'Reorders items visually without touching the DOM.'],
+    ['align-items',    '✅ Works',            '✅ Works',            'Cross-axis in flex. Block-axis in grid. Behavior is the same.'],
+    ['align-content',  '✅ Multi-line only',  '✅ Works',            'In flex: only applies when flex-wrap: wrap is set and items actually wrap. In grid: always applies.'],
+    ['align-self',     '✅ Works',            '✅ Works',            'Item-level override of align-items. Behaves the same in both.'],
+    ['justify-content','✅ Works',            '✅ Works',            'Distributes items/tracks along the main (flex) or inline (grid) axis.'],
+    ['justify-items',  '❌ No effect',        '✅ Works',            'Flex has no per-item main-axis override. Use justify-content on the container instead.'],
+    ['justify-self',   '❌ No effect',        '✅ Works',            'Does nothing on flex items. Use margin: auto on the item instead.'],
+    ['place-items',    '⚠️ align-items only', '✅ Both axes',        'Shorthand for align-items + justify-items. In flex, justify-items is ignored so only the first value does anything.'],
+    ['place-content',  '✅ Works',            '✅ Works',            'Shorthand for align-content + justify-content. Both contexts honor both values.'],
+    ['place-self',     '⚠️ align-self only',  '✅ Works',            'In flex, justify-self is ignored — only align-self applies.'],
+    ['z-index',        '✅ Works',            '✅ Works',            'Flex and grid items respect z-index without needing position: relative.'],
+  ];
+
+  const ignoredRows = [
+    ['float',                        '❌ Ignored in both', 'Flex/grid create a new formatting context. Floats inside a flex/grid container have no visual effect.'],
+    ['clear',                        '❌ Ignored in both', 'Same reason — clearing a float that does not exist does nothing.'],
+    ['vertical-align',               '❌ Ignored in both', 'This is for inline/table contexts only. Use align-items or align-self instead.'],
+    ['display: inline/block on child','⚠️ Overridden',     'Direct children of flex/grid containers become flex items or grid items — block-level boxes — regardless of their display value. display: inline on a flex item is ignored.'],
+  ];
+
+  const gotchas = [
+    { title: 'justify-self does nothing on my flex item',
+      problem: 'You wrote justify-self: flex-end on a flex item to push it to the end of the row. Nothing happens.',
+      why: 'justify-self is not part of flexbox. Individual main-axis positioning of flex items is not supported — justify-content controls the whole group.',
+      fix: 'On the item: use margin-left: auto to push it right, or margin-right: auto to push it left. You can also put a spacer element with flex: 1 between items to push them apart.' },
+    { title: 'align-content does nothing',
+      problem: 'align-content: center is on the container but items do not center vertically.',
+      why: 'align-content only works when there are multiple flex lines. Without flex-wrap: wrap and enough items to actually wrap, there is only one line and nothing to align.',
+      fix: 'For single-row flex: use align-items: center instead. align-content is only meaningful once items wrap into multiple rows.' },
+    { title: '1fr columns overflow unexpectedly',
+      problem: 'grid-template-columns: repeat(3, 1fr) and one column keeps blowing past its boundary.',
+      why: '1fr is shorthand for minmax(auto, 1fr). The auto minimum means a column will never shrink below its content size — wide content wins.',
+      fix: 'Use minmax(0, 1fr) instead of bare 1fr. This forces the minimum to zero so the column can actually shrink. Critical when columns contain text, code, or images without max-width.' },
+    { title: 'My element is both a grid item AND a flex container',
+      problem: 'An element has display: flex but its parent is a grid. Properties from both seem to collide.',
+      why: 'Two completely separate layout contexts. Grid item = how the parent grid positions this element. Flex container = how this element lays out its own children. Both are true at the same time, they do not interfere.',
+      fix: 'Ask: is this property about where THIS element sits inside its parent? Use grid properties on the parent. Is it about how THIS element\'s children are arranged? Use flex properties on the element itself.' },
+    { title: 'flex: 1 vs flex: auto — they behave differently',
+      problem: 'Items using flex: 1 ignore content size and distribute perfectly evenly, which is not what you wanted.',
+      why: 'flex: 1 expands to flex: 1 1 0 — basis is 0, so all items grow from zero and space is split purely by grow ratio. flex: auto expands to flex: 1 1 auto — items grow from their natural content size.',
+      fix: 'Use flex: 1 when you want truly equal column widths regardless of content. Use flex: auto when items should start at their natural size and grow or shrink from there.' },
+    { title: 'grid-template shorthand has rows/columns backwards',
+      problem: 'Used grid-template shorthand and the layout came out transposed.',
+      why: 'The syntax is grid-template: rows / columns. Many people assume it mirrors the visual order (columns left to right, then rows top to bottom) but the slash divides rows on the left from columns on the right.',
+      fix: 'Remember: row values / column values. Or skip the shorthand and use grid-template-columns and grid-template-rows separately for clarity.' },
+    { title: 'Absolutely-positioned child ignores flex / grid layout',
+      problem: 'A child has position: absolute inside a flex or grid container. It floats out of position entirely.',
+      why: 'Absolutely-positioned elements are removed from normal flow. They do not participate in flex or grid layout — they position relative to their nearest positioned ancestor, ignoring the grid entirely.',
+      fix: 'Add position: relative to the container so the absolute child is at least anchored to it. Understand that the child is now outside the flex/grid system and must be positioned manually.' },
+  ];
+
+  const conflictsHTML = `
+    <div class="fg-group">
+      <div class="fg-group-name">Shared Properties — Flex vs Grid Behavior</div>
+      <div class="fg-group-desc">Same property name, different behavior depending on which layout context you are in.</div>
+      <div class="fg-table-wrap">
+        <table class="fg-table">
+          <thead><tr><th>Property</th><th>In Flexbox</th><th>In Grid</th><th>Notes</th></tr></thead>
+          <tbody>${sharedRows.map(([p,f,g,n])=>`
+            <tr>
+              <td><code>${fgEsc(p)}</code></td>
+              <td class="${f.startsWith('✅')?'fg-yes':f.startsWith('❌')?'fg-no':'fg-warn-icon'}">${fgEsc(f)}</td>
+              <td class="${g.startsWith('✅')?'fg-yes':g.startsWith('❌')?'fg-no':'fg-warn-icon'}">${fgEsc(g)}</td>
+              <td>${fgEsc(n)}</td>
+            </tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="fg-group">
+      <div class="fg-group-name">Properties Ignored Inside Flex / Grid</div>
+      <div class="fg-group-desc">These do nothing when applied to flex or grid items — a common silent failure.</div>
+      <div class="fg-table-wrap">
+        <table class="fg-table">
+          <thead><tr><th>Property</th><th>Status</th><th>Why / What to do instead</th></tr></thead>
+          <tbody>${ignoredRows.map(([p,s,n])=>`
+            <tr>
+              <td><code>${fgEsc(p)}</code></td>
+              <td class="${s.startsWith('❌')?'fg-no':'fg-warn-icon'}">${fgEsc(s)}</td>
+              <td>${fgEsc(n)}</td>
+            </tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="fg-group">
+      <div class="fg-group-name">Common Gotchas — "Why Isn't This Working?"</div>
+      <div class="fg-group-desc">Click to expand.</div>
+      ${gotchas.map((g,i)=>`
+      <div class="fg-gotcha" id="fg-g-${i}">
+        <div class="fg-gotcha-head" onclick="fgToggle(${i})">${fgEsc(g.title)}<span id="fg-arr-${i}">▼</span></div>
+        <div class="fg-gotcha-body" id="fg-gb-${i}">
+          <div class="fg-gotcha-row"><div class="fg-gotcha-label">Problem</div><div>${fgEsc(g.problem)}</div></div>
+          <div class="fg-gotcha-row"><div class="fg-gotcha-label">Why</div><div>${fgEsc(g.why)}</div></div>
+          <div class="fg-gotcha-row"><div class="fg-gotcha-label">Fix</div><div>${fgEsc(g.fix)}</div></div>
+        </div>
+      </div>`).join('')}
+    </div>`;
+
+  // Populate all panels
+  document.getElementById('fgp-flex-cont').innerHTML  = flexCont;
+  document.getElementById('fgp-flex-items').innerHTML = flexItems;
+  document.getElementById('fgp-grid-cont').innerHTML  = gridCont;
+  document.getElementById('fgp-grid-items').innerHTML = gridItems;
+  document.getElementById('fgp-conflicts').innerHTML  = conflictsHTML;
+})();
+
+function fgToggle(i) {
+  const body = document.getElementById('fg-gb-' + i);
+  const arr  = document.getElementById('fg-arr-' + i);
+  const open = body.classList.toggle('open');
+  arr.textContent = open ? '▲' : '▼';
 }
 
 // ─── DESIGN TOKEN EXTRACTOR ───────────────────────────────────────────────────
