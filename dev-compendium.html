@@ -1873,6 +1873,31 @@ textarea::placeholder { color: var(--text-dim); }
       </div>
     </div>
 
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-tag tag-css">CSS</span>
+      </div>
+      <div class="entry-title">Using calc() inside clip-path polygon to create borders</div>
+      <div class="entry-body">
+        When you have an outer element (white) and an inner element (black), you can make the inner polygon match the outer shape with a consistent border thickness by nudging each polygon point inward using <code>calc()</code>.
+        <br><br>
+        The rule for each point: <strong>start where the outer point is, then nudge inward by your border size.</strong><br><br>
+        Example — outer trapezoid with border of 10px:<br>
+        <code>/* outer */<br>
+        polygon(1% 0%, 99% 0%, 90% 100%, 0% 100%)</code>
+        <br><br>
+        <code>/* inner — each point nudged inward by 10px */<br>
+        polygon(<br>
+        &nbsp;&nbsp;calc(1% + 10px) 10px,<br>
+        &nbsp;&nbsp;calc(99% - 10px) 10px,<br>
+        &nbsp;&nbsp;calc(90% - 10px) calc(100% - 10px),<br>
+        &nbsp;&nbsp;calc(0% + 10px) calc(100% - 10px)<br>
+        )</code>
+        <br><br>
+        <strong>Matching border thickness on opposite sides:</strong> if the right border is <code>calc(10% + 10px)</code> from the right edge, mirror it on the left by pushing in <code>calc(10% + 10px)</code> from the left. Same number, opposite direction. If they don't match, one side will look thicker than the other.
+      </div>
+    </div>
+
     <div id="compendium-entries"></div>
     <div class="empty-state" id="compendium-empty" style="display:none">No additional entries yet. Add when something clicks.</div>
   </section>
