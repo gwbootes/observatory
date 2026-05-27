@@ -1898,6 +1898,32 @@ textarea::placeholder { color: var(--text-dim); }
       </div>
     </div>
 
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-tag tag-css">CSS</span>
+      </div>
+      <div class="entry-title">perspective, rotateX/Y/Z, and transform-style — how 3D transforms actually work</div>
+      <div class="entry-body">
+        <strong>perspective</strong> — goes on the <em>parent</em>. Sets the camera distance. Controls how dramatic the 3D effect looks on everything inside it.<br>
+        Low number like <code>200px</code> = nose pressed against the screen. Far edges look tiny, effect is aggressive.<br>
+        High number like <code>1200px</code> = standing across the room. Effect is subtle.<br>
+        It doesn't move or tilt anything by itself — it just sets the rules for how 3D things inside it will look.
+        <br><br>
+        <strong>transform: rotateX() / rotateY() / rotateZ()</strong> — goes on the element you actually want to move.<br>
+        &nbsp;&nbsp;<code>rotateX</code> — tilts forward and back. Top goes away from you, bottom comes toward you (or vice versa).<br>
+        &nbsp;&nbsp;<code>rotateY</code> — swings left and right like a door opening.<br>
+        &nbsp;&nbsp;<code>rotateZ</code> — spins flat like clock hands.
+        <br><br>
+        <strong>transform-style: preserve-3d</strong> — by default, when a parent transforms in 3D, CSS smooshes all its children flat onto one surface first, then transforms that surface. Children lose their own 3D positions.<br>
+        <code>preserve-3d</code> keeps children in real 3D space instead of flattening them. Without it, child elements inside a transformed parent won't behave right.
+        <br><br>
+        <strong>The chain:</strong><br>
+        1. Parent gets <code>perspective</code> — sets the camera<br>
+        2. Child gets <code>transform: rotateX()</code> — actually tilts<br>
+        3. That same child gets <code>transform-style: preserve-3d</code> — keeps its own children in 3D space too
+      </div>
+    </div>
+
     <div id="compendium-entries"></div>
     <div class="empty-state" id="compendium-empty" style="display:none">No additional entries yet. Add when something clicks.</div>
   </section>
