@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dev Compendium // Rattles</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.typekit.net/jrc8luv.css">
 <style>
 :root {
   --bg:        #FFFFFF;   /* clean white */
@@ -19,7 +20,7 @@
   --accent3:   #667986;   /* muted blue-gray */
   --danger:    #e24b4a;
   --mono:      'IBM Plex Mono', monospace;
-  --sans:      'IBM Plex Sans', sans-serif;
+  --sans:      'garamond-premier-pro-caption', 'IBM Plex Sans', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1131,6 +1132,7 @@ textarea::placeholder { color: var(--text-dim); }
     <a class="nav-link" href="#section-seigiese">Seigiese</a>
     <a class="nav-link" href="#section-aifeed">AI Feed</a>
     <a class="nav-link" href="#section-converter">Converter</a>
+    <a class="nav-link" href="#section-degrees">Degrees</a>
     <a class="nav-link" href="#section-formula">Formula</a>
     <a class="nav-link" href="#section-tokens">Tokens</a>
     <a class="nav-link" href="#section-wcag">WCAG</a>
@@ -1258,6 +1260,35 @@ textarea::placeholder { color: var(--text-dim); }
     <div id="hierarchy-panel" class="hierarchy-panel" style="display:none">
       <div class="panel-label">// Detected parent hierarchy</div>
       <div id="hierarchy-tree"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       DEGREES CONVERTER
+  ════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-label" id="section-degrees">// Penpot ↔ CSS Degrees</div>
+
+    <div class="formula-card" style="margin-bottom:1rem;">
+      <div class="formula-label">Why they differ</div>
+      <div class="formula-note">
+        Penpot shows rotation as 0–360°, always positive. CSS accepts negative degrees — and a negative angle is often cleaner to read and reason about. <strong>352.45° in Penpot = -7.55° in CSS.</strong> The formula: if the Penpot value is over 180, subtract 360.
+      </div>
+    </div>
+
+    <div class="converter-grid">
+      <div class="field">
+        <label>Penpot degrees (0–360)</label>
+        <input type="number" id="deg-penpot" placeholder="e.g. 352.45" step="0.01" oninput="convertDegrees('penpot')">
+      </div>
+      <div class="field">
+        <label>CSS degrees</label>
+        <input type="number" id="deg-css" placeholder="e.g. -7.55" step="0.01" oninput="convertDegrees('css')">
+      </div>
+    </div>
+
+    <div class="converter-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('deg-penpot').value='';document.getElementById('deg-css').value=''">Clear</button>
     </div>
   </section>
 
@@ -2067,6 +2098,20 @@ function esc(s) {
 }
 
 // ─── SHARED ───────────────────────────────────────────────────────────────────
+function convertDegrees(source) {
+  const penpotEl = document.getElementById('deg-penpot');
+  const cssEl    = document.getElementById('deg-css');
+  if (source === 'penpot') {
+    const val = parseFloat(penpotEl.value);
+    if (isNaN(val)) { cssEl.value = ''; return; }
+    cssEl.value = val > 180 ? +(val - 360).toFixed(4) : +val.toFixed(4);
+  } else {
+    const val = parseFloat(cssEl.value);
+    if (isNaN(val)) { penpotEl.value = ''; return; }
+    penpotEl.value = val < 0 ? +(val + 360).toFixed(4) : +val.toFixed(4);
+  }
+}
+
 function copyOutput() {
   const out = document.getElementById('css-output').value;
   if (!out) { setStatus('nothing to copy', 'err'); return; }
