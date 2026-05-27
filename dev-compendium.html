@@ -1857,6 +1857,22 @@ textarea::placeholder { color: var(--text-dim); }
       <div class="entry-source">From Sidd's nav strip — May 2026</div>
     </div>
 
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-tag tag-css">CSS</span>
+      </div>
+      <div class="entry-title">calc() — let the browser do the math</div>
+      <div class="entry-body">
+        <code>calc()</code> does math inline so you don't have to hardcode a number that might break later. You can mix units inside it — that's the whole point.
+        <br><br>
+        <code>calc(100% - 5px)</code> means "full width of this element, minus 5px." The browser works it out at render time, so it stays correct even if the element resizes.
+        <br><br>
+        This comes up most in <code>clip-path: polygon()</code> when you need to measure from the <em>right</em> or <em>bottom</em> edge. Polygon coordinates are always measured from the top-left corner, so "5px from the right" can't just be <code>5px</code> — it has to be <code>calc(100% - 5px)</code>. If you hardcoded it as <code>334px</code> instead, it'd only be right when the element is exactly 339px wide.
+        <br><br>
+        Works with any units: <code>calc(50% + 20px)</code>, <code>calc(100vh - 60px)</code>, <code>calc(100% - 2rem)</code>.
+      </div>
+    </div>
+
     <div id="compendium-entries"></div>
     <div class="empty-state" id="compendium-empty" style="display:none">No additional entries yet. Add when something clicks.</div>
   </section>
