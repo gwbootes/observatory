@@ -1794,6 +1794,30 @@ textarea::placeholder { color: var(--text-dim); }
       </div>
     </div>
 
+    <div class="entry">
+      <div class="entry-meta">
+        <span class="entry-tag tag-css">CSS</span>
+        <span class="entry-tag tag-tip">Tip</span>
+      </div>
+      <div class="entry-title">Finding the real position of a rotated element</div>
+      <div class="entry-body">
+        CSS positions elements <em>before</em> rotation. After <code>transform: rotate()</code>, the element's visual edges land somewhere different from where <code>left</code> and <code>top</code> say they are. To find the actual position, run this in the browser console:
+        <br><br>
+        <code>document.querySelector('#your-element').getBoundingClientRect()</code>
+        <br><br>
+        This returns the real visual coordinates after all transforms are applied — <code>left</code>, <code>top</code>, <code>right</code>, <code>bottom</code>, <code>width</code>, <code>height</code>. These are measured from the viewport edges.
+        <br><br>
+        <strong>Converting between visual position and CSS position:</strong><br>
+        Once you know the gap between where CSS placed it and where it actually landed, use this formula:<br><br>
+        <code>offset = CSS value − real value</code><br>
+        <code>CSS value needed = desired visual position + offset</code><br><br>
+        Example: CSS says <code>left: 27px</code>, real left is <code>-54px</code>. Offset = 81px. If you want the visual edge at 20px from screen: <code>left: 101px</code> (20 + 81).
+        <br><br>
+        The offset stays consistent as long as the rotation angle and element dimensions don't change. Recalculate any time either of those change.
+      </div>
+      <div class="entry-source">From Sidd's nav strip — May 2026</div>
+    </div>
+
     <div id="compendium-entries"></div>
     <div class="empty-state" id="compendium-empty" style="display:none">No additional entries yet. Add when something clicks.</div>
   </section>
