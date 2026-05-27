@@ -19,12 +19,12 @@
   --accent2:   #334C5D;   /* dark slate blue */
   --accent3:   #667986;   /* muted blue-gray */
   --danger:    #e24b4a;
-  --mono:      'IBM Plex Mono', monospace;
+  --mono:      'garamond-premier-pro-caption', 'IBM Plex Mono', monospace;
   --sans:      'garamond-premier-pro-caption', 'IBM Plex Sans', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; scroll-behavior: smooth; }
+html { font-size: 18px; scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -36,7 +36,7 @@ body {
 
 /* ---- LAYOUT ---- */
 .page {
-  max-width: 960px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 3rem 2rem 6rem;
 }
@@ -339,33 +339,51 @@ textarea::placeholder { color: var(--text-dim); }
   letter-spacing: 0.1em;
 }
 
-/* ── PAGE NAV ─────────────────────────────────────────────────────────────── */
-.page-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  padding: 0.5rem 0;
+/* ── THREE-COLUMN LAYOUT ─────────────────────────────────────────────────── */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
   margin: 0 0 2.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem;
 }
-.nav-link {
+.three-col-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+.col-header {
   font-family: var(--mono);
   font-size: 0.65rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
-  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.col-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+.col-tab {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
   padding: 0.3rem 0.65rem;
-  border-radius: 3px;
-  border: 1px solid transparent;
-  white-space: nowrap;
   transition: all 0.15s;
 }
-.nav-link:hover { color: var(--text); border-color: var(--border); background: var(--surface); }
+.col-tab:hover { background: var(--surface); color: var(--text); }
+.col-tab.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+.col-section { display: none; }
+.col-section.active { display: block; }
+.rules-grid { grid-template-columns: repeat(3, 1fr); }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -1128,25 +1146,10 @@ textarea::placeholder { color: var(--text-dim); }
 <body>
 <div class="page">
 
-  <nav class="page-nav">
-    <a class="nav-link" href="#section-seigiese">Seigiese</a>
-    <a class="nav-link" href="#section-aifeed">AI Feed</a>
-    <a class="nav-link" href="#section-converter">Converter</a>
-    <a class="nav-link" href="#section-degrees">Degrees</a>
-    <a class="nav-link" href="#section-formula">Formula</a>
-    <a class="nav-link" href="#section-tokens">Tokens</a>
-    <a class="nav-link" href="#section-wcag">WCAG</a>
-    <a class="nav-link" href="#section-fg">Flex / Grid</a>
-    <a class="nav-link" href="#section-norman">Don Norman</a>
-    <a class="nav-link" href="#section-brain">Brain</a>
-    <a class="nav-link" href="#section-90sfx">90s FX</a>
-    <a class="nav-link" href="#section-notes">Notes</a>
-  </nav>
-
   <header class="site-header">
     <div class="eyebrow">// archive reef — dev tools</div>
     <h1>Dev Compendium</h1>
-    <p class="subtitle">Unit converter · Reference cheatsheet · Notes that actually clicked</p>
+    <p class="subtitle">Smart things · Neat things · Cool things</p>
   </header>
 
   <!-- ═══════════════════════════════════════════
@@ -1176,267 +1179,36 @@ textarea::placeholder { color: var(--text-dim); }
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════
-       AI READING FEED
-  ════════════════════════════════════════════ -->
-  <section class="section" id="section-aifeed">
-    <div class="section-label">// AI Reading Feed — curated sources, no doom-scrolling</div>
-    <div class="aifeed-layout">
-      <div class="aifeed-main">
-        <div id="aifeed-tabs" class="feed-tabs"></div>
-        <div id="aifeed-panels"></div>
-      </div>
-      <div class="aifeed-sidebar">
-        <div class="later-header">// Reading Queue</div>
-        <div id="later-list" class="later-list"></div>
-      </div>
-    </div>
-  </section>
+  <hr class="section-divider">
 
-  <!-- ═══════════════════════════════════════════
-       UNIT CONVERTER
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-converter">// CSS Unit Converter</div>
+  <div class="three-col-layout">
 
-    <div style="margin-bottom:1rem;">
-      <div class="textarea-wrap">
-        <label>Paste your HTML structure</label>
-        <textarea id="html-input" style="min-height:130px;" placeholder="Paste the relevant HTML here — just the part you're converting, e.g. your nav section"></textarea>
+    <!-- ═══ COLUMN 1: SMART THINGS ═══ -->
+    <div class="col-wrapper">
+      <div class="col-header">// Smart Things</div>
+      <div class="col-tabs">
+        <button class="col-tab active" data-col="smart" data-panel="smart-aifeed">AI Feed</button>
+        <button class="col-tab" data-col="smart" data-panel="smart-norman">Don Norman</button>
+        <button class="col-tab" data-col="smart" data-panel="smart-brain">Brain</button>
       </div>
-    </div>
 
-    <div class="converter-grid">
-      <div class="field">
-        <label>Convert</label>
-        <select id="convert-type" onchange="updateFields()">
-          <option value="pct">px → % (percentage)</option>
-          <option value="rem">px → rem</option>
-          <option value="em">px → em</option>
-          <option value="vh">px → vh</option>
-          <option value="vw">px → vw</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Viewport width (px)</label>
-        <input type="number" id="parent-size" value="1280" placeholder="e.g. 1280">
-      </div>
-      <div class="field">
-        <label>Viewport height (px)</label>
-        <input type="number" id="viewport-h" value="780" placeholder="e.g. 780">
-      </div>
-      <div class="field">
-        <label>Round to decimal places</label>
-        <input type="number" id="decimal-places" value="2" min="0" max="6">
-      </div>
-      <div class="field" id="field-root" style="display:none">
-        <label>Root font size (px)</label>
-        <input type="number" id="root-size" value="16" placeholder="16">
-      </div>
-    </div>
-
-    <div class="textarea-area">
-      <div class="textarea-wrap">
-        <label>Paste your CSS here</label>
-        <textarea id="css-input" placeholder="/* paste your CSS here */
-.nav-outer {
-  width: 300px;
-  left: 150px;
-  height: 100vh;
-}"></textarea>
-      </div>
-      <div class="textarea-wrap">
-        <label>Converted output</label>
-        <textarea id="css-output" readonly placeholder="/* converted CSS will appear here */"></textarea>
-      </div>
-    </div>
-
-    <div class="converter-actions">
-      <button class="btn btn-primary" onclick="convert()">Convert ↗</button>
-      <button class="btn btn-ghost" onclick="copyOutput()">Copy output</button>
-      <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
-      <span class="converter-status" id="converter-status"></span>
-    </div>
-
-    <div id="hierarchy-panel" class="hierarchy-panel" style="display:none">
-      <div class="panel-label">// Detected parent hierarchy</div>
-      <div id="hierarchy-tree"></div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       DEGREES CONVERTER
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-degrees">// Penpot ↔ CSS Degrees</div>
-
-    <div class="formula-card" style="margin-bottom:1rem;">
-      <div class="formula-label">Why they differ</div>
-      <div class="formula-note">
-        Penpot shows rotation as 0–360°, always positive. CSS accepts negative degrees — and a negative angle is often cleaner to read and reason about. <strong>352.45° in Penpot = -7.55° in CSS.</strong> The formula: if the Penpot value is over 180, subtract 360.
-      </div>
-    </div>
-
-    <div class="converter-grid">
-      <div class="field">
-        <label>Penpot degrees (0–360)</label>
-        <input type="number" id="deg-penpot" placeholder="e.g. 352.45" step="0.01" oninput="convertDegrees('penpot')">
-      </div>
-      <div class="field">
-        <label>CSS degrees</label>
-        <input type="number" id="deg-css" placeholder="e.g. -7.55" step="0.01" oninput="convertDegrees('css')">
-      </div>
-    </div>
-
-    <div class="converter-actions">
-      <button class="btn btn-ghost" onclick="document.getElementById('deg-penpot').value='';document.getElementById('deg-css').value=''">Clear</button>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       FORMULA + CHEATSHEET
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-formula">// The Formula</div>
-
-    <div class="formula-card">
-      <div class="formula-label">px to percentage</div>
-      <div class="formula-main">element ÷ parent × 100 = %</div>
-      <div class="formula-note">
-        The parent is whatever contains the element — usually the artboard width for top-level layout, or the parent element's width for anything nested.
-        <br>Example: 339px inside a 1280px artboard — 339 ÷ 1280 × 100 = <strong>26.48%</strong>
-      </div>
-    </div>
-
-    <div class="section-label">// When to use what</div>
-
-    <div class="cheatsheet-grid">
-      <div class="unit-card unit-px">
-        <div class="unit-name">px</div>
-        <div class="unit-when">Fixed pixel value. Doesn't scale with anything. Use for borders, box shadows, small decorative details where you need exact control.</div>
-        <div class="unit-example">border: 1px solid red;</div>
-      </div>
-      <div class="unit-card unit-rem">
-        <div class="unit-name">rem</div>
-        <div class="unit-when">Relative to the root font size (16px by default). Scales if the user changes their browser font size. Best for font sizes and consistent spacing.</div>
-        <div class="unit-example">font-size: 1.5rem; /* = 24px */</div>
-      </div>
-      <div class="unit-card unit-em">
-        <div class="unit-name">em</div>
-        <div class="unit-when">Relative to the parent element's font size. Good for padding and margin on text components — it scales with the text it lives next to.</div>
-        <div class="unit-example">padding: 0.75em 1em;</div>
-      </div>
-      <div class="unit-card unit-pct">
-        <div class="unit-name">%</div>
-        <div class="unit-when">Relative to the parent element's size. The workhorse of responsive layout. Use for widths, positioning, anything that should scale with its container.</div>
-        <div class="unit-example">width: 26.48%; left: 11.7%;</div>
-      </div>
-      <div class="unit-card unit-vh">
-        <div class="unit-name">vh</div>
-        <div class="unit-when">Viewport height. 1vh = 1% of the browser window height. Good for full-height sections, hero areas, anything that should fill the screen vertically.</div>
-        <div class="unit-example">height: 100vh; min-height: 50vh;</div>
-      </div>
-      <div class="unit-card unit-vw">
-        <div class="unit-name">vw</div>
-        <div class="unit-when">Viewport width. 1vw = 1% of the browser window width. Use carefully — it ignores scrollbars and can cause horizontal overflow if you're not watching it.</div>
-        <div class="unit-example">font-size: clamp(1rem, 4vw, 2rem);</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       DESIGN TOKEN EXTRACTOR
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-tokens">// Design Token Extractor</div>
-
-    <div class="textarea-wrap" style="margin-bottom:1rem;">
-      <label>Paste your CSS</label>
-      <textarea id="token-input" placeholder="/* paste your full CSS here — the extractor scans for repeated values and turns them into custom properties */"></textarea>
-    </div>
-
-    <div style="display:flex; gap:1rem; align-items:flex-end; flex-wrap:wrap; margin-bottom:1rem;">
-      <div class="field" style="width:auto;">
-        <label>Min. uses to generate a token</label>
-        <input type="number" id="token-threshold" value="2" min="1" max="20" style="width:80px;">
-      </div>
-      <div class="converter-actions" style="margin:0;">
-        <button class="btn btn-primary" onclick="runExtractor()">Extract Tokens ↗</button>
-        <button class="btn btn-ghost" onclick="clearExtractor()">Clear</button>
-        <span class="converter-status" id="token-status"></span>
-      </div>
-    </div>
-
-    <div id="token-results" style="display:none;">
-      <div class="textarea-area" style="margin-bottom:1rem;">
-        <div class="textarea-wrap">
-          <label>:root { } — edit variable names here</label>
-          <textarea id="token-root-out"></textarea>
-        </div>
-        <div class="textarea-wrap">
-          <label>CSS with var() replacements</label>
-          <textarea id="token-css-out" readonly></textarea>
+      <div class="col-section active" data-col="smart" id="smart-aifeed">
+        <div class="section-label">// AI Reading Feed — curated sources, no doom-scrolling</div>
+        <div class="aifeed-layout">
+          <div class="aifeed-main">
+            <div id="aifeed-tabs" class="feed-tabs"></div>
+            <div id="aifeed-panels"></div>
+          </div>
+          <div class="aifeed-sidebar">
+            <div class="later-header">// Reading Queue</div>
+            <div id="later-list" class="later-list"></div>
+          </div>
         </div>
       </div>
-      <div class="section-label" style="margin-top:0;">// What was found</div>
-      <div id="token-report" class="token-report"></div>
-    </div>
-  </section>
 
-  <!-- ═══════════════════════════════════════════
-       WCAG CHECKER
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-wcag">// WCAG Accessibility Checker</div>
 
-    <div class="textarea-area" style="margin-bottom:1rem;">
-      <div class="textarea-wrap">
-        <label>Paste your HTML</label>
-        <textarea id="wcag-html" placeholder="Paste your HTML here — full page or just a component"></textarea>
-      </div>
-      <div class="textarea-wrap">
-        <label>Paste your CSS (optional — needed for contrast + focus checks)</label>
-        <textarea id="wcag-css" placeholder="/* CSS is optional but needed for contrast ratio and outline checks */"></textarea>
-      </div>
-    </div>
-
-    <div class="converter-actions" style="margin-bottom:1.5rem;">
-      <button class="btn btn-primary" onclick="runWCAGCheck()">Check Accessibility ↗</button>
-      <button class="btn btn-ghost" onclick="clearWCAGCheck()">Clear</button>
-      <span class="converter-status" id="wcag-status"></span>
-    </div>
-
-    <div id="wcag-output" style="display:none;">
-      <div id="wcag-results"></div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       FLEX / GRID REFERENCE
-  ════════════════════════════════════════════ -->
-  <section class="section" id="section-fg">
-    <div class="section-label">// Flexbox &amp; Grid Visual Reference — with conflict &amp; override guide</div>
-
-    <div class="fg-tabs" id="fg-tabs">
-      <button class="fg-tab active" data-panel="fgp-flex-cont">Flex Container</button>
-      <button class="fg-tab" data-panel="fgp-flex-items">Flex Items</button>
-      <button class="fg-tab" data-panel="fgp-grid-cont">Grid Container</button>
-      <button class="fg-tab" data-panel="fgp-grid-items">Grid Items</button>
-      <button class="fg-tab" data-panel="fgp-conflicts">Conflicts &amp; Overrides</button>
-    </div>
-
-    <div id="fgp-flex-cont"  class="fg-panel active"></div>
-    <div id="fgp-flex-items" class="fg-panel"></div>
-    <div id="fgp-grid-cont"  class="fg-panel"></div>
-    <div id="fgp-grid-items" class="fg-panel"></div>
-    <div id="fgp-conflicts"  class="fg-panel"></div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       DON NORMAN
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-norman">// Don Norman — the person who explains why bad design makes you feel stupid (it's not you)</div>
+      <div class="col-section" data-col="smart" id="smart-norman">
+        <div class="section-label" id="section-norman">// Don Norman — the person who explains why bad design makes you feel stupid (it's not you)</div>
 
     <div class="norman-quotes">
       <div class="norman-quote">
@@ -1507,14 +1279,11 @@ textarea::placeholder { color: var(--text-dim); }
         <a href="https://www.youtube.com/watch?v=yY96hTb8WgI" target="_blank" rel="noopener">Don Norman: The term "UX" — YouTube</a>
         <span class="link-desc">He coined the phrase "user experience" and explains what it was actually supposed to mean — and how it got watered down.</span>
       </li>
-    </ul>
-  </section>
+        </ul>
+      </div>
 
-  <!-- ═══════════════════════════════════════════
-       BRAIN & LEARNING
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-brain">// Brain &amp; Learning — you didn't break it, but you can absolutely tune it</div>
+      <div class="col-section" data-col="smart" id="smart-brain">
+        <div class="section-label" id="section-brain">// Brain &amp; Learning — you didn't break it, but you can absolutely tune it</div>
 
     <div class="section-label" style="margin-top:0.5rem;margin-bottom:0.75rem;">// Focus techniques</div>
     <div class="brain-grid">
@@ -1670,8 +1439,6 @@ textarea::placeholder { color: var(--text-dim); }
         <div class="book-author">Elie Wiesel</div>
         <div class="book-desc">Short. About 120 pages. A first-person account of surviving Auschwitz and Buchenwald. One of the most important books written in the 20th century. Read it slowly.</div>
       </div>
-    </div>
-
       <div class="book-entry">
         <div class="book-entry-head">
           <div class="book-title">Atomic Habits</div>
@@ -1757,262 +1524,496 @@ textarea::placeholder { color: var(--text-dim); }
         <div class="book-desc">An astronaut gets stranded alone on Mars and has to science his way to survival. First-person problem-solving as plot. Genuinely funny. The ADHD brain responds well to "okay but what do I do NEXT" structure — this book is all that.</div>
       </div>
     </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       90S FX VOCABULARY
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-90sfx">// 90s Effect Vocabulary — names for the things burned into your brain</div>
-
-    <div class="entry">
-      <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
-      <div class="entry-title">Screen &amp; Display Hardware</div>
-      <div class="entry-body">
-        <strong>Scanlines</strong> — horizontal gaps between CRT pixel rows<br>
-        <strong>Phosphor glow / phosphor persistence</strong> — soft bloom around bright pixels, image lingers after changing<br>
-        <strong>CRT barrel distortion</strong> — screen edges curve inward<br>
-        <strong>CRT vignette</strong> — corners darken, center blooms<br>
-        <strong>Burn-in / screen burn</strong> — ghosted image baked into the phosphor from static content<br>
-        <strong>Dot pitch / shadow mask</strong> — visible RGB subpixel grid up close<br>
-        <strong>RGB subpixel fringing</strong> — color bleed on high-contrast edges<br>
-        <strong>Interlacing / interlace flicker</strong> — alternate scanline rows updating at 30fps, causes visible flicker on motion
       </div>
     </div>
 
-    <div class="entry">
-      <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
-      <div class="entry-title">VHS &amp; Tape</div>
-      <div class="entry-body">
-        <strong>VHS tracking error</strong> — horizontal noise bands from misaligned tape head<br>
-        <strong>Head switching noise</strong> — black bar at bottom of frame during playback<br>
-        <strong>Tape dropout</strong> — random white/black speckles from oxide loss on the tape<br>
-        <strong>Color bleed / chroma smear</strong> — colors smear horizontally past hard edges<br>
-        <strong>Luminance noise</strong> — grain specifically in the brightness channel<br>
-        <strong>VHS generational loss</strong> — each copy degrades: softer, noisier, color-shifted<br>
-        <strong>Wow and flutter</strong> — pitch/speed wobble from uneven tape transport<br>
-        <strong>Edge ringing</strong> — bright ghosting halo on high-contrast edges (also: ringing artifacts)
+    <!-- ═══ COLUMN 2: NEAT THINGS ═══ -->
+    <div class="col-wrapper">
+      <div class="col-header">// Neat Things</div>
+      <div class="col-tabs">
+        <button class="col-tab active" data-col="neat" data-panel="neat-converter">Converter</button>
+        <button class="col-tab" data-col="neat" data-panel="neat-degrees">Degrees</button>
+        <button class="col-tab" data-col="neat" data-panel="neat-formula">Formula</button>
+        <button class="col-tab" data-col="neat" data-panel="neat-tokens">Tokens</button>
+        <button class="col-tab" data-col="neat" data-panel="neat-wcag">WCAG</button>
+      </div>
+
+      <div class="col-section active" data-col="neat" id="neat-converter">
+        <div class="section-label" id="section-converter">// CSS Unit Converter</div>
+
+        <div style="margin-bottom:1rem;">
+          <div class="textarea-wrap">
+            <label>Paste your HTML structure</label>
+            <textarea id="html-input" style="min-height:130px;" placeholder="Paste the relevant HTML here — just the part you're converting, e.g. your nav section"></textarea>
+          </div>
+        </div>
+
+        <div class="converter-grid">
+          <div class="field">
+            <label>Convert</label>
+            <select id="convert-type" onchange="updateFields()">
+              <option value="pct">px → % (percentage)</option>
+              <option value="rem">px → rem</option>
+              <option value="em">px → em</option>
+              <option value="vh">px → vh</option>
+              <option value="vw">px → vw</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Viewport width (px)</label>
+            <input type="number" id="parent-size" value="1280" placeholder="e.g. 1280">
+          </div>
+          <div class="field">
+            <label>Viewport height (px)</label>
+            <input type="number" id="viewport-h" value="780" placeholder="e.g. 780">
+          </div>
+          <div class="field">
+            <label>Round to decimal places</label>
+            <input type="number" id="decimal-places" value="2" min="0" max="6">
+          </div>
+          <div class="field" id="field-root" style="display:none">
+            <label>Root font size (px)</label>
+            <input type="number" id="root-size" value="16" placeholder="16">
+          </div>
+        </div>
+
+        <div class="textarea-area">
+          <div class="textarea-wrap">
+            <label>Paste your CSS here</label>
+            <textarea id="css-input" placeholder="/* paste your CSS here */
+.nav-outer {
+  width: 300px;
+  left: 150px;
+  height: 100vh;
+}"></textarea>
+          </div>
+          <div class="textarea-wrap">
+            <label>Converted output</label>
+            <textarea id="css-output" readonly placeholder="/* converted CSS will appear here */"></textarea>
+          </div>
+        </div>
+
+        <div class="converter-actions">
+          <button class="btn btn-primary" onclick="convert()">Convert ↗</button>
+          <button class="btn btn-ghost" onclick="copyOutput()">Copy output</button>
+          <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+          <span class="converter-status" id="converter-status"></span>
+        </div>
+
+        <div id="hierarchy-panel" class="hierarchy-panel" style="display:none">
+          <div class="panel-label">// Detected parent hierarchy</div>
+          <div id="hierarchy-tree"></div>
+        </div>
+      </div>
+
+      <div class="col-section" data-col="neat" id="neat-degrees">
+        <div class="section-label" id="section-degrees">// Penpot ↔ CSS Degrees</div>
+
+        <div class="formula-card" style="margin-bottom:1rem;">
+          <div class="formula-label">Why they differ</div>
+          <div class="formula-note">
+            Penpot shows rotation as 0–360°, always positive. CSS accepts negative degrees — and a negative angle is often cleaner to read and reason about. <strong>352.45° in Penpot = -7.55° in CSS.</strong> The formula: if the Penpot value is over 180, subtract 360.
+          </div>
+        </div>
+
+        <div class="converter-grid">
+          <div class="field">
+            <label>Penpot degrees (0–360)</label>
+            <input type="number" id="deg-penpot" placeholder="e.g. 352.45" step="0.01" oninput="convertDegrees('penpot')">
+          </div>
+          <div class="field">
+            <label>CSS degrees</label>
+            <input type="number" id="deg-css" placeholder="e.g. -7.55" step="0.01" oninput="convertDegrees('css')">
+          </div>
+        </div>
+
+        <div class="converter-actions">
+          <button class="btn btn-ghost" onclick="document.getElementById('deg-penpot').value='';document.getElementById('deg-css').value=''">Clear</button>
+        </div>
+      </div>
+
+      <div class="col-section" data-col="neat" id="neat-formula">
+        <div class="section-label" id="section-formula">// The Formula</div>
+
+        <div class="formula-card">
+          <div class="formula-label">px to percentage</div>
+          <div class="formula-main">element ÷ parent × 100 = %</div>
+          <div class="formula-note">
+            The parent is whatever contains the element — usually the artboard width for top-level layout, or the parent element's width for anything nested.
+            <br>Example: 339px inside a 1280px artboard — 339 ÷ 1280 × 100 = <strong>26.48%</strong>
+          </div>
+        </div>
+
+        <div class="section-label">// When to use what</div>
+
+        <div class="cheatsheet-grid">
+          <div class="unit-card unit-px">
+            <div class="unit-name">px</div>
+            <div class="unit-when">Fixed pixel value. Doesn't scale with anything. Use for borders, box shadows, small decorative details where you need exact control.</div>
+            <div class="unit-example">border: 1px solid red;</div>
+          </div>
+          <div class="unit-card unit-rem">
+            <div class="unit-name">rem</div>
+            <div class="unit-when">Relative to the root font size (16px by default). Scales if the user changes their browser font size. Best for font sizes and consistent spacing.</div>
+            <div class="unit-example">font-size: 1.5rem; /* = 24px */</div>
+          </div>
+          <div class="unit-card unit-em">
+            <div class="unit-name">em</div>
+            <div class="unit-when">Relative to the parent element's font size. Good for padding and margin on text components — it scales with the text it lives next to.</div>
+            <div class="unit-example">padding: 0.75em 1em;</div>
+          </div>
+          <div class="unit-card unit-pct">
+            <div class="unit-name">%</div>
+            <div class="unit-when">Relative to the parent element's size. The workhorse of responsive layout. Use for widths, positioning, anything that should scale with its container.</div>
+            <div class="unit-example">width: 26.48%; left: 11.7%;</div>
+          </div>
+          <div class="unit-card unit-vh">
+            <div class="unit-name">vh</div>
+            <div class="unit-when">Viewport height. 1vh = 1% of the browser window height. Good for full-height sections, hero areas, anything that should fill the screen vertically.</div>
+            <div class="unit-example">height: 100vh; min-height: 50vh;</div>
+          </div>
+          <div class="unit-card unit-vw">
+            <div class="unit-name">vw</div>
+            <div class="unit-when">Viewport width. 1vw = 1% of the browser window width. Use carefully — it ignores scrollbars and can cause horizontal overflow if you're not watching it.</div>
+            <div class="unit-example">font-size: clamp(1rem, 4vw, 2rem);</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-section" data-col="neat" id="neat-tokens">
+        <div class="section-label" id="section-tokens">// Design Token Extractor</div>
+
+        <div class="textarea-wrap" style="margin-bottom:1rem;">
+          <label>Paste your CSS</label>
+          <textarea id="token-input" placeholder="/* paste your full CSS here — the extractor scans for repeated values and turns them into custom properties */"></textarea>
+        </div>
+
+        <div style="display:flex; gap:1rem; align-items:flex-end; flex-wrap:wrap; margin-bottom:1rem;">
+          <div class="field" style="width:auto;">
+            <label>Min. uses to generate a token</label>
+            <input type="number" id="token-threshold" value="2" min="1" max="20" style="width:80px;">
+          </div>
+          <div class="converter-actions" style="margin:0;">
+            <button class="btn btn-primary" onclick="runExtractor()">Extract Tokens ↗</button>
+            <button class="btn btn-ghost" onclick="clearExtractor()">Clear</button>
+            <span class="converter-status" id="token-status"></span>
+          </div>
+        </div>
+
+        <div id="token-results" style="display:none;">
+          <div class="textarea-area" style="margin-bottom:1rem;">
+            <div class="textarea-wrap">
+              <label>:root { } — edit variable names here</label>
+              <textarea id="token-root-out"></textarea>
+            </div>
+            <div class="textarea-wrap">
+              <label>CSS with var() replacements</label>
+              <textarea id="token-css-out" readonly></textarea>
+            </div>
+          </div>
+          <div class="section-label" style="margin-top:0;">// What was found</div>
+          <div id="token-report" class="token-report"></div>
+        </div>
+      </div>
+
+      <div class="col-section" data-col="neat" id="neat-wcag">
+        <div class="section-label" id="section-wcag">// WCAG Accessibility Checker</div>
+
+        <div class="textarea-area" style="margin-bottom:1rem;">
+          <div class="textarea-wrap">
+            <label>Paste your HTML</label>
+            <textarea id="wcag-html" placeholder="Paste your HTML here — full page or just a component"></textarea>
+          </div>
+          <div class="textarea-wrap">
+            <label>Paste your CSS (optional — needed for contrast + focus checks)</label>
+            <textarea id="wcag-css" placeholder="/* CSS is optional but needed for contrast ratio and outline checks */"></textarea>
+          </div>
+        </div>
+
+        <div class="converter-actions" style="margin-bottom:1.5rem;">
+          <button class="btn btn-primary" onclick="runWCAGCheck()">Check Accessibility ↗</button>
+          <button class="btn btn-ghost" onclick="clearWCAGCheck()">Clear</button>
+          <span class="converter-status" id="wcag-status"></span>
+        </div>
+
+        <div id="wcag-output" style="display:none;">
+          <div id="wcag-results"></div>
+        </div>
       </div>
     </div>
 
-    <div class="entry">
-      <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
-      <div class="entry-title">Signal &amp; Broadcast</div>
-      <div class="entry-body">
-        <strong>Chromatic aberration</strong> — RGB channels misaligned, color fringing on edges<br>
-        <strong>Composite video noise</strong> — dot crawl and color smearing from NTSC signal encoding<br>
-        <strong>Dot crawl</strong> — animated noise crawling along high-contrast edges, composite artifact<br>
-        <strong>Cross-color interference</strong> — false colors on fine patterns, composite artifact<br>
-        <strong>Video feedback loop</strong> — pointing a camera at its own monitor output, infinite tunnel effect<br>
-        <strong>Snow / white noise</strong> — no-signal static<br>
-        <strong>Horizontal sync loss</strong> — image tears and slides sideways<br>
-        <strong>Vertical roll</strong> — image rolls upward or downward continuously
+    <!-- ═══ COLUMN 3: COOL THINGS ═══ -->
+    <div class="col-wrapper">
+      <div class="col-header">// Cool Things</div>
+      <div class="col-tabs">
+        <button class="col-tab active" data-col="cool" data-panel="cool-fg">Flex / Grid</button>
+        <button class="col-tab" data-col="cool" data-panel="cool-notes">Notes</button>
+        <button class="col-tab" data-col="cool" data-panel="cool-90s">90s Resources</button>
+      </div>
+
+      <div class="col-section active" data-col="cool" id="cool-fg">
+        <div id="section-fg">
+          <div class="section-label">// Flexbox &amp; Grid Visual Reference — with conflict &amp; override guide</div>
+          <div class="fg-tabs" id="fg-tabs">
+            <button class="fg-tab active" data-panel="fgp-flex-cont">Flex Container</button>
+            <button class="fg-tab" data-panel="fgp-flex-items">Flex Items</button>
+            <button class="fg-tab" data-panel="fgp-grid-cont">Grid Container</button>
+            <button class="fg-tab" data-panel="fgp-grid-items">Grid Items</button>
+            <button class="fg-tab" data-panel="fgp-conflicts">Conflicts &amp; Overrides</button>
+          </div>
+          <div id="fgp-flex-cont"  class="fg-panel active"></div>
+          <div id="fgp-flex-items" class="fg-panel"></div>
+          <div id="fgp-grid-cont"  class="fg-panel"></div>
+          <div id="fgp-grid-items" class="fg-panel"></div>
+          <div id="fgp-conflicts"  class="fg-panel"></div>
+        </div>
+      </div>
+
+      <div class="col-section" data-col="cool" id="cool-notes">
+        <div class="section-label" id="section-notes">// Notes that clicked — add when something lands</div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-layout">Layout</span></div>
+          <div class="entry-title">Penpot works in CSS pixels, not device pixels</div>
+          <div class="entry-body">
+            Penpot's canvas uses CSS pixels, which is what the browser uses. So a 300px wide element in Penpot should be <code>width: 300px</code> in CSS. The values match. If they look different, it's usually because the artboard size doesn't match the viewport you're testing in — not a unit problem.
+            <br><br>
+            Physical screen pixels are different — a HiDPI display might use 3 physical pixels per CSS pixel. Only matters for image exports, not for web CSS.
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-css">CSS</span></div>
+          <div class="entry-title">padding vs margin — they do different jobs</div>
+          <div class="entry-body">
+            <strong>Padding</strong> adds space <em>inside</em> the element, between the content and the border. It affects the element's size (unless you're using <code>box-sizing: border-box</code>, which makes padding eat into the element's set dimensions instead of adding to them).
+            <br><br>
+            <strong>Margin</strong> adds space <em>outside</em> the element, pushing other elements away. Use margin to create gaps between things. Use padding to breathe space inside a box.
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Tip</span></div>
+          <div class="entry-title">box-sizing: border-box — always turn this on</div>
+          <div class="entry-body">
+            By default, <code>width: 300px</code> means the content is 300px wide — then padding and border get added on top, making the actual element bigger than you said. That's confusing.
+            <br><br>
+            <code>box-sizing: border-box</code> changes it so that padding and border are included inside the width you set. A 300px element stays 300px no matter what padding you add. Put this in your CSS reset and forget about it.
+          </div>
+          <div class="entry-source">From session 2026-05-26 — building Sidd's nav strip</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-css">CSS</span></div>
+          <div class="entry-title">Shorthand value order — margin, padding, border, clip-path inset</div>
+          <div class="entry-body">
+            <strong>margin / padding</strong> — same order for both. Think clockwise from the top:<br>
+            <code>margin: top right bottom left</code> — 4 values<br>
+            <code>margin: top-bottom left-right</code> — 2 values (pairs opposite sides)<br>
+            <code>margin: top left-right bottom</code> — 3 values<br>
+            <code>margin: all</code> — 1 value<br>
+            <br>
+            <strong>border</strong> — width, then style, then color. All three required for the shorthand to render:<br>
+            <code>border: 1px solid #ccc</code><br>
+            Individual sides work the same way: <code>border-top: 2px dashed red</code><br>
+            <br>
+            <strong>clip-path: polygon()</strong> — define a shape by listing its corner points. Each point is an x y pair, separated by commas, going clockwise:<br>
+            <code>clip-path: polygon(x1 y1, x2 y2, x3 y3, ...)</code><br>
+            Values can be px or %. The shape clips anything outside it. At least 3 points required.<br>
+            Common shapes:<br>
+            &nbsp;&nbsp;Triangle: <code>polygon(50% 0%, 0% 100%, 100% 100%)</code><br>
+            &nbsp;&nbsp;Slanted/parallelogram: <code>polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)</code><br>
+            &nbsp;&nbsp;Slanted top-right cut: <code>polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)</code><br>
+            <br>
+            <strong>clip-path: inset()</strong> — same clockwise order as margin/padding:<br>
+            <code>clip-path: inset(top right bottom left)</code><br>
+            <code>clip-path: inset(10px 20px)</code> — top/bottom, left/right<br>
+            <code>clip-path: inset(10px)</code> — all sides<br>
+            Add rounded corners with <code>round</code>: <code>clip-path: inset(10px round 5px)</code>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-css">CSS</span><span class="entry-tag tag-tip">Tip</span></div>
+          <div class="entry-title">Finding the real position of a rotated element</div>
+          <div class="entry-body">
+            CSS positions elements <em>before</em> rotation. After <code>transform: rotate()</code>, the element's visual edges land somewhere different from where <code>left</code> and <code>top</code> say they are. To find the actual position, run this in the browser console:
+            <br><br>
+            <code>document.querySelector('#your-element').getBoundingClientRect()</code>
+            <br><br>
+            This returns the real visual coordinates after all transforms are applied — <code>left</code>, <code>top</code>, <code>right</code>, <code>bottom</code>, <code>width</code>, <code>height</code>. These are measured from the viewport edges.
+            <br><br>
+            <strong>Converting between visual position and CSS position:</strong><br>
+            Once you know the gap between where CSS placed it and where it actually landed, use this formula:<br><br>
+            <code>offset = CSS value − real value</code><br>
+            <code>CSS value needed = desired visual position + offset</code><br><br>
+            Example: CSS says <code>left: 27px</code>, real left is <code>-54px</code>. Offset = 81px. If you want the visual edge at 20px from screen: <code>left: 101px</code> (20 + 81).
+            <br><br>
+            The offset stays consistent as long as the rotation angle and element dimensions don't change. Recalculate any time either of those change.
+          </div>
+          <div class="entry-source">From Sidd's nav strip — May 2026</div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-css">CSS</span></div>
+          <div class="entry-title">calc() — let the browser do the math</div>
+          <div class="entry-body">
+            <code>calc()</code> does math inline so you don't have to hardcode a number that might break later. You can mix units inside it — that's the whole point.
+            <br><br>
+            <code>calc(100% - 5px)</code> means "full width of this element, minus 5px." The browser works it out at render time, so it stays correct even if the element resizes.
+            <br><br>
+            This comes up most in <code>clip-path: polygon()</code> when you need to measure from the <em>right</em> or <em>bottom</em> edge. Polygon coordinates are always measured from the top-left corner, so "5px from the right" can't just be <code>5px</code> — it has to be <code>calc(100% - 5px)</code>. If you hardcoded it as <code>334px</code> instead, it'd only be right when the element is exactly 339px wide.
+            <br><br>
+            Works with any units: <code>calc(50% + 20px)</code>, <code>calc(100vh - 60px)</code>, <code>calc(100% - 2rem)</code>.
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-css">CSS</span></div>
+          <div class="entry-title">Using calc() inside clip-path polygon to create borders</div>
+          <div class="entry-body">
+            When you have an outer element (white) and an inner element (black), you can make the inner polygon match the outer shape with a consistent border thickness by nudging each polygon point inward using <code>calc()</code>.
+            <br><br>
+            The rule for each point: <strong>start where the outer point is, then nudge inward by your border size.</strong><br><br>
+            Example — outer trapezoid with border of 10px:<br>
+            <code>/* outer */<br>
+            polygon(1% 0%, 99% 0%, 90% 100%, 0% 100%)</code>
+            <br><br>
+            <code>/* inner — each point nudged inward by 10px */<br>
+            polygon(<br>
+            &nbsp;&nbsp;calc(1% + 10px) 10px,<br>
+            &nbsp;&nbsp;calc(99% - 10px) 10px,<br>
+            &nbsp;&nbsp;calc(90% - 10px) calc(100% - 10px),<br>
+            &nbsp;&nbsp;calc(0% + 10px) calc(100% - 10px)<br>
+            )</code>
+            <br><br>
+            <strong>Matching border thickness on opposite sides:</strong> if the right border is <code>calc(10% + 10px)</code> from the right edge, mirror it on the left by pushing in <code>calc(10% + 10px)</code> from the left. Same number, opposite direction. If they don't match, one side will look thicker than the other.
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-css">CSS</span></div>
+          <div class="entry-title">perspective, rotateX/Y/Z, and transform-style — how 3D transforms actually work</div>
+          <div class="entry-body">
+            <strong>perspective</strong> — goes on the <em>parent</em>. Sets the camera distance. Controls how dramatic the 3D effect looks on everything inside it.<br>
+            Low number like <code>200px</code> = nose pressed against the screen. Far edges look tiny, effect is aggressive.<br>
+            High number like <code>1200px</code> = standing across the room. Effect is subtle.<br>
+            It doesn't move or tilt anything by itself — it just sets the rules for how 3D things inside it will look.
+            <br><br>
+            <strong>transform: rotateX() / rotateY() / rotateZ()</strong> — goes on the element you actually want to move.<br>
+            &nbsp;&nbsp;<code>rotateX</code> — tilts forward and back. Top goes away from you, bottom comes toward you (or vice versa).<br>
+            &nbsp;&nbsp;<code>rotateY</code> — swings left and right like a door opening.<br>
+            &nbsp;&nbsp;<code>rotateZ</code> — spins flat like clock hands.
+            <br><br>
+            <strong>transform-style: preserve-3d</strong> — by default, when a parent transforms in 3D, CSS smooshes all its children flat onto one surface first, then transforms that surface. Children lose their own 3D positions.<br>
+            <code>preserve-3d</code> keeps children in real 3D space instead of flattening them. Without it, child elements inside a transformed parent won't behave right.
+            <br><br>
+            <strong>The chain:</strong><br>
+            1. Parent gets <code>perspective</code> — sets the camera<br>
+            2. Child gets <code>transform: rotateX()</code> — actually tilts<br>
+            3. That same child gets <code>transform-style: preserve-3d</code> — keeps its own children in 3D space too
+          </div>
+        </div>
+
+        <div id="compendium-entries"></div>
+        <div class="empty-state" id="compendium-empty" style="display:none">No additional entries yet. Add when something clicks.</div>
+      </div>
+
+      <div class="col-section" data-col="cool" id="cool-90s">
+        <div class="section-label" id="section-90sfx">// 90s Resources — names for the things burned into your brain</div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Screen &amp; Display Hardware</div>
+          <div class="entry-body">
+            <strong>Scanlines</strong> — horizontal gaps between CRT pixel rows<br>
+            <strong>Phosphor glow / phosphor persistence</strong> — soft bloom around bright pixels, image lingers after changing<br>
+            <strong>CRT barrel distortion</strong> — screen edges curve inward<br>
+            <strong>CRT vignette</strong> — corners darken, center blooms<br>
+            <strong>Burn-in / screen burn</strong> — ghosted image baked into the phosphor from static content<br>
+            <strong>Dot pitch / shadow mask</strong> — visible RGB subpixel grid up close<br>
+            <strong>RGB subpixel fringing</strong> — color bleed on high-contrast edges<br>
+            <strong>Interlacing / interlace flicker</strong> — alternate scanline rows updating at 30fps, causes visible flicker on motion
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">VHS &amp; Tape</div>
+          <div class="entry-body">
+            <strong>VHS tracking error</strong> — horizontal noise bands from misaligned tape head<br>
+            <strong>Head switching noise</strong> — black bar at bottom of frame during playback<br>
+            <strong>Tape dropout</strong> — random white/black speckles from oxide loss on the tape<br>
+            <strong>Color bleed / chroma smear</strong> — colors smear horizontally past hard edges<br>
+            <strong>Luminance noise</strong> — grain specifically in the brightness channel<br>
+            <strong>VHS generational loss</strong> — each copy degrades: softer, noisier, color-shifted<br>
+            <strong>Wow and flutter</strong> — pitch/speed wobble from uneven tape transport<br>
+            <strong>Edge ringing</strong> — bright ghosting halo on high-contrast edges (also: ringing artifacts)
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Signal &amp; Broadcast</div>
+          <div class="entry-body">
+            <strong>Chromatic aberration</strong> — RGB channels misaligned, color fringing on edges<br>
+            <strong>Composite video noise</strong> — dot crawl and color smearing from NTSC signal encoding<br>
+            <strong>Dot crawl</strong> — animated noise crawling along high-contrast edges, composite artifact<br>
+            <strong>Cross-color interference</strong> — false colors on fine patterns, composite artifact<br>
+            <strong>Video feedback loop</strong> — pointing a camera at its own monitor output, infinite tunnel effect<br>
+            <strong>Snow / white noise</strong> — no-signal static<br>
+            <strong>Horizontal sync loss</strong> — image tears and slides sideways<br>
+            <strong>Vertical roll</strong> — image rolls upward or downward continuously
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Glitch &amp; Compression</div>
+          <div class="entry-body">
+            <strong>Datamoshing</strong> — intentional video compression artifacts; pixels from one frame smear into another<br>
+            <strong>Pixel sorting</strong> — rows or columns sorted by brightness or color, creates streaky displacement<br>
+            <strong>Glitch art / bitcrushing</strong> — intentional data corruption for visual effect<br>
+            <strong>JPEG artifacting</strong> — blocky 8x8 grid compression noise<br>
+            <strong>Dithering</strong> — checkerboard or pattern noise used to simulate colors with limited palette<br>
+            <strong>Halftone</strong> — dots of varying size simulating gradients (print origin, crossed into digital)
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Camera &amp; Optical</div>
+          <div class="entry-body">
+            <strong>Camcorder timestamp / HUD overlay</strong> — date/time burned into the corner of the frame<br>
+            <strong>VHS camera fisheye</strong> — wide-angle consumer lens barrel distortion<br>
+            <strong>Chromatic lens fringing</strong> — optical chromatic aberration from glass, distinct from signal CA<br>
+            <strong>Lens flare</strong> — light hitting glass elements, produces streaks and circles<br>
+            <strong>Anamorphic lens flare</strong> — horizontal streak specific to anamorphic cinema lenses<br>
+            <strong>Bloom / halation</strong> — bright areas bleed glow into surrounding pixels<br>
+            <strong>Film grain</strong> — analog noise from silver halide crystals in film stock<br>
+            <strong>Gate weave</strong> — slight frame-to-frame wobble from mechanical film transport
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="entry">
-      <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
-      <div class="entry-title">Glitch &amp; Compression</div>
-      <div class="entry-body">
-        <strong>Datamoshing</strong> — intentional video compression artifacts; pixels from one frame smear into another<br>
-        <strong>Pixel sorting</strong> — rows or columns sorted by brightness or color, creates streaky displacement<br>
-        <strong>Glitch art / bitcrushing</strong> — intentional data corruption for visual effect<br>
-        <strong>JPEG artifacting</strong> — blocky 8x8 grid compression noise<br>
-        <strong>Dithering</strong> — checkerboard or pattern noise used to simulate colors with limited palette<br>
-        <strong>Halftone</strong> — dots of varying size simulating gradients (print origin, crossed into digital)
-      </div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
-      <div class="entry-title">Camera &amp; Optical</div>
-      <div class="entry-body">
-        <strong>Camcorder timestamp / HUD overlay</strong> — date/time burned into the corner of the frame<br>
-        <strong>VHS camera fisheye</strong> — wide-angle consumer lens barrel distortion<br>
-        <strong>Chromatic lens fringing</strong> — optical chromatic aberration from glass, distinct from signal CA<br>
-        <strong>Lens flare</strong> — light hitting glass elements, produces streaks and circles<br>
-        <strong>Anamorphic lens flare</strong> — horizontal streak specific to anamorphic cinema lenses<br>
-        <strong>Bloom / halation</strong> — bright areas bleed glow into surrounding pixels<br>
-        <strong>Film grain</strong> — analog noise from silver halide crystals in film stock<br>
-        <strong>Gate weave</strong> — slight frame-to-frame wobble from mechanical film transport
-      </div>
-    </div>
-
-  </section>
-
-  <!-- ═══════════════════════════════════════════
-       COMPENDIUM
-  ════════════════════════════════════════════ -->
-  <section class="section">
-    <div class="section-label" id="section-notes">// Notes that clicked — add when something lands</div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-layout">Layout</span>
-      </div>
-      <div class="entry-title">Penpot works in CSS pixels, not device pixels</div>
-      <div class="entry-body">
-        Penpot's canvas uses CSS pixels, which is what the browser uses. So a 300px wide element in Penpot should be <code>width: 300px</code> in CSS. The values match. If they look different, it's usually because the artboard size doesn't match the viewport you're testing in — not a unit problem.
-        <br><br>
-        Physical screen pixels are different — a HiDPI display might use 3 physical pixels per CSS pixel. Only matters for image exports, not for web CSS.
-      </div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-css">CSS</span>
-      </div>
-      <div class="entry-title">padding vs margin — they do different jobs</div>
-      <div class="entry-body">
-        <strong>Padding</strong> adds space <em>inside</em> the element, between the content and the border. It affects the element's size (unless you're using <code>box-sizing: border-box</code>, which makes padding eat into the element's set dimensions instead of adding to them).
-        <br><br>
-        <strong>Margin</strong> adds space <em>outside</em> the element, pushing other elements away. Use margin to create gaps between things. Use padding to breathe space inside a box.
-      </div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-tip">Tip</span>
-      </div>
-      <div class="entry-title">box-sizing: border-box — always turn this on</div>
-      <div class="entry-body">
-        By default, <code>width: 300px</code> means the content is 300px wide — then padding and border get added on top, making the actual element bigger than you said. That's confusing.
-        <br><br>
-        <code>box-sizing: border-box</code> changes it so that padding and border are included inside the width you set. A 300px element stays 300px no matter what padding you add. Put this in your CSS reset and forget about it.
-      </div>
-      <div class="entry-source">From session 2026-05-26 — building Sidd's nav strip</div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-css">CSS</span>
-      </div>
-      <div class="entry-title">Shorthand value order — margin, padding, border, clip-path inset</div>
-      <div class="entry-body">
-        <strong>margin / padding</strong> — same order for both. Think clockwise from the top:<br>
-        <code>margin: top right bottom left</code> — 4 values<br>
-        <code>margin: top-bottom left-right</code> — 2 values (pairs opposite sides)<br>
-        <code>margin: top left-right bottom</code> — 3 values<br>
-        <code>margin: all</code> — 1 value<br>
-        <br>
-        <strong>border</strong> — width, then style, then color. All three required for the shorthand to render:<br>
-        <code>border: 1px solid #ccc</code><br>
-        Individual sides work the same way: <code>border-top: 2px dashed red</code><br>
-        <br>
-        <strong>clip-path: polygon()</strong> — define a shape by listing its corner points. Each point is an x y pair, separated by commas, going clockwise:<br>
-        <code>clip-path: polygon(x1 y1, x2 y2, x3 y3, ...)</code><br>
-        Values can be px or %. The shape clips anything outside it. At least 3 points required.<br>
-        Common shapes:<br>
-        &nbsp;&nbsp;Triangle: <code>polygon(50% 0%, 0% 100%, 100% 100%)</code><br>
-        &nbsp;&nbsp;Slanted/parallelogram: <code>polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)</code><br>
-        &nbsp;&nbsp;Slanted top-right cut: <code>polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)</code><br>
-        <br>
-        <strong>clip-path: inset()</strong> — same clockwise order as margin/padding:<br>
-        <code>clip-path: inset(top right bottom left)</code><br>
-        <code>clip-path: inset(10px 20px)</code> — top/bottom, left/right<br>
-        <code>clip-path: inset(10px)</code> — all sides<br>
-        Add rounded corners with <code>round</code>: <code>clip-path: inset(10px round 5px)</code>
-      </div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-css">CSS</span>
-        <span class="entry-tag tag-tip">Tip</span>
-      </div>
-      <div class="entry-title">Finding the real position of a rotated element</div>
-      <div class="entry-body">
-        CSS positions elements <em>before</em> rotation. After <code>transform: rotate()</code>, the element's visual edges land somewhere different from where <code>left</code> and <code>top</code> say they are. To find the actual position, run this in the browser console:
-        <br><br>
-        <code>document.querySelector('#your-element').getBoundingClientRect()</code>
-        <br><br>
-        This returns the real visual coordinates after all transforms are applied — <code>left</code>, <code>top</code>, <code>right</code>, <code>bottom</code>, <code>width</code>, <code>height</code>. These are measured from the viewport edges.
-        <br><br>
-        <strong>Converting between visual position and CSS position:</strong><br>
-        Once you know the gap between where CSS placed it and where it actually landed, use this formula:<br><br>
-        <code>offset = CSS value − real value</code><br>
-        <code>CSS value needed = desired visual position + offset</code><br><br>
-        Example: CSS says <code>left: 27px</code>, real left is <code>-54px</code>. Offset = 81px. If you want the visual edge at 20px from screen: <code>left: 101px</code> (20 + 81).
-        <br><br>
-        The offset stays consistent as long as the rotation angle and element dimensions don't change. Recalculate any time either of those change.
-      </div>
-      <div class="entry-source">From Sidd's nav strip — May 2026</div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-css">CSS</span>
-      </div>
-      <div class="entry-title">calc() — let the browser do the math</div>
-      <div class="entry-body">
-        <code>calc()</code> does math inline so you don't have to hardcode a number that might break later. You can mix units inside it — that's the whole point.
-        <br><br>
-        <code>calc(100% - 5px)</code> means "full width of this element, minus 5px." The browser works it out at render time, so it stays correct even if the element resizes.
-        <br><br>
-        This comes up most in <code>clip-path: polygon()</code> when you need to measure from the <em>right</em> or <em>bottom</em> edge. Polygon coordinates are always measured from the top-left corner, so "5px from the right" can't just be <code>5px</code> — it has to be <code>calc(100% - 5px)</code>. If you hardcoded it as <code>334px</code> instead, it'd only be right when the element is exactly 339px wide.
-        <br><br>
-        Works with any units: <code>calc(50% + 20px)</code>, <code>calc(100vh - 60px)</code>, <code>calc(100% - 2rem)</code>.
-      </div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-css">CSS</span>
-      </div>
-      <div class="entry-title">Using calc() inside clip-path polygon to create borders</div>
-      <div class="entry-body">
-        When you have an outer element (white) and an inner element (black), you can make the inner polygon match the outer shape with a consistent border thickness by nudging each polygon point inward using <code>calc()</code>.
-        <br><br>
-        The rule for each point: <strong>start where the outer point is, then nudge inward by your border size.</strong><br><br>
-        Example — outer trapezoid with border of 10px:<br>
-        <code>/* outer */<br>
-        polygon(1% 0%, 99% 0%, 90% 100%, 0% 100%)</code>
-        <br><br>
-        <code>/* inner — each point nudged inward by 10px */<br>
-        polygon(<br>
-        &nbsp;&nbsp;calc(1% + 10px) 10px,<br>
-        &nbsp;&nbsp;calc(99% - 10px) 10px,<br>
-        &nbsp;&nbsp;calc(90% - 10px) calc(100% - 10px),<br>
-        &nbsp;&nbsp;calc(0% + 10px) calc(100% - 10px)<br>
-        )</code>
-        <br><br>
-        <strong>Matching border thickness on opposite sides:</strong> if the right border is <code>calc(10% + 10px)</code> from the right edge, mirror it on the left by pushing in <code>calc(10% + 10px)</code> from the left. Same number, opposite direction. If they don't match, one side will look thicker than the other.
-      </div>
-    </div>
-
-    <div class="entry">
-      <div class="entry-meta">
-        <span class="entry-tag tag-css">CSS</span>
-      </div>
-      <div class="entry-title">perspective, rotateX/Y/Z, and transform-style — how 3D transforms actually work</div>
-      <div class="entry-body">
-        <strong>perspective</strong> — goes on the <em>parent</em>. Sets the camera distance. Controls how dramatic the 3D effect looks on everything inside it.<br>
-        Low number like <code>200px</code> = nose pressed against the screen. Far edges look tiny, effect is aggressive.<br>
-        High number like <code>1200px</code> = standing across the room. Effect is subtle.<br>
-        It doesn't move or tilt anything by itself — it just sets the rules for how 3D things inside it will look.
-        <br><br>
-        <strong>transform: rotateX() / rotateY() / rotateZ()</strong> — goes on the element you actually want to move.<br>
-        &nbsp;&nbsp;<code>rotateX</code> — tilts forward and back. Top goes away from you, bottom comes toward you (or vice versa).<br>
-        &nbsp;&nbsp;<code>rotateY</code> — swings left and right like a door opening.<br>
-        &nbsp;&nbsp;<code>rotateZ</code> — spins flat like clock hands.
-        <br><br>
-        <strong>transform-style: preserve-3d</strong> — by default, when a parent transforms in 3D, CSS smooshes all its children flat onto one surface first, then transforms that surface. Children lose their own 3D positions.<br>
-        <code>preserve-3d</code> keeps children in real 3D space instead of flattening them. Without it, child elements inside a transformed parent won't behave right.
-        <br><br>
-        <strong>The chain:</strong><br>
-        1. Parent gets <code>perspective</code> — sets the camera<br>
-        2. Child gets <code>transform: rotateX()</code> — actually tilts<br>
-        3. That same child gets <code>transform-style: preserve-3d</code> — keeps its own children in 3D space too
-      </div>
-    </div>
-
-    <div id="compendium-entries"></div>
-    <div class="empty-state" id="compendium-empty" style="display:none">No additional entries yet. Add when something clicks.</div>
-  </section>
+  </div>
 
 </div>
 
 <script>
+// ─── COLUMN TAB SWITCHING ─────────────────────────────────────────────────────
+document.querySelectorAll('.col-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const col = tab.dataset.col;
+    const panelId = tab.dataset.panel;
+    document.querySelectorAll('.col-tab[data-col="' + col + '"]').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.col-section[data-col="' + col + '"]').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+  });
+});
+
 // ─── FIELDS ──────────────────────────────────────────────────────────────────
 function updateFields() {
   const type = document.getElementById('convert-type').value;
@@ -3425,6 +3426,10 @@ function setTokStatus(msg, type) {
 
 <!--
 UPDATE LOG
+
+2026-05-27 | Pixel | Rebuilt layout as three-column tab system
+Why: Rattles wanted sections organized into Smart Things / Neat Things / Cool Things columns with tab switching.
+Changes: Three-col grid layout, col-tab JS, Garamond all-fonts, 18px root, 1500px max-width, Atomic Habits bug fixed, 90s FX renamed to 90s Resources, page nav removed.
 
 2026-05-26 | Pixel | Created dev-compendium.html
 Why: Rattles needed a CSS unit converter and reference cheatsheet that grows with the project.
