@@ -1817,6 +1817,14 @@ textarea::placeholder { color: var(--text-dim); }
         <code>border: 1px solid #ccc</code><br>
         Individual sides work the same way: <code>border-top: 2px dashed red</code><br>
         <br>
+        <strong>clip-path: polygon()</strong> — define a shape by listing its corner points. Each point is an x y pair, separated by commas, going clockwise:<br>
+        <code>clip-path: polygon(x1 y1, x2 y2, x3 y3, ...)</code><br>
+        Values can be px or %. The shape clips anything outside it. At least 3 points required.<br>
+        Common shapes:<br>
+        &nbsp;&nbsp;Triangle: <code>polygon(50% 0%, 0% 100%, 100% 100%)</code><br>
+        &nbsp;&nbsp;Slanted/parallelogram: <code>polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%)</code><br>
+        &nbsp;&nbsp;Slanted top-right cut: <code>polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%)</code><br>
+        <br>
         <strong>clip-path: inset()</strong> — same clockwise order as margin/padding:<br>
         <code>clip-path: inset(top right bottom left)</code><br>
         <code>clip-path: inset(10px 20px)</code> — top/bottom, left/right<br>
