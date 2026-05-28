@@ -1192,6 +1192,7 @@ textarea::placeholder { color: var(--text-dim); }
       <div class="col-tabs">
         <button class="col-tab active" data-col="smart" data-panel="smart-aifeed">AI Feed</button>
         <button class="col-tab" data-col="smart" data-panel="smart-norman">Don Norman</button>
+        <button class="col-tab" data-col="smart" data-panel="smart-jonathan">Jonathan Edwards</button>
         <button class="col-tab" data-col="smart" data-panel="smart-brain">Brain</button>
       </div>
 
@@ -1282,6 +1283,32 @@ textarea::placeholder { color: var(--text-dim); }
         <a href="https://www.youtube.com/watch?v=yY96hTb8WgI" target="_blank" rel="noopener">Don Norman: The term "UX" — YouTube</a>
         <span class="link-desc">He coined the phrase "user experience" and explains what it was actually supposed to mean — and how it got watered down.</span>
       </li>
+        </ul>
+      </div>
+
+      <div class="col-section" data-col="smart" id="smart-jonathan">
+        <div class="section-label">// Jonathan Edwards — practical AI architecture, documented failure, and what actually works vs. what just sounds good</div>
+
+        <div class="norman-quotes">
+          <div class="norman-quote">
+            <div class="norman-quote-text">"Terminology isn't a barrier to entry. It's a receipt for the work you've already done."</div>
+            <div class="norman-quote-source">Limited Edition Jonathan</div>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top: 1.5rem;">// On Terminology and Understanding</div>
+        <p style="margin: 0.75rem 0 1.25rem;">Terminology isn't decoration layered on top of understanding — it's the understanding itself, compressed. You can grasp a concept intuitively without the word for it, but the term completes something: it lets you search for it, connect it to the broader literature, recognize it when someone else names it, and communicate it precisely. Concept first so the term has something to land on. Term second to carry it forward. Not knowing the word doesn't mean you understand nothing — but the receipt hasn't been written yet.</p>
+
+        <div class="section-label">// Reading</div>
+        <ul class="link-list">
+          <li>
+            <a href="https://limitededitionjonathan.substack.com/p/stop-calling-it-memory-the-problem" target="_blank" rel="noopener">Stop Calling It Memory</a>
+            <span class="link-desc">Why "AI memory" is the wrong framing and what the actual problem is. The article that started the Ritsu architecture.</span>
+          </li>
+          <li>
+            <a href="https://limitededitionjonathan.substack.com" target="_blank" rel="noopener">limitededitionjonathan.substack.com</a>
+            <span class="link-desc">Full archive. Practical, non-technical, built on actual failure. No hype.</span>
+          </li>
         </ul>
       </div>
 
@@ -3430,6 +3457,10 @@ function setTokStatus(msg, type) {
 
 <!--
 UPDATE LOG
+
+2026-05-27 | Pixel | Added Jonathan Edwards tab to Smart Things
+Why: Terminology insight from his writing worth keeping in the compendium. Quote + concise summary + reading links.
+Changes: New smart-jonathan tab between Don Norman and Brain.
 
 2026-05-27 | Pixel | Rebuilt layout as three-column tab system
 Why: Rattles wanted sections organized into Smart Things / Neat Things / Cool Things columns with tab switching.
