@@ -351,6 +351,7 @@ textarea::placeholder { color: var(--text-dim); }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 0.3rem;
   padding: 0.75rem 20px;
   border-bottom: 1px solid var(--border);
@@ -1126,9 +1127,13 @@ textarea::placeholder { color: var(--text-dim); }
 
 /* ── RULES OF SEIGIESE ───────────────────────────────────────────────────── */
 .rules-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: nowrap;
   gap: 1rem;
+  align-items: flex-start;
+}
+.rules-grid .rule-card {
+  flex: 0 1 auto;
 }
 .rule-card {
   background: var(--surface);
@@ -1156,7 +1161,7 @@ textarea::placeholder { color: var(--text-dim); }
 .rule-body {
   font-size: 0.82rem;
   color: var(--text);
-  line-height: 1.65;
+  line-height: 1.4;
 }
 .rule-closer {
   font-family: var(--mono);
