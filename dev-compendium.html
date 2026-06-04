@@ -347,30 +347,22 @@ textarea::placeholder { color: var(--text-dim); }
   border-top: 1px solid var(--border);
   margin: 0 20px 2.5rem;
 }
-.three-col-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1.5rem;
-  align-items: start;
-  padding: 0 20px;
-}
-.col-header {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-.col-tabs {
+#main-tab-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 1rem;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.75rem 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
 }
-.col-tab {
+.tab-divider {
+  width: 1px;
+  height: 1.2rem;
+  background: var(--border);
+  margin: 0 0.3rem;
+}
+.main-tab {
   background: none;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -382,11 +374,38 @@ textarea::placeholder { color: var(--text-dim); }
   padding: 0.3rem 0.65rem;
   transition: all 0.15s;
 }
-.col-tab:hover { background: var(--surface); color: var(--text); }
-.col-tab.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+.main-tab:hover { background: var(--surface); color: var(--text); }
+.tab-smart.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+.tab-neat.active  { background: var(--accent);  border-color: var(--accent);  color: #fff; }
+.tab-cool.active  { background: var(--accent3); border-color: var(--accent3); color: #fff; }
+.tab-smart:hover:not(.active) { border-color: var(--accent2); color: var(--accent2); }
+.tab-neat:hover:not(.active)  { border-color: var(--accent);  color: var(--accent);  }
+.tab-cool:hover:not(.active)  { border-color: var(--accent3); color: var(--accent3); }
+#main-content {
+  padding: 0 20px;
+}
 .col-section { display: none; }
 .col-section.active { display: block; }
-.rules-grid { grid-template-columns: repeat(3, 1fr); }
+.rules-grid { grid-template-columns: repeat(4, 1fr); }
+#scroll-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 0.7rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#scroll-top.visible { opacity: 1; pointer-events: auto; }
+#scroll-top:hover { color: var(--text); border-color: var(--text-dim); }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -1190,20 +1209,27 @@ textarea::placeholder { color: var(--text-dim); }
 
   <hr class="section-divider">
 
-  <div class="three-col-layout">
+  <div id="main-tab-bar">
+    <button class="main-tab tab-smart active" data-panel="smart-aifeed">AI Feed</button>
+    <button class="main-tab tab-smart" data-panel="smart-norman">Don Norman</button>
+    <button class="main-tab tab-smart" data-panel="smart-jonathan">Jonathan Edwards</button>
+    <button class="main-tab tab-smart" data-panel="smart-snakeoil">AI Snake Oil</button>
+    <button class="main-tab tab-smart" data-panel="smart-ritsu">Ritsu</button>
+    <button class="main-tab tab-smart" data-panel="smart-brain">Brain</button>
+    <button class="main-tab tab-smart" data-panel="smart-psych">Psych</button>
+    <span class="tab-divider"></span>
+    <button class="main-tab tab-neat" data-panel="neat-converter">Converter</button>
+    <button class="main-tab tab-neat" data-panel="neat-degrees">Degrees</button>
+    <button class="main-tab tab-neat" data-panel="neat-formula">Formula</button>
+    <button class="main-tab tab-neat" data-panel="neat-tokens">Tokens</button>
+    <button class="main-tab tab-neat" data-panel="neat-wcag">WCAG</button>
+    <span class="tab-divider"></span>
+    <button class="main-tab tab-cool" data-panel="cool-fg">Flex / Grid</button>
+    <button class="main-tab tab-cool" data-panel="cool-notes">Notes</button>
+    <button class="main-tab tab-cool" data-panel="cool-90s">90s Resources</button>
+  </div>
 
-    <!-- ═══ COLUMN 1: THE RIGHT MINDSET ═══ -->
-    <div class="col-wrapper">
-      <div class="col-header">// The Right Mindset</div>
-      <div class="col-tabs">
-        <button class="col-tab active" data-col="smart" data-panel="smart-aifeed">AI Feed</button>
-        <button class="col-tab" data-col="smart" data-panel="smart-norman">Don Norman</button>
-        <button class="col-tab" data-col="smart" data-panel="smart-jonathan">Jonathan Edwards</button>
-        <button class="col-tab" data-col="smart" data-panel="smart-snakeoil">AI Snake Oil</button>
-        <button class="col-tab" data-col="smart" data-panel="smart-ritsu">Ritsu</button>
-        <button class="col-tab" data-col="smart" data-panel="smart-brain">Brain</button>
-        <button class="col-tab" data-col="smart" data-panel="smart-psych">Psych</button>
-      </div>
+  <div id="main-content">
 
       <div class="col-section active" data-col="smart" id="smart-aifeed">
         <div class="section-label">// AI Reading Feed — curated sources, no doom-scrolling</div>
@@ -1704,18 +1730,8 @@ textarea::placeholder { color: var(--text-dim); }
           </div>
 
         </div>
-      </div>
 
-    <!-- ═══ COLUMN 2: NEAT THINGS ═══ -->
-    <div class="col-wrapper">
-      <div class="col-header">// Neat Things</div>
-      <div class="col-tabs">
-        <button class="col-tab active" data-col="neat" data-panel="neat-converter">Converter</button>
-        <button class="col-tab" data-col="neat" data-panel="neat-degrees">Degrees</button>
-        <button class="col-tab" data-col="neat" data-panel="neat-formula">Formula</button>
-        <button class="col-tab" data-col="neat" data-panel="neat-tokens">Tokens</button>
-        <button class="col-tab" data-col="neat" data-panel="neat-wcag">WCAG</button>
-      </div>
+    <!-- ═══ NEAT THINGS ═══ -->
 
       <div class="col-section active" data-col="neat" id="neat-converter">
         <div class="section-label" id="section-converter">// CSS Unit Converter</div>
@@ -1919,16 +1935,8 @@ textarea::placeholder { color: var(--text-dim); }
           <div id="wcag-results"></div>
         </div>
       </div>
-    </div>
 
-    <!-- ═══ COLUMN 3: COOL THINGS ═══ -->
-    <div class="col-wrapper">
-      <div class="col-header">// Cool Things</div>
-      <div class="col-tabs">
-        <button class="col-tab active" data-col="cool" data-panel="cool-fg">Flex / Grid</button>
-        <button class="col-tab" data-col="cool" data-panel="cool-notes">Notes</button>
-        <button class="col-tab" data-col="cool" data-panel="cool-90s">90s Resources</button>
-      </div>
+    <!-- ═══ COOL THINGS ═══ -->
 
       <div class="col-section active" data-col="cool" id="cool-fg">
         <div id="section-fg">
@@ -2174,23 +2182,29 @@ textarea::placeholder { color: var(--text-dim); }
           </div>
         </div>
       </div>
-    </div>
 
   </div>
 
 </div>
 
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">^ top</button>
+
 <script>
-// ─── COLUMN TAB SWITCHING ─────────────────────────────────────────────────────
-document.querySelectorAll('.col-tab').forEach(tab => {
+// ─── TAB SWITCHING ────────────────────────────────────────────────────────────
+document.querySelectorAll('.main-tab').forEach(tab => {
   tab.addEventListener('click', () => {
-    const col = tab.dataset.col;
-    const panelId = tab.dataset.panel;
-    document.querySelectorAll('.col-tab[data-col="' + col + '"]').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.col-section[data-col="' + col + '"]').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.col-section').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
-    document.getElementById(panelId).classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+});
+
+// ─── SCROLL TO TOP ────────────────────────────────────────────────────────────
+const scrollBtn = document.getElementById('scroll-top');
+window.addEventListener('scroll', () => {
+  scrollBtn.classList.toggle('visible', window.scrollY > 400);
 });
 
 // ─── FIELDS ──────────────────────────────────────────────────────────────────
