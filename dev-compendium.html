@@ -1741,7 +1741,7 @@ textarea::placeholder { color: var(--text-dim); }
 
     <!-- ═══ NEAT THINGS ═══ -->
 
-      <div class="col-section active" data-col="neat" id="neat-converter">
+      <div class="col-section" data-col="neat" id="neat-converter">
         <div class="section-label" id="section-converter">// CSS Unit Converter</div>
 
         <div style="margin-bottom:1rem;">
@@ -1946,7 +1946,7 @@ textarea::placeholder { color: var(--text-dim); }
 
     <!-- ═══ COOL THINGS ═══ -->
 
-      <div class="col-section active" data-col="cool" id="cool-fg">
+      <div class="col-section" data-col="cool" id="cool-fg">
         <div id="section-fg">
           <div class="section-label">// Flexbox &amp; Grid Visual Reference — with conflict &amp; override guide</div>
           <div class="fg-tabs" id="fg-tabs">
@@ -2199,14 +2199,21 @@ textarea::placeholder { color: var(--text-dim); }
 
 <script>
 // ─── TAB SWITCHING ────────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.col-section').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  const panel = document.getElementById(tab.dataset.panel);
+  if (panel) panel.classList.add('active');
+}
+
 document.querySelectorAll('.main-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.col-section').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.panel).classList.add('active');
-  });
+  tab.addEventListener('click', () => switchTab(tab));
 });
+
+// init — enforce clean state on load
+const defaultTab = document.querySelector('.main-tab.active');
+if (defaultTab) switchTab(defaultTab);
 
 // ─── SCROLL TO TOP ────────────────────────────────────────────────────────────
 const scrollBtn = document.getElementById('scroll-top');
