@@ -4,34 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dev Compendium // Rattles</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.typekit.net/jrc8luv.css">
+<!-- we don't need fancy fonts here. we have Comic Sans. we have everything we need. -->
 <style>
 :root {
-  --bg:        #FFFFFF;   /* clean white */
-  --surface:   #E5E9EB;   /* utopia light gray */
-  --surface2:  #d4dadf;   /* slightly lifted surface */
-  --border:    #9D8D6C;   /* warm tan border */
-  --text:      #001F35;   /* deep navy body text */
-  --text-muted:#334C5D;   /* blue-slate muted */
-  --text-dim:  #7690A4;   /* slate blue dim */
-  --accent:    #857047;   /* warm brown */
-  --accent2:   #334C5D;   /* dark slate blue */
-  --accent3:   #667986;   /* muted blue-gray */
-  --danger:    #e24b4a;
-  --mono:      'garamond-premier-pro-caption', 'IBM Plex Mono', monospace;
-  --sans:      'garamond-premier-pro-caption', 'IBM Plex Sans', sans-serif;
+  --bg:        #0a0020;
+  --surface:   #1a0035;
+  --surface2:  #25004a;
+  --border:    #ff69b4;
+  --text:      #ffe8ff;
+  --text-muted:#dd99ff;
+  --text-dim:  #ff99cc;
+  --accent:    #ff00aa;
+  --accent2:   #00ffee;
+  --accent3:   #ffff00;
+  --danger:    #ff3300;
+  --mono:      'Comic Sans MS', 'Comic Sans', cursive;
+  --sans:      'Comic Sans MS', 'Comic Sans', cursive;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 18px; scroll-behavior: smooth; }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(1px 1px at 5% 8%,   rgba(255,255,255,.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 18% 3%,  rgba(255,200,255,.8) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 28% 14%, rgba(255,255,255,1) 0%, transparent 100%),
+    radial-gradient(1px 1px at 42% 6%,  rgba(200,255,255,.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 19%, rgba(255,255,200,.7) 0%, transparent 100%),
+    radial-gradient(2px 2px at 68% 4%,  rgba(255,255,255,.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 22%, rgba(255,200,255,.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 11%, rgba(255,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 12% 55%, rgba(200,255,255,.8) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 62%, rgba(255,255,255,.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 48%, rgba(255,200,255,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82% 71%, rgba(255,255,200,.8) 0%, transparent 100%),
+    radial-gradient(2px 2px at 96% 58%, rgba(255,255,255,1) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 88%, rgba(200,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 82%, rgba(255,200,255,.9) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 73% 93%, rgba(255,255,255,.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 85%, rgba(255,255,200,.9) 0%, transparent 100%);
+  background-size: 300px 200px;
   color: var(--text);
   font-family: var(--sans);
   line-height: 1.6;
   min-height: 100vh;
+}
+
+@keyframes blink {
+  0%, 100% { visibility: visible; }
+  50% { visibility: hidden; }
+}
+@keyframes glow-pulse {
+  0%, 100% { text-shadow: 0 0 8px var(--accent), 0 0 16px var(--accent); }
+  50% { text-shadow: 0 0 16px var(--accent), 0 0 32px var(--accent), 0 0 48px var(--accent); }
 }
 
 /* ---- LAYOUT ---- */
@@ -56,11 +83,13 @@ body {
   margin-bottom: 0.5rem;
 }
 .site-header h1 {
-  font-family: var(--mono);
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  font-weight: 700;
+  font-family: Impact, 'Comic Sans MS', cursive;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
   color: var(--accent);
-  letter-spacing: -0.02em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  animation: glow-pulse 2s ease-in-out infinite;
 }
 .site-header .subtitle {
   font-size: 0.9rem;
@@ -75,12 +104,14 @@ body {
   padding: 0 2rem;
 }
 .section-label {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+  text-shadow: 0 0 6px var(--accent);
+  border-bottom: 2px solid var(--border);
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
 }
@@ -344,8 +375,9 @@ textarea::placeholder { color: var(--text-dim); }
 /* ── THREE-COLUMN LAYOUT ─────────────────────────────────────────────────── */
 .section-divider {
   border: none;
-  border-top: 1px solid var(--border);
-  margin: 0 20px 2.5rem;
+  height: 5px;
+  background: linear-gradient(90deg, #ff0099, #ff6600, #ffff00, #00ff99, #00ffff, #0066ff, #cc00ff, #ff0099);
+  margin: 0 0 2.5rem;
 }
 #main-tab-bar {
   display: flex;
@@ -364,24 +396,25 @@ textarea::placeholder { color: var(--text-dim); }
   margin: 0 0.3rem;
 }
 .main-tab {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  background: var(--surface);
+  border: 3px outset #ff69b4;
+  border-radius: 0;
   color: var(--text-muted);
   cursor: pointer;
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  padding: 0.3rem 0.65rem;
-  transition: all 0.15s;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  padding: 0.3rem 0.7rem;
+  transition: all 0.1s;
 }
-.main-tab:hover { background: var(--surface); color: var(--text); }
-.tab-smart.active { background: var(--accent2); border-color: var(--accent2); color: #fff; }
-.tab-neat.active  { background: var(--accent);  border-color: var(--accent);  color: #fff; }
-.tab-cool.active  { background: var(--accent3); border-color: var(--accent3); color: #fff; }
-.tab-smart:hover:not(.active) { border-color: var(--accent2); color: var(--accent2); }
-.tab-neat:hover:not(.active)  { border-color: var(--accent);  color: var(--accent);  }
-.tab-cool:hover:not(.active)  { border-color: var(--accent3); color: var(--accent3); }
+.main-tab:hover { background: var(--surface2); color: var(--text); }
+.tab-smart.active { background: #002244; border: 3px inset #00ffee; color: #00ffee; text-shadow: 0 0 6px #00ffee; }
+.tab-neat.active  { background: #332200; border: 3px inset #ffff00; color: #ffff00; text-shadow: 0 0 6px #ffff00; }
+.tab-cool.active  { background: #330022; border: 3px inset #ff00aa; color: #ff00aa; text-shadow: 0 0 6px #ff00aa; }
+.tab-smart:hover:not(.active) { border-color: #00ffee; color: #00ffee; }
+.tab-neat:hover:not(.active)  { border-color: #ffff00; color: #ffff00; }
+.tab-cool:hover:not(.active)  { border-color: #ff00aa; color: #ff00aa; }
 #main-content {
   max-width: 1100px;
   margin: 0 auto;
@@ -1031,9 +1064,9 @@ textarea::placeholder { color: var(--text-dim); }
 }
 .brain-card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--accent2);
-  border-radius: 0 0 6px 6px;
+  border: 3px solid var(--border);
+  border-top: 5px solid var(--accent2);
+  border-radius: 0;
   padding: 1rem 1.1rem;
   display: flex;
   flex-direction: column;
@@ -1137,9 +1170,9 @@ textarea::placeholder { color: var(--text-dim); }
 }
 .rule-card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--accent);
-  border-radius: 0 0 6px 6px;
+  border: 3px solid var(--border);
+  border-top: 5px solid var(--accent);
+  border-radius: 0;
   padding: 1rem 1.1rem;
   display: flex;
   flex-direction: column;
@@ -1176,10 +1209,18 @@ textarea::placeholder { color: var(--text-dim); }
 <body>
 <div class="page">
 
+  <marquee scrollamount="3" style="background:#1a0035; color:#ff99cc; font-family:'Comic Sans MS',cursive; font-size:0.85rem; padding:0.4rem 0; border-top:3px solid #ff69b4; border-bottom:3px solid #ff69b4; margin-bottom:0;">✨ welcom 2 pixel's dev compendium ✨ &nbsp;&nbsp;&nbsp; u r visitor #000420 since 1999 &nbsp;&nbsp;&nbsp; 🌟 pleaz dont steal my graphics!! 🌟 &nbsp;&nbsp;&nbsp; best viewed in netscape navigator 4.0 at 800x600 &nbsp;&nbsp;&nbsp; ✨ site under construction!! ✨ &nbsp;&nbsp;&nbsp; sign my guestbook!! &nbsp;&nbsp;&nbsp; 💜 made with luv by rattles &amp; pixel 💜 &nbsp;&nbsp;&nbsp;</marquee>
+
   <header class="site-header">
     <div class="eyebrow">// archive reef — dev tools</div>
     <h1>Dev Compendium</h1>
     <p class="subtitle">The Right Mindset · Neat things · Cool things</p>
+    <p style="font-family:'Comic Sans MS',cursive; font-size:0.72rem; color:#ffff00; margin-top:0.75rem;">
+      <span style="animation:blink 1s step-end infinite; display:inline-block;">🚧 UNDER CONSTRUCTION 🚧</span>
+      &nbsp;&nbsp; last updated: today &nbsp;&nbsp;
+      <span style="color:#00ffee;">[ visitors: <strong>000420</strong> ]</span>
+      &nbsp;&nbsp; <span style="color:#ff99cc;">⭐ add to favorites!! ⭐</span>
+    </p>
   </header>
 
   <!-- ═══════════════════════════════════════════
