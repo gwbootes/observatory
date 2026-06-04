@@ -382,7 +382,9 @@ textarea::placeholder { color: var(--text-dim); }
 .tab-neat:hover:not(.active)  { border-color: var(--accent);  color: var(--accent);  }
 .tab-cool:hover:not(.active)  { border-color: var(--accent3); color: var(--accent3); }
 #main-content {
-  padding: 0 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 .col-section { display: none; }
 .col-section.active { display: block; }
@@ -1125,7 +1127,7 @@ textarea::placeholder { color: var(--text-dim); }
 /* ── RULES OF SEIGIESE ───────────────────────────────────────────────────── */
 .rules-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
 .rule-card {
@@ -2197,7 +2199,6 @@ document.querySelectorAll('.main-tab').forEach(tab => {
     document.querySelectorAll('.col-section').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById(tab.dataset.panel).classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
