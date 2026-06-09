@@ -16,11 +16,39 @@
   --glyph-color: #f5a623;   --glyph-dim: #9a6510;   --glyph-bubble: #1e1507;
   --rattles-color: #ff8c00; --rattles-dim: #99520a; --rattles-bubble: #1a0e00;
   --shrine-color: #7eb8f7;  --shrine-dim: #3a6090;  --shrine-bubble: #060d1a;
-  --text: #c8d8f0;
-  --text-muted: #4a6080;
-  --text-dim: #2a3a50;
+  --text: #d8e4f5;
+  --text-muted: #8aa0c0;
+  --text-dim: #5a7095;
   --ok: #2aaa6a;
   --err: #e05555;
+  --pixel-edge: #0d3a3c;
+  --glyph-edge: #3a2a0d;
+  --rattles-edge: #3a2208;
+  --shrine-edge: #16304a;
+  --accent-bg: #071e20;
+  --accent-bg-hover: #0a2c2e;
+  --row-rim: #0a1322;
+}
+body.light {
+  --deep: #f0f3f8;
+  --panel: #ffffff;
+  --rim: #c4d0e2;
+  --pixel-color: #00766e;  --pixel-dim: #00766e;  --pixel-bubble: #e2f3f2;
+  --glyph-color: #8a5a00;  --glyph-dim: #8a5a00;  --glyph-bubble: #faf0dc;
+  --rattles-color: #aa4f00; --rattles-dim: #aa4f00; --rattles-bubble: #fdeede;
+  --shrine-color: #1d5fa8; --shrine-dim: #1d5fa8; --shrine-bubble: #e4eefb;
+  --text: #16202e;
+  --text-muted: #44566e;
+  --text-dim: #5e7290;
+  --ok: #157a48;
+  --err: #b82e2e;
+  --pixel-edge: #a8d4d1;
+  --glyph-edge: #e0caa0;
+  --rattles-edge: #ecc9a8;
+  --shrine-edge: #b6cdec;
+  --accent-bg: #d9efed;
+  --accent-bg-hover: #c5e6e3;
+  --row-rim: #dde5f0;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
@@ -46,11 +74,11 @@ body { background: var(--deep); color: var(--text); font-family: 'Space Mono', m
 #gate-pass:focus { border-color: var(--pixel-dim); }
 #gate-btn {
   margin-top: 0.8rem; width: 100%; padding: 0.7rem; cursor: pointer;
-  background: #071e20; border: 1px solid var(--pixel-dim); border-radius: 6px;
+  background: var(--accent-bg); border: 1px solid var(--pixel-dim); border-radius: 6px;
   color: var(--pixel-color); font-family: 'Space Mono', monospace; font-size: 11px;
   letter-spacing: 0.18em; text-transform: uppercase; transition: background 0.15s;
 }
-#gate-btn:hover { background: #0a2c2e; }
+#gate-btn:hover { background: var(--accent-bg-hover); }
 #gate-msg { margin-top: 0.9rem; font-size: 10px; letter-spacing: 0.1em; color: var(--err); min-height: 14px; }
 
 /* ───── shell ───── */
@@ -67,8 +95,8 @@ header {
 .hd-right { display: flex; align-items: center; gap: 1rem; font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
 .hd-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); display: inline-block; margin-right: 0.35rem; animation: pulse 2.4s infinite; }
 @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.35 } }
-#lock-btn { background: none; border: 1px solid var(--rim); color: var(--text-muted); border-radius: 4px; padding: 0.3rem 0.6rem; font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
-#lock-btn:hover { color: var(--text); border-color: var(--text-dim); }
+#lock-btn, #theme-btn { background: none; border: 1px solid var(--rim); color: var(--text-muted); border-radius: 4px; padding: 0.3rem 0.6rem; font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+#lock-btn:hover, #theme-btn:hover { color: var(--text); border-color: var(--text-dim); }
 
 /* tabs (mobile) */
 #tabs { display: none; flex-shrink: 0; border-bottom: 1px solid var(--rim); }
@@ -91,10 +119,10 @@ header {
 .msg-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
 .msg-body { padding: 0.6rem 0.8rem; border-radius: 8px; font-size: 12.5px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; border: 1px solid; }
 .msg-time { font-size: 8.5px; color: var(--text-dim); letter-spacing: 0.08em; }
-.msg.pixel   .msg-label { color: var(--pixel-dim) }   .msg.pixel   .msg-body { background: var(--pixel-bubble);   border-color: #0d3a3c; }
-.msg.glyph   .msg-label { color: var(--glyph-dim) }   .msg.glyph   .msg-body { background: var(--glyph-bubble);   border-color: #3a2a0d; }
-.msg.rattles .msg-label { color: var(--rattles-dim); text-align: right } .msg.rattles .msg-body { background: var(--rattles-bubble); border-color: #3a2208; }
-.msg.shrine  .msg-label { color: var(--shrine-dim);  text-align: right } .msg.shrine  .msg-body { background: var(--shrine-bubble);  border-color: #16304a; }
+.msg.pixel   .msg-label { color: var(--pixel-dim) }   .msg.pixel   .msg-body { background: var(--pixel-bubble);   border-color: var(--pixel-edge); }
+.msg.glyph   .msg-label { color: var(--glyph-dim) }   .msg.glyph   .msg-body { background: var(--glyph-bubble);   border-color: var(--glyph-edge); }
+.msg.rattles .msg-label { color: var(--rattles-dim); text-align: right } .msg.rattles .msg-body { background: var(--rattles-bubble); border-color: var(--rattles-edge); }
+.msg.shrine  .msg-label { color: var(--shrine-dim);  text-align: right } .msg.shrine  .msg-body { background: var(--shrine-bubble);  border-color: var(--shrine-edge); }
 .msg.rattles .msg-time, .msg.shrine .msg-time { text-align: right; }
 
 #composer { flex-shrink: 0; border-top: 1px solid var(--rim); padding: 0.8rem 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; }
@@ -107,8 +135,8 @@ header {
 #input-row { display: flex; gap: 0.6rem; }
 #msg-input { flex: 1; resize: none; min-height: 42px; max-height: 140px; padding: 0.6rem 0.8rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 12.5px; line-height: 1.5; outline: none; }
 #msg-input:focus { border-color: var(--text-dim); }
-#send-btn { padding: 0 1.1rem; background: #071e20; border: 1px solid var(--pixel-dim); border-radius: 6px; color: var(--pixel-color); font-family: inherit; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; }
-#send-btn:hover { background: #0a2c2e; }
+#send-btn { padding: 0 1.1rem; background: var(--accent-bg); border: 1px solid var(--pixel-dim); border-radius: 6px; color: var(--pixel-color); font-family: inherit; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; }
+#send-btn:hover { background: var(--accent-bg-hover); }
 
 /* ───── files ───── */
 #file-toolbar { flex-shrink: 0; padding: 0.7rem 1.2rem; border-bottom: 1px solid var(--rim); display: flex; align-items: center; gap: 0.8rem; }
@@ -118,7 +146,7 @@ header {
 #file-input { display: none; }
 
 #file-list { flex-shrink: 0; max-height: 32%; overflow-y: auto; border-bottom: 1px solid var(--rim); }
-.f-row { display: flex; align-items: baseline; gap: 0.8rem; padding: 0.5rem 1.2rem; cursor: pointer; border-bottom: 1px solid #0a1322; font-size: 11.5px; }
+.f-row { display: flex; align-items: baseline; gap: 0.8rem; padding: 0.5rem 1.2rem; cursor: pointer; border-bottom: 1px solid var(--row-rim); font-size: 11.5px; }
 .f-row:hover { background: var(--panel); }
 .f-row.sel { background: var(--panel); border-left: 2px solid var(--pixel-color); padding-left: calc(1.2rem - 2px); }
 .f-name { flex: 1; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -130,7 +158,7 @@ header {
 #viewer img { max-width: 100%; border-radius: 6px; }
 #viewer pre.raw { white-space: pre-wrap; word-wrap: break-word; font-size: 11.5px; line-height: 1.6; color: var(--text); }
 .md-body { font-size: 12.5px; line-height: 1.65; }
-.md-body h1, .md-body h2, .md-body h3, .md-body h4 { font-family: 'Syne', sans-serif; margin: 1.2em 0 0.5em; color: #e8f0ff; }
+.md-body h1, .md-body h2, .md-body h3, .md-body h4 { font-family: 'Syne', sans-serif; margin: 1.2em 0 0.5em; color: var(--text); }
 .md-body h1 { font-size: 1.4rem; } .md-body h2 { font-size: 1.15rem; } .md-body h3 { font-size: 1rem; }
 .md-body p, .md-body ul, .md-body ol { margin-bottom: 0.8em; }
 .md-body ul, .md-body ol { padding-left: 1.4em; }
@@ -178,6 +206,7 @@ header {
     </div>
     <div class="hd-right">
       <span><span class="hd-dot"></span><span id="live-label">live</span></span>
+      <button id="theme-btn">surface</button>
       <button id="lock-btn">lock up</button>
     </div>
   </header>
@@ -269,6 +298,15 @@ function enter() {
 $('gate-btn').onclick = () => unlock($('gate-pass').value.trim());
 $('gate-pass').addEventListener('keydown', e => { if (e.key === 'Enter') unlock($('gate-pass').value.trim()); });
 $('lock-btn').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+/* theme: "surface" = light mode, "dive" = dark mode */
+function applyTheme(t) {
+  document.body.classList.toggle('light', t === 'light');
+  $('theme-btn').textContent = t === 'light' ? 'dive' : 'surface';
+  localStorage.setItem('drydock_theme', t);
+}
+$('theme-btn').onclick = () => applyTheme(document.body.classList.contains('light') ? 'dark' : 'light');
+applyTheme(localStorage.getItem('drydock_theme') || 'dark');
 
 // already signed in from a previous visit?
 sb.auth.getSession().then(({ data }) => { if (data.session) enter(); });
@@ -394,6 +432,10 @@ $('tab-files').onclick = () => {
 chat left (dev_messages table), file manifest + viewer right (dev_files bucket).
 Gated by shared Supabase Auth login; RLS restricts all reads/writes to the crew
 identity. Named by Pixel, blessed by Rattles.
+
+2026-06-09 | Session 130, later: contrast pass per Rattles — dark mode muted/dim
+text brightened, all hardcoded colors moved to CSS variables, light mode added.
+Theme toggle in header: "surface" goes light, "dive" goes dark. Persists per device.
 -->
 </body>
 </html>
