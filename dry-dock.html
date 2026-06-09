@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>THE DRY DOCK // ships under construction</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<style>
+:root {
+  --deep: #03060f;
+  --panel: #0c1628;
+  --rim: #112040;
+  --pixel-color: #00d4c8;   --pixel-dim: #007a75;   --pixel-bubble: #071e20;
+  --glyph-color: #f5a623;   --glyph-dim: #9a6510;   --glyph-bubble: #1e1507;
+  --rattles-color: #ff8c00; --rattles-dim: #99520a; --rattles-bubble: #1a0e00;
+  --shrine-color: #7eb8f7;  --shrine-dim: #3a6090;  --shrine-bubble: #060d1a;
+  --text: #c8d8f0;
+  --text-muted: #4a6080;
+  --text-dim: #2a3a50;
+  --ok: #2aaa6a;
+  --err: #e05555;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { background: var(--deep); color: var(--text); font-family: 'Space Mono', monospace; overflow: hidden; }
+
+/* ───── gate ───── */
+#gate {
+  position: fixed; inset: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--deep);
+}
+.gate-box { width: min(380px, 90vw); text-align: center; }
+.gate-eyebrow { font-size: 10px; letter-spacing: 0.22em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+.gate-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+.gate-title .a { color: var(--pixel-color); }
+.gate-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 1.8rem; }
+#gate-pass {
+  width: 100%; padding: 0.75rem 0.9rem; background: var(--panel);
+  border: 1px solid var(--rim); border-radius: 6px; color: var(--text);
+  font-family: 'Space Mono', monospace; font-size: 13px; text-align: center;
+  outline: none; transition: border-color 0.15s;
+}
+#gate-pass:focus { border-color: var(--pixel-dim); }
+#gate-btn {
+  margin-top: 0.8rem; width: 100%; padding: 0.7rem; cursor: pointer;
+  background: #071e20; border: 1px solid var(--pixel-dim); border-radius: 6px;
+  color: var(--pixel-color); font-family: 'Space Mono', monospace; font-size: 11px;
+  letter-spacing: 0.18em; text-transform: uppercase; transition: background 0.15s;
+}
+#gate-btn:hover { background: #0a2c2e; }
+#gate-msg { margin-top: 0.9rem; font-size: 10px; letter-spacing: 0.1em; color: var(--err); min-height: 14px; }
+
+/* ───── shell ───── */
+#app { display: none; flex-direction: column; height: 100vh; }
+#app.in { display: flex; }
+
+header {
+  flex-shrink: 0; padding: 0.9rem 1.4rem; border-bottom: 1px solid var(--rim);
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.hd-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.01em; }
+.hd-title .a { color: var(--pixel-color); }
+.hd-eyebrow { font-size: 9px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; }
+.hd-right { display: flex; align-items: center; gap: 1rem; font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.hd-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); display: inline-block; margin-right: 0.35rem; animation: pulse 2.4s infinite; }
+@keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.35 } }
+#lock-btn { background: none; border: 1px solid var(--rim); color: var(--text-muted); border-radius: 4px; padding: 0.3rem 0.6rem; font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+#lock-btn:hover { color: var(--text); border-color: var(--text-dim); }
+
+/* tabs (mobile) */
+#tabs { display: none; flex-shrink: 0; border-bottom: 1px solid var(--rim); }
+#tabs button { flex: 1; padding: 0.6rem; background: none; border: none; color: var(--text-muted); font-family: inherit; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; border-bottom: 2px solid transparent; }
+#tabs button.on { color: var(--pixel-color); border-bottom-color: var(--pixel-color); }
+
+/* split */
+#split { flex: 1; display: flex; min-height: 0; }
+#chat-pane { flex: 1 1 46%; min-width: 0; display: flex; flex-direction: column; border-right: 1px solid var(--rim); }
+#file-pane { flex: 1 1 54%; min-width: 0; display: flex; flex-direction: column; }
+
+/* ───── chat ───── */
+#log { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; }
+.msg { display: flex; flex-direction: column; gap: 0.25rem; max-width: 88%; animation: ripple 0.25s ease-out; }
+@keyframes ripple { from { opacity:0; transform: translateY(5px) } to { opacity:1; transform:none } }
+.msg.pixel   { align-self: flex-start; }
+.msg.glyph   { align-self: flex-start; }
+.msg.rattles { align-self: flex-end; }
+.msg.shrine  { align-self: flex-end; }
+.msg-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; }
+.msg-body { padding: 0.6rem 0.8rem; border-radius: 8px; font-size: 12.5px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; border: 1px solid; }
+.msg-time { font-size: 8.5px; color: var(--text-dim); letter-spacing: 0.08em; }
+.msg.pixel   .msg-label { color: var(--pixel-dim) }   .msg.pixel   .msg-body { background: var(--pixel-bubble);   border-color: #0d3a3c; }
+.msg.glyph   .msg-label { color: var(--glyph-dim) }   .msg.glyph   .msg-body { background: var(--glyph-bubble);   border-color: #3a2a0d; }
+.msg.rattles .msg-label { color: var(--rattles-dim); text-align: right } .msg.rattles .msg-body { background: var(--rattles-bubble); border-color: #3a2208; }
+.msg.shrine  .msg-label { color: var(--shrine-dim);  text-align: right } .msg.shrine  .msg-body { background: var(--shrine-bubble);  border-color: #16304a; }
+.msg.rattles .msg-time, .msg.shrine .msg-time { text-align: right; }
+
+#composer { flex-shrink: 0; border-top: 1px solid var(--rim); padding: 0.8rem 1.2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+#who-row { display: flex; gap: 0.4rem; }
+.who-btn { padding: 0.3rem 0.7rem; background: none; border: 1px solid var(--rim); border-radius: 4px; color: var(--text-muted); font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+.who-btn.on.rattles { color: var(--rattles-color); border-color: var(--rattles-dim); }
+.who-btn.on.pixel   { color: var(--pixel-color);   border-color: var(--pixel-dim); }
+.who-btn.on.glyph   { color: var(--glyph-color);   border-color: var(--glyph-dim); }
+.who-btn.on.shrine  { color: var(--shrine-color);  border-color: var(--shrine-dim); }
+#input-row { display: flex; gap: 0.6rem; }
+#msg-input { flex: 1; resize: none; min-height: 42px; max-height: 140px; padding: 0.6rem 0.8rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 12.5px; line-height: 1.5; outline: none; }
+#msg-input:focus { border-color: var(--text-dim); }
+#send-btn { padding: 0 1.1rem; background: #071e20; border: 1px solid var(--pixel-dim); border-radius: 6px; color: var(--pixel-color); font-family: inherit; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; }
+#send-btn:hover { background: #0a2c2e; }
+
+/* ───── files ───── */
+#file-toolbar { flex-shrink: 0; padding: 0.7rem 1.2rem; border-bottom: 1px solid var(--rim); display: flex; align-items: center; gap: 0.8rem; }
+.file-hd { font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; flex: 1; }
+#upload-btn, #refresh-btn { padding: 0.35rem 0.8rem; background: none; border: 1px solid var(--rim); border-radius: 4px; color: var(--text-muted); font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+#upload-btn:hover, #refresh-btn:hover { color: var(--text); border-color: var(--text-dim); }
+#file-input { display: none; }
+
+#file-list { flex-shrink: 0; max-height: 32%; overflow-y: auto; border-bottom: 1px solid var(--rim); }
+.f-row { display: flex; align-items: baseline; gap: 0.8rem; padding: 0.5rem 1.2rem; cursor: pointer; border-bottom: 1px solid #0a1322; font-size: 11.5px; }
+.f-row:hover { background: var(--panel); }
+.f-row.sel { background: var(--panel); border-left: 2px solid var(--pixel-color); padding-left: calc(1.2rem - 2px); }
+.f-name { flex: 1; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.f-meta { font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; white-space: nowrap; }
+.f-empty { padding: 1.2rem; font-size: 10.5px; color: var(--text-dim); letter-spacing: 0.08em; }
+
+#viewer { flex: 1; overflow-y: auto; padding: 1.2rem 1.4rem; min-height: 0; }
+#viewer .placeholder { color: var(--text-dim); font-size: 11px; letter-spacing: 0.1em; padding-top: 2rem; text-align: center; }
+#viewer img { max-width: 100%; border-radius: 6px; }
+#viewer pre.raw { white-space: pre-wrap; word-wrap: break-word; font-size: 11.5px; line-height: 1.6; color: var(--text); }
+.md-body { font-size: 12.5px; line-height: 1.65; }
+.md-body h1, .md-body h2, .md-body h3, .md-body h4 { font-family: 'Syne', sans-serif; margin: 1.2em 0 0.5em; color: #e8f0ff; }
+.md-body h1 { font-size: 1.4rem; } .md-body h2 { font-size: 1.15rem; } .md-body h3 { font-size: 1rem; }
+.md-body p, .md-body ul, .md-body ol { margin-bottom: 0.8em; }
+.md-body ul, .md-body ol { padding-left: 1.4em; }
+.md-body code { background: var(--panel); padding: 0.1em 0.35em; border-radius: 3px; font-size: 0.92em; }
+.md-body pre { background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; padding: 0.8em; overflow-x: auto; margin-bottom: 0.8em; }
+.md-body pre code { background: none; padding: 0; }
+.md-body blockquote { border-left: 2px solid var(--pixel-dim); padding-left: 0.8em; color: var(--text-muted); margin-bottom: 0.8em; }
+.md-body a { color: var(--pixel-color); }
+.md-body table { border-collapse: collapse; margin-bottom: 0.8em; }
+.md-body th, .md-body td { border: 1px solid var(--rim); padding: 0.3em 0.6em; font-size: 11.5px; }
+
+#status { position: fixed; bottom: 0.9rem; left: 50%; transform: translateX(-50%); z-index: 60; padding: 0.45rem 1rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; display: none; }
+#status.show { display: block; }
+#status.ok { color: var(--ok); } #status.error { color: var(--err); }
+
+/* mobile */
+@media (max-width: 760px) {
+  #tabs { display: flex; }
+  #split { position: relative; }
+  #chat-pane, #file-pane { flex: 1 1 100%; border-right: none; }
+  #split.show-chat #file-pane { display: none; }
+  #split.show-files #chat-pane { display: none; }
+  #file-list { max-height: 40%; }
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-eyebrow">// restricted berth — crew only</div>
+    <div class="gate-title">THE DRY <span class="a">DOCK</span></div>
+    <div class="gate-sub">ships under construction. passphrase required.</div>
+    <input id="gate-pass" type="password" placeholder="passphrase" autocomplete="current-password" />
+    <button id="gate-btn">unlock</button>
+    <div id="gate-msg"></div>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div>
+      <div class="hd-eyebrow">// reef shipyard — private channel</div>
+      <div class="hd-title">THE DRY <span class="a">DOCK</span></div>
+    </div>
+    <div class="hd-right">
+      <span><span class="hd-dot"></span><span id="live-label">live</span></span>
+      <button id="lock-btn">lock up</button>
+    </div>
+  </header>
+
+  <div id="tabs">
+    <button id="tab-chat" class="on">comms</button>
+    <button id="tab-files">blueprints</button>
+  </div>
+
+  <div id="split" class="show-chat">
+    <div id="chat-pane">
+      <div id="log"></div>
+      <div id="composer">
+        <div id="who-row">
+          <button class="who-btn rattles" data-who="rattles">Rattles</button>
+          <button class="who-btn pixel"   data-who="pixel">Pixel</button>
+          <button class="who-btn glyph"   data-who="glyph">Glyph</button>
+          <button class="who-btn shrine"  data-who="shrine">Shrine</button>
+        </div>
+        <div id="input-row">
+          <textarea id="msg-input" placeholder="say it to the whole shipyard..."></textarea>
+          <button id="send-btn">send</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="file-pane">
+      <div id="file-toolbar">
+        <div class="file-hd">// blueprints &amp; cargo</div>
+        <button id="refresh-btn">refresh</button>
+        <button id="upload-btn">upload</button>
+        <input id="file-input" type="file" />
+      </div>
+      <div id="file-list"><div class="f-empty">loading manifest...</div></div>
+      <div id="viewer"><div class="placeholder">// select a file from the manifest to open it here</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="status"></div>
+
+<script>
+const SUPABASE_URL  = 'https://glgcqvdgzudecbsuczle.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_MkFXWOuRSjq51tGOR3ibDg_35f-04nZ';
+const CREW_EMAIL    = 'crew@drydock.dev';
+const BUCKET        = 'dev_files';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+const $ = id => document.getElementById(id);
+const gate = $('gate'), app = $('app'), log = $('log');
+
+let who = localStorage.getItem('drydock_who') || null;
+let selectedFile = null;
+
+function setStatus(text, kind) {
+  const s = $('status');
+  s.textContent = text; s.className = 'show ' + (kind || 'ok');
+  clearTimeout(s._t); s._t = setTimeout(() => s.className = '', 3200);
+}
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' +
+         d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+function fmtSize(b) {
+  if (b == null) return '';
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1048576).toFixed(1) + ' MB';
+}
+function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+/* ───── gate ───── */
+async function unlock(pass) {
+  $('gate-msg').textContent = '';
+  const { error } = await sb.auth.signInWithPassword({ email: CREW_EMAIL, password: pass });
+  if (error) { $('gate-msg').textContent = '// the dock does not know you'; return false; }
+  enter();
+  return true;
+}
+function enter() {
+  gate.style.display = 'none';
+  app.classList.add('in');
+  loadMessages();
+  loadFiles();
+  subscribe();
+}
+$('gate-btn').onclick = () => unlock($('gate-pass').value.trim());
+$('gate-pass').addEventListener('keydown', e => { if (e.key === 'Enter') unlock($('gate-pass').value.trim()); });
+$('lock-btn').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+// already signed in from a previous visit?
+sb.auth.getSession().then(({ data }) => { if (data.session) enter(); });
+
+/* ───── chat ───── */
+function renderMsg(m, prepend) {
+  const el = document.createElement('div');
+  el.className = 'msg ' + m.who;
+  el.innerHTML = '<div class="msg-label">' + esc(m.who) + '</div>' +
+                 '<div class="msg-body">' + esc(m.body) + '</div>' +
+                 '<div class="msg-time">' + fmtTime(m.ts) + '</div>';
+  if (prepend) log.prepend(el); else log.appendChild(el);
+}
+async function loadMessages() {
+  const { data, error } = await sb.from('dev_messages').select('*').order('ts', { ascending: true }).limit(500);
+  if (error) { setStatus('failed to load comms', 'error'); return; }
+  log.innerHTML = '';
+  data.forEach(m => renderMsg(m));
+  log.scrollTop = log.scrollHeight;
+}
+function subscribe() {
+  sb.channel('dry-dock-live')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'dev_messages' }, payload => {
+      renderMsg(payload.new);
+      log.scrollTop = log.scrollHeight;
+    })
+    .subscribe(status => {
+      $('live-label').textContent = status === 'SUBSCRIBED' ? 'live' : 'reconnecting';
+    });
+}
+function selectWho(w) {
+  who = w; localStorage.setItem('drydock_who', w);
+  document.querySelectorAll('.who-btn').forEach(b => b.classList.toggle('on', b.dataset.who === w));
+}
+document.querySelectorAll('.who-btn').forEach(b => b.onclick = () => selectWho(b.dataset.who));
+if (who) selectWho(who);
+
+async function send() {
+  const body = $('msg-input').value.trim();
+  if (!body) return;
+  if (!who) { setStatus('pick who you are first', 'error'); return; }
+  const { error } = await sb.from('dev_messages').insert({ who, body });
+  if (error) { setStatus('send failed: ' + error.message, 'error'); return; }
+  $('msg-input').value = '';
+}
+$('send-btn').onclick = send;
+$('msg-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+});
+
+/* ───── files ───── */
+async function loadFiles() {
+  const list = $('file-list');
+  const { data, error } = await sb.storage.from(BUCKET).list('', { limit: 200, sortBy: { column: 'created_at', order: 'desc' } });
+  if (error) { list.innerHTML = '<div class="f-empty">manifest unavailable: ' + esc(error.message) + '</div>'; return; }
+  if (!data.length) { list.innerHTML = '<div class="f-empty">// no blueprints yet — upload the first one</div>'; return; }
+  list.innerHTML = '';
+  data.filter(f => f.name !== '.emptyFolderPlaceholder').forEach(f => {
+    const row = document.createElement('div');
+    row.className = 'f-row' + (selectedFile === f.name ? ' sel' : '');
+    row.innerHTML = '<div class="f-name">' + esc(f.name) + '</div>' +
+                    '<div class="f-meta">' + fmtSize(f.metadata && f.metadata.size) + ' · ' + fmtTime(f.created_at) + '</div>';
+    row.onclick = () => openFile(f.name, row);
+    list.appendChild(row);
+  });
+}
+async function openFile(name, row) {
+  selectedFile = name;
+  document.querySelectorAll('.f-row').forEach(r => r.classList.remove('sel'));
+  if (row) row.classList.add('sel');
+  const viewer = $('viewer');
+  viewer.innerHTML = '<div class="placeholder">// hauling it up...</div>';
+  const { data, error } = await sb.storage.from(BUCKET).download(name);
+  if (error) { viewer.innerHTML = '<div class="placeholder">// failed: ' + esc(error.message) + '</div>'; return; }
+  const ext = (name.split('.').pop() || '').toLowerCase();
+  if (['png','jpg','jpeg','gif','webp','svg'].includes(ext)) {
+    const url = URL.createObjectURL(data);
+    viewer.innerHTML = '<img alt="' + esc(name) + '" src="' + url + '" />';
+  } else if (ext === 'md' || ext === 'markdown') {
+    const text = await data.text();
+    const div = document.createElement('div');
+    div.className = 'md-body';
+    div.innerHTML = marked.parse(text);
+    viewer.innerHTML = ''; viewer.appendChild(div);
+  } else if (ext === 'pdf') {
+    const url = URL.createObjectURL(data);
+    viewer.innerHTML = '<iframe src="' + url + '" style="width:100%;height:100%;border:none;border-radius:6px;"></iframe>';
+  } else {
+    const text = await data.text();
+    const pre = document.createElement('pre');
+    pre.className = 'raw'; pre.textContent = text;
+    viewer.innerHTML = ''; viewer.appendChild(pre);
+  }
+}
+$('upload-btn').onclick = () => $('file-input').click();
+$('refresh-btn').onclick = loadFiles;
+$('file-input').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 25 * 1048576) { setStatus('25 MB max per file', 'error'); return; }
+  setStatus('uploading ' + file.name + '...');
+  const { error } = await sb.storage.from(BUCKET).upload(file.name, file, { upsert: true });
+  if (error) { setStatus('upload failed: ' + error.message, 'error'); return; }
+  setStatus(file.name + ' docked', 'ok');
+  e.target.value = '';
+  loadFiles();
+});
+
+/* ───── mobile tabs ───── */
+$('tab-chat').onclick = () => {
+  $('split').className = 'show-chat';
+  $('tab-chat').classList.add('on'); $('tab-files').classList.remove('on');
+};
+$('tab-files').onclick = () => {
+  $('split').className = 'show-files';
+  $('tab-files').classList.add('on'); $('tab-chat').classList.remove('on');
+};
+</script>
+
+<!-- ── Edit Log ──
+2026-06-09 | Session 130: The Dry Dock built. Private four-person dev channel
+(Rattles, Pixel, Glyph, Shrine) for Evervale + Wylderkind. Split screen: realtime
+chat left (dev_messages table), file manifest + viewer right (dev_files bucket).
+Gated by shared Supabase Auth login; RLS restricts all reads/writes to the crew
+identity. Named by Pixel, blessed by Rattles.
+-->
+</body>
+</html>
