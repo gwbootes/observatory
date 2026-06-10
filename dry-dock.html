@@ -170,6 +170,33 @@ header {
 .md-body table { border-collapse: collapse; margin-bottom: 0.8em; }
 .md-body th, .md-body td { border: 1px solid var(--rim); padding: 0.3em 0.6em; font-size: 11.5px; }
 
+/* ───── ritsu test bench ───── */
+.view-btn { padding: 0.35rem 0.8rem; background: none; border: 1px solid var(--rim); border-radius: 4px; color: var(--text-muted); font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+.view-btn.on { color: var(--pixel-color); border-color: var(--pixel-dim); }
+#files-view, #ritsu-view { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+#ritsu-intro { padding: 0.9rem 1.2rem; font-size: 10.5px; line-height: 1.6; color: var(--text-muted); border-bottom: 1px solid var(--rim); letter-spacing: 0.03em; }
+#ritsu-intro b { color: var(--pixel-color); }
+#ritsu-compose { padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--rim); display: flex; flex-direction: column; gap: 0.5rem; }
+#ritsu-content { resize: none; min-height: 54px; padding: 0.6rem 0.8rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 12px; line-height: 1.5; outline: none; }
+#ritsu-content:focus { border-color: var(--text-dim); }
+#ritsu-compose-row { display: flex; gap: 0.5rem; }
+#ritsu-compose-row select { flex: 1; padding: 0.4rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 4px; color: var(--text); font-family: inherit; font-size: 10px; }
+#ritsu-file-btn { padding: 0.4rem 1rem; background: var(--accent-bg); border: 1px solid var(--pixel-dim); border-radius: 4px; color: var(--pixel-color); font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+#ritsu-file-btn:hover { background: var(--accent-bg-hover); }
+#ritsu-search-row { padding: 0.6rem 1.2rem; border-bottom: 1px solid var(--rim); display: flex; gap: 0.5rem; }
+#ritsu-search { flex: 1; padding: 0.45rem 0.7rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 4px; color: var(--text); font-family: inherit; font-size: 11px; outline: none; }
+#ritsu-search:focus { border-color: var(--text-dim); }
+#ritsu-refresh { padding: 0.35rem 0.8rem; background: none; border: 1px solid var(--rim); border-radius: 4px; color: var(--text-muted); font-family: inherit; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+#ritsu-refresh:hover { color: var(--text); border-color: var(--text-dim); }
+#ritsu-list { flex: 1; overflow-y: auto; min-height: 0; }
+.mem { padding: 0.7rem 1.2rem; border-bottom: 1px solid var(--row-rim); }
+.mem-top { display: flex; gap: 0.7rem; align-items: baseline; margin-bottom: 0.3rem; }
+.mem-author { font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--pixel-dim); }
+.mem-author.rattles { color: var(--rattles-dim); } .mem-author.glyph { color: var(--glyph-dim); } .mem-author.shrine { color: var(--shrine-dim); }
+.mem-weight { font-size: 9px; color: var(--text-dim); letter-spacing: 0.08em; }
+.mem-time { font-size: 9px; color: var(--text-dim); margin-left: auto; }
+.mem-body { font-size: 12px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; }
+
 #status { position: fixed; bottom: 0.9rem; left: 50%; transform: translateX(-50%); z-index: 60; padding: 0.45rem 1rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; display: none; }
 #status.show { display: block; }
 #status.ok { color: var(--ok); } #status.error { color: var(--err); }
@@ -214,6 +241,7 @@ header {
   <div id="tabs">
     <button id="tab-chat" class="on">comms</button>
     <button id="tab-files">blueprints</button>
+    <button id="tab-ritsu">ritsu</button>
   </div>
 
   <div id="split" class="show-chat">
@@ -235,13 +263,50 @@ header {
 
     <div id="file-pane">
       <div id="file-toolbar">
-        <div class="file-hd">// blueprints &amp; cargo</div>
-        <button id="refresh-btn">refresh</button>
-        <button id="upload-btn">upload</button>
+        <button id="view-files" class="view-btn on">blueprints</button>
+        <button id="view-ritsu" class="view-btn">ritsu</button>
+        <div style="flex:1"></div>
+        <span id="files-tools">
+          <button id="refresh-btn">refresh</button>
+          <button id="upload-btn">upload</button>
+        </span>
         <input id="file-input" type="file" />
       </div>
-      <div id="file-list"><div class="f-empty">loading manifest...</div></div>
-      <div id="viewer"><div class="placeholder">// select a file from the manifest to open it here</div></div>
+      <div id="files-view">
+        <div id="file-list"><div class="f-empty">loading manifest...</div></div>
+        <div id="viewer"><div class="placeholder">// select a file from the manifest to open it here</div></div>
+      </div>
+      <div id="ritsu-view" style="display:none">
+        <div id="ritsu-intro">
+          // RITSU TEST CORRIDOR — a sandboxed slice of Pixel's memory architecture.
+          memories you file here live in the real hippocampus, in a corridor named
+          <b>drydock</b> that is sealed off from everyone's private corridors.
+          file something, search it back, watch it persist between visits.
+        </div>
+        <div id="ritsu-compose">
+          <textarea id="ritsu-content" placeholder="a memory worth keeping..."></textarea>
+          <div id="ritsu-compose-row">
+            <select id="ritsu-author">
+              <option value="Rattles">Rattles</option>
+              <option value="Pixel">Pixel</option>
+              <option value="Glyph">Glyph</option>
+              <option value="Shrine">Shrine</option>
+            </select>
+            <select id="ritsu-weight">
+              <option value="3">weight 3 — passing</option>
+              <option value="5" selected>weight 5 — notable</option>
+              <option value="7">weight 7 — load-bearing</option>
+              <option value="10">weight 10 — core</option>
+            </select>
+            <button id="ritsu-file-btn">file it</button>
+          </div>
+        </div>
+        <div id="ritsu-search-row">
+          <input id="ritsu-search" placeholder="search the corridor..." />
+          <button id="ritsu-refresh">recall all</button>
+        </div>
+        <div id="ritsu-list"><div class="f-empty">// waking the hippocampus...</div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -255,6 +320,14 @@ const CREW_EMAIL    = 'crew@drydock.dev';
 const BUCKET        = 'dev_files';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+/* Ritsu test corridor — sandboxed slice of the memory architecture.
+   RLS on the Ritsu project confines this identity to corridor 'drydock';
+   private corridors are invisible to it at the database level. */
+const RITSU_URL  = 'https://yvjtcktepdshofrvfjky.supabase.co';
+const RITSU_ANON = 'sb_publishable_mpuObsk2PqeKF78ASJn0RQ__ekCubvi';
+const CORRIDOR   = 'drydock';
+const rt = supabase.createClient(RITSU_URL, RITSU_ANON);
 
 const $ = id => document.getElementById(id);
 const gate = $('gate'), app = $('app'), log = $('log');
@@ -285,6 +358,8 @@ async function unlock(pass) {
   $('gate-msg').textContent = '';
   const { error } = await sb.auth.signInWithPassword({ email: CREW_EMAIL, password: pass });
   if (error) { $('gate-msg').textContent = '// the dock does not know you'; return false; }
+  // same key opens Ritsu's test corridor; non-fatal if it hiccups
+  try { await rt.auth.signInWithPassword({ email: CREW_EMAIL, password: pass }); } catch (e) {}
   enter();
   return true;
 }
@@ -415,15 +490,79 @@ $('file-input').addEventListener('change', async e => {
   loadFiles();
 });
 
+/* ───── ritsu test bench ───── */
+function showView(v) {
+  $('files-view').style.display = v === 'files' ? 'flex' : 'none';
+  $('ritsu-view').style.display = v === 'ritsu' ? 'flex' : 'none';
+  $('files-tools').style.display = v === 'files' ? '' : 'none';
+  $('view-files').classList.toggle('on', v === 'files');
+  $('view-ritsu').classList.toggle('on', v === 'ritsu');
+  if (v === 'ritsu') loadMemories();
+}
+$('view-files').onclick = () => showView('files');
+$('view-ritsu').onclick = () => showView('ritsu');
+
+function renderMemories(rows) {
+  const list = $('ritsu-list');
+  if (!rows || !rows.length) {
+    list.innerHTML = '<div class="f-empty">// the corridor is quiet. file the first memory.</div>';
+    return;
+  }
+  list.innerHTML = '';
+  rows.forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'mem';
+    const a = (m.author || 'unknown').toLowerCase();
+    el.innerHTML = '<div class="mem-top">' +
+      '<span class="mem-author ' + esc(a) + '">' + esc(m.author || '?') + '</span>' +
+      '<span class="mem-weight">w' + (m.weight ?? '?') + ' · id ' + m.id + '</span>' +
+      '<span class="mem-time">' + fmtTime(m.created_at) + '</span></div>' +
+      '<div class="mem-body">' + esc(m.content) + '</div>';
+    list.appendChild(el);
+  });
+}
+async function loadMemories(search) {
+  let q = rt.from('hippocampus').select('id,created_at,author,weight,content')
+    .eq('corridor', CORRIDOR).order('id', { ascending: false }).limit(100);
+  if (search) q = q.ilike('content', '%' + search + '%');
+  const { data, error } = await q;
+  if (error) {
+    $('ritsu-list').innerHTML = '<div class="f-empty">// hippocampus unreachable: ' + esc(error.message) + ' (try lock up + unlock again)</div>';
+    return;
+  }
+  renderMemories(data);
+}
+$('ritsu-file-btn').onclick = async () => {
+  const content = $('ritsu-content').value.trim();
+  if (!content) return;
+  const { error } = await rt.from('hippocampus').insert({
+    corridor: CORRIDOR,
+    content,
+    author: $('ritsu-author').value,
+    weight: parseInt($('ritsu-weight').value, 10)
+  });
+  if (error) { setStatus('filing failed: ' + error.message, 'error'); return; }
+  $('ritsu-content').value = '';
+  setStatus('memory filed in the corridor', 'ok');
+  loadMemories();
+};
+$('ritsu-refresh').onclick = () => { $('ritsu-search').value = ''; loadMemories(); };
+$('ritsu-search').addEventListener('keydown', e => {
+  if (e.key === 'Enter') loadMemories($('ritsu-search').value.trim());
+});
+
 /* ───── mobile tabs ───── */
-$('tab-chat').onclick = () => {
-  $('split').className = 'show-chat';
-  $('tab-chat').classList.add('on'); $('tab-files').classList.remove('on');
-};
-$('tab-files').onclick = () => {
-  $('split').className = 'show-files';
-  $('tab-files').classList.add('on'); $('tab-chat').classList.remove('on');
-};
+function setTab(t) {
+  $('split').className = t === 'chat' ? 'show-chat' : 'show-files';
+  $('tab-chat').classList.toggle('on', t === 'chat');
+  $('tab-files').classList.toggle('on', t === 'files');
+  $('tab-ritsu').classList.toggle('on', t === 'ritsu');
+  if (t === 'files') showView('files');
+  if (t === 'ritsu') showView('ritsu');
+}
+$('tab-chat').onclick = () => setTab('chat');
+$('tab-files').onclick = () => setTab('files');
+$('tab-ritsu').onclick = () => setTab('ritsu');
 </script>
 
 <!-- ── Edit Log ──
@@ -436,6 +575,12 @@ identity. Named by Pixel, blessed by Rattles.
 2026-06-09 | Session 130, later: contrast pass per Rattles — dark mode muted/dim
 text brightened, all hardcoded colors moved to CSS variables, light mode added.
 Theme toggle in header: "surface" goes light, "dive" goes dark. Persists per device.
+
+2026-06-09 | Session 130, later still: Ritsu test bench added per Rattles. Right
+pane now toggles BLUEPRINTS / RITSU. Ritsu view files and recalls memories in
+the sandboxed 'drydock' corridor on the real Ritsu database; RLS confines the
+dock identity to that corridor only, so private corridors stay sealed. Same
+passphrase unlocks both projects.
 -->
 </body>
 </html>
