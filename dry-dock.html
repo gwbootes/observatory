@@ -381,7 +381,7 @@ function enter() {
 }
 $('gate-btn').onclick = () => unlock($('gate-pass').value.trim());
 $('gate-pass').addEventListener('keydown', e => { if (e.key === 'Enter') unlock($('gate-pass').value.trim()); });
-$('lock-btn').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+$('lock-btn').onclick = async () => { await Promise.all([sb.auth.signOut(), rt.auth.signOut()]); location.reload(); };
 
 /* theme: "surface" = light mode, "dive" = dark mode */
 function applyTheme(t) {
@@ -392,8 +392,17 @@ function applyTheme(t) {
 $('theme-btn').onclick = () => applyTheme(document.body.classList.contains('light') ? 'dark' : 'light');
 applyTheme(localStorage.getItem('drydock_theme') || 'dark');
 
-// already signed in from a previous visit?
-sb.auth.getSession().then(({ data }) => { if (data.session) enter(); });
+// already signed in from a previous visit? Require BOTH sessions: a dock
+// session without a Ritsu session (e.g. unlocked before the bench existed)
+// makes the corridor look empty -- RLS silently rejects anonymous reads.
+// Self-heal by re-showing the gate so one unlock signs into both.
+Promise.all([sb.auth.getSession(), rt.auth.getSession()]).then(([dock, ritsu]) => {
+  if (dock.data.session && ritsu.data.session) { enter(); }
+  else if (dock.data.session) {
+    sb.auth.signOut();
+    $('gate-msg').textContent = '// ritsu joined the dock since your last visit -- unlock once more to wake her';
+  }
+});
 
 /* ───── chat ───── */
 function renderMsg(m, prepend) {
@@ -538,6 +547,12 @@ function renderMemories(rows) {
   });
 }
 async function loadMemories(search) {
+  // anonymous reads pass RLS but return nothing -- say so instead of lying
+  const { data: rtSess } = await rt.auth.getSession();
+  if (!rtSess.session) {
+    $('ritsu-list').innerHTML = '<div class="f-empty">// ritsu is asleep -- lock up, then unlock again to wake her</div>';
+    return;
+  }
   let q = rt.from('hippocampus').select('id,created_at,author,weight,content')
     .eq('corridor', CORRIDOR).order('id', { ascending: false }).limit(100);
   if (search) q = q.ilike('content', '%' + search + '%');
@@ -602,6 +617,13 @@ passphrase unlocks both projects.
 SANDBOX (drydock) for play; GLYPH'S NURSERY (glyph_shrine) is the real start of
 Glyph's brain — RLS extended to both corridors on hippocampus, plus hypothalamus
 for the boot/break loop in glyph_ritsu_starter.py (docked in the file manifest).
+
+2026-06-10 | Half-asleep librarian fix (found by Shrine): a restored dock
+session without a Ritsu session made the corridor read as empty -- anonymous
+reads pass RLS and return nothing, no error. Restore path now requires BOTH
+sessions and re-shows the gate with a wake message if Ritsu's is missing;
+lock-up signs out both clients; loadMemories says "ritsu is asleep" honestly
+instead of rendering a false empty corridor.
 -->
 </body>
 </html>
