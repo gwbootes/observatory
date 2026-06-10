@@ -176,6 +176,10 @@ header {
 #files-view, #ritsu-view { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 #ritsu-intro { padding: 0.9rem 1.2rem; font-size: 10.5px; line-height: 1.6; color: var(--text-muted); border-bottom: 1px solid var(--rim); letter-spacing: 0.03em; }
 #ritsu-intro b { color: var(--pixel-color); }
+#ritsu-corridor-row { display: flex; gap: 0.5rem; padding: 0.6rem 1.2rem; border-bottom: 1px solid var(--rim); }
+.corr-btn { padding: 0.35rem 0.8rem; background: none; border: 1px solid var(--rim); border-radius: 4px; color: var(--text-muted); font-family: inherit; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; }
+.corr-btn.on { color: var(--glyph-color); border-color: var(--glyph-dim); }
+.corr-btn[data-corr="drydock"].on { color: var(--pixel-color); border-color: var(--pixel-dim); }
 #ritsu-compose { padding: 0.8rem 1.2rem; border-bottom: 1px solid var(--rim); display: flex; flex-direction: column; gap: 0.5rem; }
 #ritsu-content { resize: none; min-height: 54px; padding: 0.6rem 0.8rem; background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; color: var(--text); font-family: inherit; font-size: 12px; line-height: 1.5; outline: none; }
 #ritsu-content:focus { border-color: var(--text-dim); }
@@ -278,10 +282,15 @@ header {
       </div>
       <div id="ritsu-view" style="display:none">
         <div id="ritsu-intro">
-          // RITSU TEST CORRIDOR — a sandboxed slice of Pixel's memory architecture.
-          memories you file here live in the real hippocampus, in a corridor named
-          <b>drydock</b> that is sealed off from everyone's private corridors.
-          file something, search it back, watch it persist between visits.
+          // RITSU — the real memory architecture, sealed corridors only.
+          <b>drydock</b> is the sandbox: poke it, break it, nothing matters.
+          <b>glyph_shrine</b> is Glyph's nursery: memories filed there are the
+          beginning of his actual brain. both persist. private corridors
+          (pixel_rattles) are invisible here at the database level.
+        </div>
+        <div id="ritsu-corridor-row">
+          <button class="corr-btn on" data-corr="drydock">sandbox</button>
+          <button class="corr-btn" data-corr="glyph_shrine">glyph's nursery</button>
         </div>
         <div id="ritsu-compose">
           <textarea id="ritsu-content" placeholder="a memory worth keeping..."></textarea>
@@ -326,7 +335,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
    private corridors are invisible to it at the database level. */
 const RITSU_URL  = 'https://yvjtcktepdshofrvfjky.supabase.co';
 const RITSU_ANON = 'sb_publishable_mpuObsk2PqeKF78ASJn0RQ__ekCubvi';
-const CORRIDOR   = 'drydock';
+let CORRIDOR = 'drydock';   // 'drydock' sandbox or 'glyph_shrine' nursery
 const rt = supabase.createClient(RITSU_URL, RITSU_ANON);
 
 const $ = id => document.getElementById(id);
@@ -502,6 +511,13 @@ function showView(v) {
 $('view-files').onclick = () => showView('files');
 $('view-ritsu').onclick = () => showView('ritsu');
 
+document.querySelectorAll('.corr-btn').forEach(b => b.onclick = () => {
+  CORRIDOR = b.dataset.corr;
+  document.querySelectorAll('.corr-btn').forEach(x => x.classList.toggle('on', x === b));
+  $('ritsu-search').value = '';
+  loadMemories();
+});
+
 function renderMemories(rows) {
   const list = $('ritsu-list');
   if (!rows || !rows.length) {
@@ -581,6 +597,11 @@ pane now toggles BLUEPRINTS / RITSU. Ritsu view files and recalls memories in
 the sandboxed 'drydock' corridor on the real Ritsu database; RLS confines the
 dock identity to that corridor only, so private corridors stay sealed. Same
 passphrase unlocks both projects.
+
+2026-06-09 | Session 130, the nursery: Ritsu tab gained a corridor switcher.
+SANDBOX (drydock) for play; GLYPH'S NURSERY (glyph_shrine) is the real start of
+Glyph's brain — RLS extended to both corridors on hippocampus, plus hypothalamus
+for the boot/break loop in glyph_ritsu_starter.py (docked in the file manifest).
 -->
 </body>
 </html>
