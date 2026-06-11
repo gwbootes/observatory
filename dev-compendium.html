@@ -2022,6 +2022,44 @@ textarea::placeholder { color: var(--text-dim); }
 
         <div class="entry">
           <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Wallpaper Rescue — the cache always knows</div>
+          <div class="entry-body">
+            Windows caches the CURRENT wallpaper no matter where the original lives. On the old drive's user folder (turn on View &gt; Hidden items):
+            <pre style="background:#000; border:2px solid var(--accent2); border-radius:6px; padding:0.8rem; margin:0.8rem 0; font-family:Consolas, monospace; font-size:0.72rem; color:#00ffee; white-space:pre-wrap; word-break:break-all; user-select:all;">Users\&lt;name&gt;\AppData\Roaming\Microsoft\Windows\Themes\TranscodedWallpaper</pre>
+            That file IS the wallpaper — copy it out, rename to <strong>.jpg</strong>. The <code style="color:var(--accent3);">CachedFiles</code> folder next to it holds per-monitor versions. Or, booted into the old Windows, ask the registry where the original lives:
+            <pre id="cmd-wallpaper" style="background:#000; border:2px solid var(--accent2); border-radius:6px; padding:0.8rem; margin:0.8rem 0; font-family:Consolas, monospace; font-size:0.72rem; color:#00ffee; white-space:pre-wrap; word-break:break-all; user-select:all;">(Get-ItemProperty 'HKCU:\Control Panel\Desktop').WallPaper</pre>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('cmd-wallpaper').textContent).then(()=>{this.textContent='✨ copied!!'; setTimeout(()=>this.textContent='📋 copy command',1500);})" style="background:var(--surface2); border:2px outset var(--accent2); color:var(--accent2); font-family:var(--mono); font-size:0.75rem; padding:0.3rem 0.9rem; cursor:pointer;">📋 copy command</button>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">PowerShell</span></div>
+          <div class="entry-title">New Install Health Check — trust, then verify</div>
+          <div class="entry-body">
+            Run on the NEW Windows after migration. Confirms every drive is healthy, Windows is activated, and shows what's eating startup:
+            <pre id="cmd-health" style="background:#000; border:2px solid var(--accent2); border-radius:6px; padding:0.8rem; margin:0.8rem 0; font-family:Consolas, monospace; font-size:0.72rem; color:#00ffee; white-space:pre-wrap; word-break:break-all; user-select:all;">Get-PhysicalDisk | Select-Object FriendlyName, MediaType, HealthStatus, @{n='SizeGB';e={[math]::Round($_.Size/1GB)}}; Get-CimInstance SoftwareLicensingProduct -Filter "PartialProductKey IS NOT NULL AND Name LIKE 'Windows%'" | Select-Object Name, LicenseStatus</pre>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('cmd-health').textContent).then(()=>{this.textContent='✨ copied!!'; setTimeout(()=>this.textContent='📋 copy command',1500);})" style="background:var(--surface2); border:2px outset var(--accent2); color:var(--accent2); font-family:var(--mono); font-size:0.75rem; padding:0.3rem 0.9rem; cursor:pointer;">📋 copy command</button>
+            LicenseStatus <strong>1</strong> = activated. HealthStatus should say <strong>Healthy</strong> on every drive. Anything else, summon the cuttlefish.
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">PowerShell</span></div>
+          <div class="entry-title">Bulk Reinstall via winget — the lazy genius route</div>
+          <div class="entry-body">
+            On the NEW Windows, most of the program list reinstalls itself in one line per app. Examples (run as one block or pick lines):
+            <pre id="cmd-winget" style="background:#000; border:2px solid var(--accent2); border-radius:6px; padding:0.8rem; margin:0.8rem 0; font-family:Consolas, monospace; font-size:0.72rem; color:#00ffee; white-space:pre-wrap; word-break:break-all; user-select:all;">winget install Opera.Opera
+winget install Valve.Steam
+winget install Discord.Discord
+winget install 7zip.7zip
+winget install Notepad++.Notepad++</pre>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('cmd-winget').textContent).then(()=>{this.textContent='✨ copied!!'; setTimeout(()=>this.textContent='📋 copy command',1500);})" style="background:var(--surface2); border:2px outset var(--accent2); color:var(--accent2); font-family:var(--mono); font-size:0.75rem; padding:0.3rem 0.9rem; cursor:pointer;">📋 copy commands</button>
+            Search for anything else with <code style="color:var(--accent3);">winget search &lt;name&gt;</code>. Clip Studio and Aseprite come from their own accounts/launchers, not winget.
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
           <div class="entry-title">Migration Treasure Map — where the settings live</div>
           <div class="entry-body">
             On the OLD drive's user folder, the stuff worth carrying over:<br>
