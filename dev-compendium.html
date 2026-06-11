@@ -1291,6 +1291,7 @@ textarea::placeholder { color: var(--text-dim); }
     <button class="main-tab tab-neat" data-panel="neat-formula">Formula</button>
     <button class="main-tab tab-neat" data-panel="neat-tokens">Tokens</button>
     <button class="main-tab tab-neat" data-panel="neat-wcag">WCAG</button>
+    <button class="main-tab tab-neat" data-panel="neat-commands">Commands</button>
     <span class="tab-divider"></span>
     <button class="main-tab tab-cool" data-panel="cool-fg">Flex / Grid</button>
     <button class="main-tab tab-cool" data-panel="cool-notes">Notes</button>
@@ -2005,6 +2006,33 @@ textarea::placeholder { color: var(--text-dim); }
       </div>
 
     <!-- ═══ COOL THINGS ═══ -->
+
+      <div class="col-section" data-col="neat" id="neat-commands">
+        <div class="section-label">// Commands — copy-paste spells, no running between rooms</div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">PowerShell</span></div>
+          <div class="entry-title">Export Installed Programs List</div>
+          <div class="entry-body">
+            Dumps every installed program (with versions) to <strong>C:\Users\Public\installed-programs.txt</strong>. Run it on the OLD Windows, read the file from the new one. Made for the M.2 migration inventory.
+            <pre id="cmd-proglist" style="background:#000; border:2px solid var(--accent2); border-radius:6px; padding:0.8rem; margin:0.8rem 0; font-family:Consolas, monospace; font-size:0.72rem; color:#00ffee; white-space:pre-wrap; word-break:break-all; user-select:all;">Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*, HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion | Sort-Object DisplayName | Out-File C:\Users\Public\installed-programs.txt</pre>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('cmd-proglist').textContent).then(()=>{this.textContent='✨ copied!!'; setTimeout(()=>this.textContent='📋 copy command',1500);})" style="background:var(--surface2); border:2px outset var(--accent2); color:var(--accent2); font-family:var(--mono); font-size:0.75rem; padding:0.3rem 0.9rem; cursor:pointer;">📋 copy command</button>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Migration Treasure Map — where the settings live</div>
+          <div class="entry-body">
+            On the OLD drive's user folder, the stuff worth carrying over:<br>
+            <strong>Clip Studio materials/brushes</strong> — <code style="color:var(--accent3);">Documents\CELSYS</code> (plus sign into the CELSYS account)<br>
+            <strong>Opera profile</strong> — <code style="color:var(--accent3);">AppData\Roaming\Opera Software</code> (or just sign into Opera sync)<br>
+            <strong>Aseprite</strong> — Steam install or key from itch/Humble account<br>
+            <strong>Claude</strong> — fresh install, sign in, repoint boots at the library<br>
+            <em>Old Windows folders stay un-deleted until the resident has lived in the new install for days. The graveyard is also a settings warehouse.</em>
+          </div>
+        </div>
+      </div>
 
       <div class="col-section" data-col="cool" id="cool-fg">
         <div id="section-fg">
