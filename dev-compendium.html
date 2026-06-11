@@ -2059,6 +2059,18 @@ winget install Notepad++.Notepad++</pre>
         </div>
 
         <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">PowerShell (Admin)</span></div>
+          <div class="entry-title">Unlock the Old Drive — NTFS permissions exorcism</div>
+          <div class="entry-body">
+            Old user folders are owned by accounts that no longer exist, so the new Windows says "not yours." Run BOTH in an <strong>Administrator</strong> terminal (Win+X &gt; Terminal (Admin)). Replace <code style="color:var(--accent3);">X:</code> and <code style="color:var(--accent3);">OldName</code> first:
+            <pre id="cmd-takeown" style="background:#000; border:2px solid var(--accent2); border-radius:6px; padding:0.8rem; margin:0.8rem 0; font-family:Consolas, monospace; font-size:0.72rem; color:#00ffee; white-space:pre-wrap; word-break:break-all; user-select:all;">takeown /F "X:\Users\OldName" /R /D Y
+icacls "X:\Users\OldName" /grant "${env:USERNAME}:(OI)(CI)F" /T /C</pre>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('cmd-takeown').textContent).then(()=>{this.textContent='✨ copied!!'; setTimeout(()=>this.textContent='📋 copy commands',1500);})" style="background:var(--surface2); border:2px outset var(--accent2); color:var(--accent2); font-family:var(--mono); font-size:0.75rem; padding:0.3rem 0.9rem; cursor:pointer;">📋 copy commands</button>
+            First claims ownership (slow on big folders, normal), second grants full control. <strong>Aim at the Users folder ONLY</strong> — never the drive root or old Windows folder. Treasure's in Users, stay in Users.
+          </div>
+        </div>
+
+        <div class="entry">
           <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
           <div class="entry-title">Migration Treasure Map — where the settings live</div>
           <div class="entry-body">
