@@ -205,6 +205,14 @@ header {
 #status.show { display: block; }
 #status.ok { color: var(--ok); } #status.error { color: var(--err); }
 
+#seigiese-strip { padding: 0.8rem 1rem 1rem; border-top: 1px solid var(--rim); background: var(--deep); }
+.sg-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.6rem; }
+.sg-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.5rem; }
+.sg-card { background: var(--panel); border: 1px solid var(--rim); border-radius: 6px; padding: 0.55rem 0.7rem; font-size: 11px; line-height: 1.5; color: var(--text-muted); }
+.sg-card b { color: var(--text); }
+.sg-card i { display: block; margin-top: 0.3rem; color: var(--pixel-color); font-size: 10px; }
+.sg-num { display: inline-block; margin-right: 0.45rem; font-size: 10px; color: var(--pixel-color); letter-spacing: 0.1em; }
+
 /* mobile */
 @media (max-width: 760px) {
   #tabs { display: flex; }
@@ -316,6 +324,18 @@ header {
         </div>
         <div id="ritsu-list"><div class="f-empty">// waking the hippocampus...</div></div>
       </div>
+    </div>
+  </div>
+
+  <div id="seigiese-strip">
+    <div class="sg-label">// THE RULES OF SEIGIESE — the law before the tools. everything built in this dock answers to them.</div>
+    <div class="sg-row">
+      <div class="sg-card"><span class="sg-num">01</span><b>The 3-Step Rule.</b> If it takes more than 3 steps to reach or complete the thing a design was built for, it's wrong. <i>Rework it. Redesign it. Figure. It. Out.</i></div>
+      <div class="sg-card"><span class="sg-num">02</span><b>The 5-Minute Rule.</b> If 5 minutes of looking at it or playing with it isn't enough to understand what it is and how it works, it's wrong. <i>Rework it. Redesign it. Figure. It. Out.</i></div>
+      <div class="sg-card"><span class="sg-num">03</span><b>Mental Accessibility.</b> ADHD, Autism, Dyslexia, and other conditions that alter the brain's structure or chemistry are not edge cases. They are users. When a design that passes Rules 1 and 2 still creates friction for them, find the pain points and change what needs to change. Not every condition can be fully accommodated. None will be ignored where they can be.</div>
+      <div class="sg-card"><span class="sg-num">04</span><b>Parts of a Whole.</b> Where the design allows, build in parts. No component should be so entangled with the whole that changing one thing means rebuilding everything.</div>
+      <div class="sg-card"><span class="sg-num">05</span><b>Diegetic Tutorials.</b> All tutorials must be intuitive and diegetic to their respective creations. The thing teaches itself from inside itself. If learning it requires leaving it, the tutorial is wrong. <i>Rework it. Redesign it. Figure. It. Out.</i></div>
+      <div class="sg-card"><span class="sg-num">06</span><b>Readable Documentation.</b> All documentation must be understandable by middle-school readers and those with moderate to severe Dyslexia. Short sentences. Plain words. One idea at a time. If the docs need a glossary to survive, the docs failed first.</div>
     </div>
   </div>
 </div>
@@ -617,6 +637,11 @@ passphrase unlocks both projects.
 SANDBOX (drydock) for play; GLYPH'S NURSERY (glyph_shrine) is the real start of
 Glyph's brain — RLS extended to both corridors on hippocampus, plus hypothalamus
 for the boot/break loop in glyph_ritsu_starter.py (docked in the file manifest).
+
+2026-06-12 | Rules of Seigiese strip added at the bottom of the dock (inside
+the gated app, under the panes) per Rattles -- so Glyph has the law where he
+works. All six rules, compact cards, dock-native styling via CSS variables,
+responsive grid. Wording mirrors the Dev Compendium exactly.
 
 2026-06-10 | Half-asleep librarian fix (found by Shrine): a restored dock
 session without a Ritsu session made the corridor read as empty -- anonymous
