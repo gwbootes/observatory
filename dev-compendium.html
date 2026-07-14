@@ -2389,6 +2389,78 @@ icacls "X:\Users\OldName" /grant "${env:USERNAME}:(OI)(CI)F" /T /C</pre>
           </div>
           <div class="entry-source"><a href="https://www.retrogames.cc" target="_blank">retrogames.cc</a></div>
         </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Vinyl &amp; Turntable (audio)</div>
+          <div class="entry-body">
+            <strong>Surface noise / crackle</strong> — continuous pops and hiss from dust and wear in the groove<br>
+            <strong>Pops &amp; clicks</strong> — discrete sharp ticks from scratches or debris hits<br>
+            <strong>Turntable rumble</strong> — low-frequency hum from the motor and platter bearing<br>
+            <strong>Warp wow</strong> — slow pitch undulation from a physically warped disc<br>
+            <strong>Inner-groove distortion</strong> — tracks near the label sound duller and grittier; the groove physically travels slower<br>
+            <strong>Needle drop</strong> — the thump-and-crackle of the stylus landing; THE "song is starting" sound<br>
+            <strong>Locked groove / skipping</strong> — the same second looping forever until someone nudges the arm<br>
+            <strong>Stylus mistracking</strong> — harsh sizzly breakup on loud passages the needle can't follow
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Cassette &amp; Tape (audio)</div>
+          <div class="entry-body">
+            <strong>Tape hiss</strong> — constant high-frequency noise floor; the sound of tape itself<br>
+            <strong>Wow and flutter</strong> — pitch wobble; wow is slow (warbly), flutter is fast (nervous shimmer)<br>
+            <strong>Tape saturation</strong> — warm compression and soft distortion when recorded hot; why tape sounds "fat"<br>
+            <strong>Dropouts</strong> — momentary volume dips where oxide flaked off the tape<br>
+            <strong>Print-through / pre-echo</strong> — faint ghost of the next loud part heard early, bled between tape layers on the reel<br>
+            <strong>Azimuth error</strong> — dull, phasey highs from a misaligned playback head<br>
+            <strong>Tape stop / tape start</strong> — pitch dives to a growl as the motor spins down (the DJ "power down" effect)<br>
+            <strong>Chewed tape / crinkle</strong> — garbled warbling from physically creased tape; the walkman-ate-it sound
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Radio &amp; Broadcast (audio)</div>
+          <div class="entry-body">
+            <strong>AM bandwidth crush</strong> — everything above ~5kHz gone; tinny, midrange-only "old radio" voice<br>
+            <strong>FM static / interstation noise</strong> — the hiss-wash between stations<br>
+            <strong>Signal fade</strong> — station drifting in and out of the noise as reception wavers<br>
+            <strong>Heterodyne whine</strong> — piercing whistle from two stations interfering<br>
+            <strong>Broadcast compression</strong> — everything squashed loud and dense so it survives a car radio<br>
+            <strong>Telephone EQ</strong> — 300Hz–3.4kHz band only; the "voice on the phone" filter<br>
+            <strong>Ground-loop hum</strong> — steady 60Hz drone from bad wiring (50Hz across the pond)<br>
+            <strong>Vacuum tube warmth</strong> — even-harmonic distortion from tube amps; the "glow" audio nerds chase
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Reference</span></div>
+          <div class="entry-title">Digital &amp; Lo-Fi (audio)</div>
+          <div class="entry-body">
+            <strong>Bitcrushing</strong> — reducing bit depth; adds gritty, fizzy quantization noise (the audio sibling of visual bitcrushing)<br>
+            <strong>Sample-rate reduction / downsampling</strong> — crunchy aliased highs; the 90s sampler sound (SP-1200, early Akai)<br>
+            <strong>Aliasing</strong> — false metallic frequencies folding back where the sample rate can't keep up<br>
+            <strong>MP3 swirlies / compression artifacts</strong> — underwater, phasey smearing on cymbals in low-bitrate encodes<br>
+            <strong>Quantization noise</strong> — the grainy floor of low bit-depth audio<br>
+            <strong>DAC crunch</strong> — cheap converter grit; why a Game Boy speaker sounds like a Game Boy<br>
+            <strong>Buffer stutter / CD skip</strong> — a slice of audio machine-gun repeating<br>
+            <strong>Ring modulation</strong> — robotic metallic bell tones; the Dalek voice
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-meta"><span class="entry-tag tag-tip">Tool</span></div>
+          <div class="entry-title">Time-Machine Stereo (system-wide audio FX)</div>
+          <div class="entry-body">
+            The install chain that makes ALL Windows audio (Spotify included) play through fake vinyl or cassette, toggleable:<br>
+            <strong>Equalizer APO</strong> — free system-wide audio processor; everything the PC plays routes through it<br>
+            <strong>iZotope Vinyl</strong> — free VST, the fake-record-player standard: dust, crackle, warp, hum, and a YEAR dial by decade<br>
+            <strong>CHOW Tape Model</strong> — free, open-source cassette simulation: saturation, wow, flutter, hiss
+          </div>
+          <div class="entry-source"><a href="https://sourceforge.net/projects/equalizerapo/" target="_blank">Equalizer APO</a> · <a href="https://www.izotope.com/en/products/vinyl.html" target="_blank">iZotope Vinyl</a> · <a href="https://chowdsp.com/products.html" target="_blank">CHOW Tape Model</a></div>
+        </div>
       </div>
 
       <div class="col-section" data-col="adoptables" id="adoptables-corner">
@@ -3896,6 +3968,10 @@ function setTokStatus(msg, type) {
 
 <!--
 UPDATE LOG
+
+2026-07-14 | Pixel | Added audio wing to 90s Resources
+Why: Rattles asked for the audio version of all the visual effects — names for the sounds burned into your brain, same as the visuals. Sparked by the time-machine stereo discovery (Equalizer APO + iZotope Vinyl).
+Changes: Four new Reference cards (Vinyl & Turntable, Cassette & Tape, Radio & Broadcast, Digital & Lo-Fi) + one Tool card (Time-Machine Stereo install chain) after Retrogames in cool-90s.
 
 2026-05-28 | Pixel | Added Ritsu tab to The Right Mindset
 Why: Glyph and Lumen need to understand the architecture to implement their own corridors.
